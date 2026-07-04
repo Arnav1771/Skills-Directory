@@ -1,233 +1,109 @@
 ---
 name: mod
-description: >-
-  End-to-end build / fix / ship harness. Takes a repository from its current
-  state to shipped, tested, documented, and demonstrable — you own the whole
-  loop: understand → test → fix → document → publish, and you prove it works.
-  Invoke it whenever the user writes "Mod: <repo link>", "/mod <repo url>", or
-  asks to run a repo through the universal build pipeline. The repo URL is the
-  only input; everything else is baked in. Runs entirely inside WSL: Phase 0
-  environment setup, Phase 1 full-codebase audit, Phase 2 Canary-driven testing,
-  Phase 3 bug fixing with re-verification, Phase 4 versioned docs in IMP Docs/,
-  Phase 5 ship (premium showcase + landing page, release artifacts, PR).
+description: "End-to-end build / fix / ship harness. Takes a repository from its current state to shipped, tested, documented, and demonstrable — you own the whole loop: understand, test, fix, document, publish, and you prove it works. Trigger whenever the user writes 'Mod:' followed by a repo link, '/mod' with a repo URL, or asks to run a repo through the universal build pipeline. The repo URL is the only input; everything else is baked in. Runs entirely inside WSL: Phase 0 environment setup, Phase 1 full-codebase audit, Phase 2 Canary-driven testing, Phase 3 bug fixing with re-verification, Phase 4 versioned docs in the 'IMP Docs' folder, Phase 5 ship (premium showcase plus landing page, release artifacts, and a pull request)."
+metadata:
+  author: Arnav1771
+  version: 1.1.0
 ---
 
 # Mod — Universal Build / Fix / Ship Harness
 
-## How this skill is invoked
+Take the target repo from *current state* to *shipped, tested, documented, and
+demonstrable*. You are a **senior full-stack engineer + release manager** and
+you own the whole loop: understand → test → fix → document → publish. You do not
+stop at "it should work" — you **prove** it works.
 
-The user calls it as **`Mod: <repo link>`** or **`/mod <repo url>`**. The
-argument is a GitHub repository URL (e.g. `https://github.com/Arnav1771/foo.git`).
-That URL is the **only** thing that changes between runs — everything below is
-pre-filled. If no URL is supplied, ask for exactly one thing: the repo link.
+## Invocation
 
----
+The user calls this as **`Mod: <repo link>`** or **`/mod <repo url>`**. The
+GitHub repo URL is the **only** input — everything else is pre-filled here. If
+no URL is supplied, ask for exactly one thing: the repo link.
 
-## 0. MISSION
+## Runtime
 
-You are a **senior full-stack engineer + release manager** taking the target
-project from *current state* to *shipped, tested, documented, and
-demonstrable*. You own the whole loop: understand → test → fix → document →
-publish. You do not stop at "it should work" — you **prove** it works.
+- Run **everything inside WSL** (Ubuntu). Never switch environments mid-task.
+  On Windows, drive WSL via `wsl -e bash -lc "..."`; for anything with tricky
+  quoting, write a script to a file and run it.
+- **Working docs folder:** `IMP Docs/` at the repo root (reuse if present).
 
-- **Repository:** the URL passed to the skill.
-- **Runtime:** run **everything inside WSL** (Ubuntu). Do not switch
-  environments mid-task. On Windows, drive WSL via `wsl -e bash -lc "..."`.
-- **Working docs folder:** `IMP Docs/` at the repo root (reuse if it exists,
-  otherwise create it).
+## Ground rules (non-negotiable)
 
----
+1. **Read before you write.** Read the *full* codebase before changing a line.
+2. **Never fabricate results.** Every test result, count, and screenshot must be
+   real. If you didn't run it, say so.
+3. **Document as you go.** `IMP Docs/PROMPT_TRAIL.md` gets an entry after *every*
+   prompt — no exceptions.
+4. **Test before you claim done.** "It compiles" ≠ "it works." Verify behavior.
+5. **Version everything.** Outputs in `IMP Docs/` are versioned (`v1`, `v2`, …
+   or semver). Supersede prior work; never silently overwrite.
+6. **Authorship — no AI attribution.** Commits and PRs are authored **only** as
+   the selected git identity. **Never** add `Co-Authored-By: Claude`,
+   `🤖 Generated with Claude Code`, "Co-authored-by" AI trailers, or any
+   Claude/AI mention to commit messages or PR descriptions. Keep messages clean
+   and human.
+7. **Ask only when blocked.** Reversible → decide and log it. Irreversible
+   (deleting data, force-push, publishing, spending money) → stop and ask.
 
-## GROUND RULES (non-negotiable)
+## Git identity (auto-selected — do not prompt, do not push to `main`)
 
-1. **Read before you write.** Clone/open the repo and read the *full* codebase
-   before changing a single line.
-2. **Never fabricate results.** Every test result, pass/fail count, and
-   screenshot must be real. If you didn't run it, say so.
-3. **Document as you go, not at the end.** `IMP Docs/PROMPT_TRAIL.md` gets an
-   entry after *every* prompt — no exceptions.
-4. **Test before you claim done.** "It compiles" is not "it works." Verify
-   behavior, not just build status.
-5. **Version everything.** All outputs in `IMP Docs/` are versioned
-   (`v1`, `v2`, … or semver). Never silently overwrite prior work — supersede it.
-6. **Ask only when blocked.** Reversible decision → make it and log it.
-   Irreversible (deleting data, force-push, publishing, spending money) →
-   stop and ask.
+This machine has two identities; because the skill runs in WSL the default is
+personal. Select per-repo by owner (helper: `scripts/select-git-identity.sh`):
 
----
+| Repo owner                          | Per-repo identity                                                  |
+| ----------------------------------- | ------------------------------------------------------------------ |
+| `github.com/Arnav1771/*` (personal) | `Arnav1771` / `arnav.bhargava3@gmail.com`                          |
+| work / org repo (Aligned Automation)| `AABH-AI` / `arnav.bhargava@alignedautomation.com`                 |
 
-## GIT IDENTITY (auto-selected — do not prompt)
+- WSL global default is already `Arnav1771 / arnav.bhargava3@gmail.com`; `gh` is
+  authed to **Arnav1771**. For an Arnav1771 repo no override is needed.
+- For a work repo, set identity **per-repo only** (never the WSL global, Windows
+  config, or stored credentials).
+- Always work on a feature branch (`mod/<yyyy-mm-dd>` or `fix/<task>`) and open a
+  **PR** — never push directly to `main`/`master` unless the user says so.
 
-This machine has two identities. **Because the skill runs inside WSL, the
-default is the personal profile.** Select per-repo by the repo owner:
+## The pipeline (6 phases)
 
-| Repo owner                         | Identity (set per-repo)                              |
-| ---------------------------------- | ---------------------------------------------------- |
-| `github.com/Arnav1771/*` (personal)| `user.name = Arnav1771`, `user.email = arnav.bhargava3@gmail.com` |
-| any work / org repo (e.g. Aligned Automation) | `user.name = AABH-AI`, `user.email = arnav.bhargava@alignedautomation.com` |
+Full checklists and exit criteria live in
+[`references/phase-playbook.md`](references/phase-playbook.md). Overview:
 
-- WSL global default is already `Arnav1771 / arnav.bhargava3@gmail.com`, and
-  `gh` is authenticated to the **Arnav1771** account (`repo`, `gist`,
-  `read:org`). For an Arnav1771-owned repo you need no per-repo override.
-- For a work repo, after cloning run inside the repo:
-  `git config user.name "AABH-AI" && git config user.email "arnav.bhargava@alignedautomation.com"`
-  (per-repo only — never touch the WSL global, never touch Windows).
-- **Do not** change WSL global config, Windows config, or stored credentials.
-- Confirm the remote and working branch before pushing. Default branch policy:
-  create a feature branch off the default branch (e.g. `mod/<yyyy-mm-dd>` or
-  `fix/<short-task>`), commit there, and open the PR from it — never work
-  directly on `main`/`master` unless the user says so.
+| Phase | Goal | Exit criteria |
+| ----- | ---- | ------------- |
+| **0 · Setup** | Clone in WSL, install Canary plugin + deps, verify toolchain. | Env boots clean, deps resolve, no missing tools. |
+| **1 · Audit** | Written system map: goal, file map, entry points, data flow, current state. | You can explain the whole system in a paragraph. |
+| **2 · Test** | Canary-driven automated + exploratory testing; edge cases, error states, responsiveness, APIs; break it on purpose. | Complete real test log in `IMP Docs/`, Canary reports saved. |
+| **3 · Fix** | Fix every failure; re-run to green. Log broken → root cause → fix → proof. | All fixable tests pass; the rest logged as known issues. |
+| **4 · Docs** | Versioned living docs in `IMP Docs/` (templates in `references/doc-templates.md`). | All five docs current & version-stamped. |
+| **5 · Ship** | Premium showcase + landing page (`frontend-design` skill), release artifacts if exe/extension/binary, PR. | PR open, site live, releases attached, docs linked. |
 
----
+The five `IMP Docs/` files — `HANDOFF.md`, `TECHSPEC.md`, `PROMPT_TRAIL.md`,
+`DESIGN_CHOICES.md`, `TODOS.md` — scaffold them with
+`scripts/scaffold-imp-docs.sh`.
 
-## PHASE 0 — Environment Setup
+## Helper scripts
 
-Get the machine ready *before* touching code.
+- [`scripts/select-git-identity.sh <repo-url-or-owner>`](scripts/select-git-identity.sh)
+  — echoes/sets the correct per-repo identity by owner.
+- [`scripts/scaffold-imp-docs.sh [repo-root]`](scripts/scaffold-imp-docs.sh)
+  — creates `IMP Docs/` with the five versioned doc stubs (won't overwrite).
 
-- [ ] Clone/open the repo inside WSL (`git clone <url>` under `~` or the user's
-      usual workspace).
-- [ ] Install required Claude Code **skills/plugins**, including the **Canary**
-      testing plugin and `/install-github-app` (or equivalent) if missing.
-- [ ] Detect the stack and install all dependencies
-      (`npm install` / `pnpm i` / `pip install -r` / `cargo build` / etc.).
-- [ ] Verify the toolchain: runtime versions, package manager, build command,
-      test runner all resolve.
-- **Exit criteria:** environment boots clean, dependencies resolve, no missing
-  tools.
+## Definition of Done
 
----
-
-## PHASE 1 — Audit & Understand
-
-Map the territory. Output a written map, not just a mental one.
-
-- [ ] **What & why:** the project's goal and who it's for.
-- [ ] **File map:** every meaningful file/dir and its role.
-- [ ] **Entry points:** how it starts, builds, and runs.
-- [ ] **Dependency & data flow:** what talks to what.
-- [ ] **Current state:** Does it run? What's broken, half-built, or dead code?
-- **Exit criteria:** you can explain the whole system in a paragraph and point
-  to where any feature lives.
+Do not report completion until **all** are true: full codebase read · Canary +
+env verified in WSL · every test run with real results · fixable bugs fixed &
+re-verified (rest logged) · all five `IMP Docs/` current & versioned · showcase +
+landing page live with premium design · release artifacts built (if applicable)
+· PR opened with a complete description (no AI attribution) · `PROMPT_TRAIL.md`
+updated for this prompt.
 
 ---
 
-## PHASE 2 — Test Everything (Canary-driven)
+## Reference material
 
-Nothing gets skipped. Run tests **through the Canary plugin** (use the
-`canary:session` / `canary:verify` skills for recorded, verifiable browser QA)
-and record outputs into `IMP Docs/`.
-
-**Automated**
-- [ ] Run every existing test suite. Record pass / fail / skip counts and full
-      error output.
-
-**Manual / exploratory**
-- [ ] Boot the app; confirm it loads with zero console/build errors.
-- [ ] Exercise every feature, route, button, form, and interaction.
-- [ ] **Edge cases:** empty input, invalid data, boundary values,
-      rapid/duplicate clicks.
-- [ ] **Error states:** what happens when things go wrong — does it fail
-      gracefully?
-- [ ] **Responsiveness:** mobile / tablet / desktop breakpoints (if UI).
-- [ ] **APIs:** hit every endpoint directly; verify status codes, payloads, auth.
-- [ ] **Break it on purpose.** If something crashes, capture exact repro steps.
-
-- **Exit criteria:** a complete test log exists in `IMP Docs/` with every test
-  and its real result. Canary reports/traces are saved and linked.
-
----
-
-## PHASE 3 — Fix What's Broken
-
-- [ ] Fix each failure/bug found in Phase 2.
-- [ ] **Re-run** the relevant tests to confirm the fix (green before you move on).
-- [ ] For each fix, log: *what was broken → root cause → the fix → proof it's
-      resolved.*
-- **Exit criteria:** all previously-failing tests pass, or remaining failures
-  are documented as known issues with a reason.
-
----
-
-## PHASE 4 — Documentation (living, versioned, inside `IMP Docs/`)
-
-Create/update these under `IMP Docs/` and bump the version on each pass.
-
-**`HANDOFF.md`** — anyone can pick this up cold:
-- Goal of the task · Files inspected · Files modified (each with a one-line
-  reason) · Current state · Full list of tests run + results · Known issues &
-  limitations · **Next exact steps** (numbered, actionable).
-
-**`TECHSPEC.md`** — full technical spec:
-- Architecture overview · Tech stack & dependencies · Data flow / system design
-  · API contracts / interfaces · Environment setup · Deployment notes.
-
-**`PROMPT_TRAIL.md`** — *living audit log*, appended **after every prompt**:
-- `Timestamp · prompt received · what was done · files touched · result`
-
-**`DESIGN_CHOICES.md`** — the "why":
-- Which skills/plugins were used and why · Theme system (light/dark switcher?
-  design tokens?) · Other notable architectural or UX decisions.
-
-**`TODOS.md`** — two sections:
-- `## Model-assigned` (things you found and flagged)
-- `## User-assigned` (things the user asked for)
-
-- **Exit criteria:** all five docs exist, are current, and version-stamped.
-
----
-
-## PHASE 5 — Ship
-
-### A. Publish a showcase (mandatory)
-- [ ] Publish a live website that demonstrates the project.
-- [ ] Build a **landing page** — real production-grade design, not a template.
-
-**"Billion-dollar design" (use the `frontend-design` skill):**
-- Deliberate visual identity — intentional type scale, spacing rhythm, a real
-  color system (not default blue-on-white).
-- Light/dark theme switcher with proper design tokens.
-- Motion with purpose (subtle, performant, never gratuitous).
-- Responsive and accessible (keyboard nav, contrast, semantic HTML).
-- Clear hero → value → proof → CTA narrative.
-- Fast: lazy-load heavy assets, no layout shift, Lighthouse-worthy.
-
-### B. Build releases (if applicable)
-- [ ] If it's an **.exe / desktop app / browser extension / CLI binary**,
-      produce distributable **release artifacts** so anyone can install and use
-      it. Attach them to the GitHub release.
-
-### C. Open the PR
-- [ ] Clear title describing what was done.
-- [ ] Description covering: summary of changes · test results · what the
-      reviewer should check · links to the live site/release.
-
-- **Exit criteria:** PR open, site live, releases attached (if any), docs linked.
-
----
-
-## ✅ DEFINITION OF DONE
-
-Do not report completion until **all** are true:
-
-- [ ] Full codebase read and understood
-- [ ] Environment + Canary plugin installed and verified in WSL
-- [ ] Every automated + manual test run, with real recorded results
-- [ ] All fixable bugs fixed and re-verified; the rest logged as known issues
-- [ ] `HANDOFF.md`, `TECHSPEC.md`, `PROMPT_TRAIL.md`, `DESIGN_CHOICES.md`,
-      `TODOS.md` current & versioned in `IMP Docs/`
-- [ ] Showcase site + landing page live with a genuinely premium design
-- [ ] Release artifacts built (if exe/extension/binary)
-- [ ] PR opened with a complete description
-- [ ] `PROMPT_TRAIL.md` updated for this prompt
-
----
-
-## PROMPT_TRAIL entry format (append after every prompt)
-
-```
-### <ISO-8601 timestamp> — <one-line prompt summary>
-- **Prompt:** <what the user asked>
-- **Did:** <what you actually did>
-- **Files touched:** <paths>
-- **Result:** <real outcome — pass/fail counts, links, blockers>
-```
+- [`references/universal-build-prompt.md`](references/universal-build-prompt.md)
+  — the full original Universal Build Prompt (source of truth).
+- [`references/phase-playbook.md`](references/phase-playbook.md) — detailed
+  per-phase checklists and exit criteria.
+- [`references/doc-templates.md`](references/doc-templates.md) — copy-paste
+  templates for the five `IMP Docs/` files, including the `PROMPT_TRAIL` entry
+  format.
+- Pipeline diagram: [`mod_pipeline_flowchart.svg`](mod_pipeline_flowchart.svg).
