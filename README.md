@@ -13,6 +13,39 @@ A curated repository of agent skills — reusable capabilities that can be plugg
 | **[claude-assassin](./claude-assassin/SKILL.md)** | Silent background daemon (Windows/macOS/Linux) that saves task state on a session limit and automatically relaunches Claude Code the moment the reset timer expires. |
 | **[mod](./mod/SKILL.md)** | End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Reads the full codebase, runs Canary-driven tests, fixes bugs, writes versioned docs in `IMP Docs/`, publishes a premium showcase, and opens a PR. Invoke as `Mod: <repo link>`. |
 
+> Repo docs live in [`IMP Docs/`](./IMP%20Docs/) — [HANDOFF](./IMP%20Docs/HANDOFF.md) · [TECHSPEC](./IMP%20Docs/TECHSPEC.md) · [Update log](./IMP%20Docs/Update.md).
+
+---
+
+## 📦 Install & Use
+
+Skills are portable — the same folder works in Claude Code, Claude.ai, and the API.
+
+**Claude Code (local)**
+```bash
+git clone https://github.com/Arnav1771/Skills-Directory.git
+# Global (all projects):
+cp -r Skills-Directory/mod ~/.claude/skills/mod
+# — or project-scoped:
+cp -r Skills-Directory/mod .claude/skills/mod
+```
+The skill loads automatically when your request matches its `description`. You can
+also invoke it by name (e.g. `/mod`), or just say its trigger phrase.
+
+**Claude.ai**
+1. Zip the skill folder (e.g. `mod/`).
+2. Settings → Capabilities → **Skills** → **Upload skill** → select the zip.
+3. Toggle the skill on. It now activates automatically on relevant requests.
+
+**Try it — example triggers**
+
+| Skill | Say something like |
+|-------|--------------------|
+| `mod` | `Mod: https://github.com/you/your-repo.git` |
+| `code-translator` | "Translate this Python file to Go, keeping logic identical." |
+| `supply-chain-prober` | "Interview me about my supply chain and structure the data." |
+| `claude-assassin` | (auto) fires when you hit a Claude Code session limit. |
+
 ---
 
 ## 🛠 The Ritual: How to Add a New Skill
@@ -33,22 +66,22 @@ my-skill-name/
 
 ### The `SKILL.md` Format
 
-Every skill must follow this exact structure:
+The frontmatter is **required**; the body is a **recommended template — adapt it**, don't treat it as a straitjacket (per Anthropic's guide, "adapt this template for your skill").
 
 **1. YAML Frontmatter** (required) — this is what the agent uses to decide when to trigger the skill:
 
 ```yaml
 ---
 name: my-skill-name
-description: What it does and when to trigger it. Be specific.
+description: What it does AND when to trigger it. Include the phrases users say.
 ---
 ```
 
 **2. Title & Role Statement** — one paragraph telling the agent who it is when this skill activates.
 
-**3. `## Instructions` with `### Step N:` headings** — the actual workflow, broken into clear sequential steps. Keep each step focused on one action.
+**3. Instructions** — the actual workflow. Use whatever headings fit: sequential `### Step N:` for linear flows, or `## Phase`/topic sections for larger skills (see [`mod`](./mod/SKILL.md)). Put critical rules near the top.
 
-**4. File Reference Table** — if you have supporting files, list them at the bottom so the agent knows what's available.
+**4. File Reference Table** — if you have supporting files, link them (usually at the bottom) so the agent can discover them on demand.
 
 ### Guidelines
 
@@ -62,10 +95,12 @@ description: What it does and when to trigger it. Be specific.
 ### Push & Ship
 
 ```bash
+git checkout -b add-my-skill-name
 git add my-skill-name/
-# Update this README's "Available Skills" table
+# Update this README's "Available Skills" table (and IMP Docs/Update.md)
 git commit -m "Add my-skill-name skill"
-git push
+git push -u origin add-my-skill-name
+gh pr create --fill        # open a PR — merges land on main via review
 ```
 
-The skill is now live and available to any agent that references this repository.
+Once merged, the skill is live and available to any agent that references this repository. Record the change in [`IMP Docs/Update.md`](./IMP%20Docs/Update.md).
