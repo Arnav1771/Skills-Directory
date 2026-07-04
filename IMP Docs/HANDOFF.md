@@ -1,0 +1,61 @@
+# HANDOFF — Skills-Directory (v1 · 2026-07-04)
+
+> **What this doc is:** the cold-start briefing. Anyone (human or agent) should be
+> able to read only this file and know what the repo is, its current state, how to
+> work on it, and exactly what to do next. Rules: no jargon without a pointer,
+> every claim reflects the repo as it actually is, and it ends with numbered next
+> steps. Version-stamped; superseded, never silently overwritten.
+
+## Goal
+`Skills-Directory` is a curated catalog of **agent skills** — reusable, portable
+capabilities (following Anthropic's Agent Skills standard) that plug into Claude
+Code, Claude.ai, or the API. Each skill is a self-contained folder; the repo is
+the shared home + install source for them.
+
+## Repo layout
+```
+Skills-Directory/
+├── README.md                 # human landing page: catalog, install/use, authoring ritual
+├── IMP Docs/                 # repo-level living docs (this folder)
+│   ├── HANDOFF.md            # this file
+│   ├── TECHSPEC.md           # architecture & the skill standard
+│   └── Update.md             # changelog
+├── mod/                      # build/fix/ship harness (multi-file: references/, scripts/, svg)
+├── claude-assassin/          # session-limit auto-resume daemon (scripts/, references/, svgs)
+├── code-translator/          # cross-language code translation (SKILL.md only)
+└── supply-chain-prober/      # conversational supply-chain intake (scripts/, examples/)
+```
+
+## Current state
+- **4 skills**, all with valid `SKILL.md` frontmatter. `mod` (v1.1.0) and
+  `claude-assassin` use the full multi-file layout; `code-translator` is a lean
+  single-file skill; `supply-chain-prober` ships scripts + examples.
+- No build system, CI, dependencies, or `LICENSE` — it's a docs/scripts catalog.
+  Nothing to compile; "it works" = the skill loads and triggers correctly.
+- `README.md` covers the catalog, an Install & Use guide, and the authoring ritual
+  (aligned to the official skill-building guide).
+
+## How it's maintained (workflow)
+- Personal repo under the **Arnav1771** GitHub account; `gh` in WSL is authed to it.
+- **Direct pushes to `main` are blocked** — publish via a feature branch + PR
+  (`gh pr create`), then merge.
+- Commits are authored as `Arnav1771 <arnav.bhargava3@gmail.com>`; **no AI
+  attribution** in commits or PRs.
+
+## Validation
+- Manual, per the guide's testing approach: does the skill **trigger** on the
+  right requests (and not on unrelated ones)? does its workflow run end-to-end?
+- Mechanical checks before merge: `SKILL.md` exists (exact case), frontmatter has
+  `name` + `description` and **no `<`/`>` angle brackets**, scripts pass `bash -n`,
+  any SVG is well-formed XML.
+
+## Known issues / limitations
+- No automated CI to lint skills — validation is manual today.
+- No `LICENSE` file yet (skills are open-standard but the repo license is unstated).
+- `code-translator` has no supporting files/examples (fine, but lighter than the others).
+
+## Next exact steps
+1. Add a `LICENSE` (MIT or Apache-2.0) and reference it in the README frontmatter guidance.
+2. Add a lightweight CI check (frontmatter lint: name/description present, no `<`/`>`; `bash -n` on scripts).
+3. Give `code-translator` an `examples/` sample translation for parity with the others.
+4. Keep [`Update.md`](./Update.md) current on every skill add/upgrade.
