@@ -9,6 +9,7 @@ A curated repository of agent skills — reusable capabilities that can be plugg
 | **[code-translator](./code-translator/SKILL.md)** | Translates code between 15+ programming languages while preserving exact logical equivalence. |
 | **[supply-chain-prober](./supply-chain-prober/SKILL.md)** | Conducts conversational supply chain interviews with non-tech users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building. |
 | **[claude-assassin](./claude-assassin/SKILL.md)** | Silent background daemon (Windows/macOS/Linux) that saves task state on a session limit and automatically relaunches Claude Code the moment the reset timer expires. |
+| **[mod](./mod/SKILL.md)** | End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Reads the full codebase, runs Canary-driven tests, fixes bugs, writes versioned docs in IMP Docs/, publishes a premium showcase, and opens a PR. Invoke as "Mod: <repo link>". |
 
 ---
 
