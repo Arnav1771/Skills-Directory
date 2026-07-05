@@ -12,6 +12,7 @@ A curated repository of agent skills — reusable capabilities that can be plugg
 | **[supply-chain-prober](./supply-chain-prober/SKILL.md)** | Conducts conversational supply chain interviews with non-tech users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building. |
 | **[claude-assassin](./claude-assassin/SKILL.md)** | Silent background daemon (Windows/macOS/Linux) that saves task state on a session limit and automatically relaunches Claude Code the moment the reset timer expires. |
 | **[mod](./mod/SKILL.md)** | End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Reads the full codebase, runs Canary-driven tests, fixes bugs, writes versioned docs in `IMP Docs/`, publishes a premium showcase, and opens a PR. Invoke as `Mod: <repo link>`. |
+| **[grimoire](./grimoire/SKILL.md)** | Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an `IMP_DOCS/` folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys (GitHub + one AI provider: GitHub Models / Gemini / Groq / Anthropic). Say `Grimoire, build me …`. |
 
 > Repo docs live in [`IMP Docs/`](./IMP%20Docs/) — [HANDOFF](./IMP%20Docs/HANDOFF.md) · [TECHSPEC](./IMP%20Docs/TECHSPEC.md) · [Update log](./IMP%20Docs/Update.md).
 
@@ -42,6 +43,7 @@ also invoke it by name (e.g. `/mod`), or just say its trigger phrase.
 | Skill | Say something like |
 |-------|--------------------|
 | `mod` | `Mod: https://github.com/you/your-repo.git` |
+| `grimoire` | "Grimoire, build a Flask todo app with SQLite and dark mode." |
 | `code-translator` | "Translate this Python file to Go, keeping logic identical." |
 | `supply-chain-prober` | "Interview me about my supply chain and structure the data." |
 | `claude-assassin` | (auto) fires when you hit a Claude Code session limit. |

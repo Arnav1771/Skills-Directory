@@ -7,6 +7,10 @@
 
 ---
 
+## 2026-07-05
+### Added
+- `grimoire` skill — generate/modify a full app from plain English and push it to a private GitHub repo (with IMP_DOCS/), via the Grimoire MCP tools or CLI. BYO-keys (GitHub + one AI provider). SKILL.md + references/ + flow SVG.
+
 ## 2026-07-04
 ### Added
 - `IMP Docs/` for the repo itself — `HANDOFF.md` (cold-start briefing),
