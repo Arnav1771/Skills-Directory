@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="470" viewBox="0 0 880 470" font-family="'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Grimoire skill flow">
+  <defs>
+    <linearGradient id="hdr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
+    <marker id="arw" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker>
+  </defs>
+  <rect x="0" y="0" width="880" height="470" rx="18" fill="#f8fafc" stroke="#e2e8f0"/>
+  <rect x="24" y="20" width="832" height="72" rx="14" fill="url(#hdr)"/>
+  <text x="44" y="54" fill="#ffffff" font-size="24" font-weight="700">Grimoire — speak the app into existence</text>
+  <text x="44" y="78" fill="#e0e7ff" font-size="14">Describe an app → it is generated and pushed to your private GitHub repo (with IMP_DOCS/)</text>
+
+  <g font-size="15">
+    <rect x="40" y="120" width="800" height="56" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="40" y="120" width="8" height="56" rx="4" fill="#6366f1"/>
+    <text x="70" y="146" fill="#0f172a" font-weight="700">1 · check_credentials</text>
+    <text x="70" y="166" fill="#475569" font-size="13">BYO-keys: GitHub token + one AI provider. Stop if missing.</text>
+
+    <rect x="40" y="196" width="800" height="56" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="40" y="196" width="8" height="56" rx="4" fill="#0ea5e9"/>
+    <text x="70" y="222" fill="#0f172a" font-weight="700">2 · nail the spec</text>
+    <text x="70" y="242" fill="#475569" font-size="13">Ask 1–2 sharp questions if vague. Optionally pick provider/model.</text>
+
+    <rect x="40" y="272" width="800" height="56" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="40" y="272" width="8" height="56" rx="4" fill="#14b8a6"/>
+    <text x="70" y="298" fill="#0f172a" font-weight="700">3 · build_app  (or grimoire build)</text>
+    <text x="70" y="318" fill="#475569" font-size="13">Generate all files → create private repo → push → optional deploy.</text>
+
+    <rect x="40" y="348" width="800" height="56" rx="12" fill="#ffffff" stroke="#e2e8f0"/>
+    <rect x="40" y="348" width="8" height="56" rx="4" fill="#ec4899"/>
+    <text x="70" y="374" fill="#0f172a" font-weight="700">4 · report + iterate</text>
+    <text x="70" y="394" fill="#475569" font-size="13">Return repo_url + IMP_DOCS/HANDOFF.md. Then update_app / experiment_app.</text>
+  </g>
+  <line x1="440" y1="176" x2="440" y2="196" stroke="#64748b" stroke-width="2" marker-end="url(#arw)"/>
+  <line x1="440" y1="252" x2="440" y2="272" stroke="#64748b" stroke-width="2" marker-end="url(#arw)"/>
+  <line x1="440" y1="328" x2="440" y2="348" stroke="#64748b" stroke-width="2" marker-end="url(#arw)"/>
+
+  <text x="44" y="438" fill="#94a3b8" font-size="12" font-style="italic">Never ask for keys in chat · repos are private by default · no AI attribution on commits</text>
+</svg>
