@@ -1,4 +1,4 @@
-# TECHSPEC — Skills-Directory (v1 · 2026-07-04)
+# TECHSPEC — Skills-Directory (v2 · 2026-07-11)
 
 > **What this doc is:** the technical specification. It describes the system's
 > architecture and the *contract* every skill in this repo must satisfy. Rules:
@@ -25,6 +25,7 @@ packaged as a folder, loaded via **progressive disclosure**:
 ```
 <skill-name>/                 # kebab-case; matches SKILL.md `name`
 ├── SKILL.md                  # REQUIRED — exact filename, case-sensitive
+├── manifest.yaml             # optional — catalog/discovery metadata (see §4a)
 ├── scripts/                  # optional — executable helpers (bash/python)
 ├── references/               # optional — docs loaded on demand
 ├── assets/                   # optional — templates, icons, fonts for output
@@ -48,6 +49,26 @@ allowed-tools: "<space-separated tool restrictions>"
 Constraints: `name` + `description` required; description **must** state *what* and
 *when* and **must not** contain XML angle brackets (`<` `>`) — a frontmatter
 security restriction (it appears verbatim in the system prompt).
+
+## 4a. `manifest.yaml` interface (optional catalog metadata)
+A separate, **human/catalog-facing** metadata layer. It is *not* part of the Agent
+Skills runtime — Claude never reads it to decide triggering (that's `SKILL.md`
+frontmatter, §4). Its sole purpose is discovery: grouping, tagging, versioning, and
+cross-linking skills in the README catalog and any future skill browser. The schema
+follows the convention popularized by community skill directories.
+```yaml
+name: <kebab-case, matches folder + SKILL.md name>
+description: <one-line catalog card; same no-angle-bracket rule as SKILL.md>
+categories: [<broad buckets: developer-tools | automation | testing | business | …>]
+tags: [<free-form search keywords>]
+icon: <Lucide icon name — https://lucide.dev/icons>
+version: "<quoted string; mirrors SKILL.md metadata.version>"
+composesWell: [<names of other skills in THIS repo that pair well>]
+```
+Constraints (enforced by `IMP Docs/validate_manifests.py`): all seven fields present;
+`name` == folder; no `<`/`>` in `description`; `version` is a quoted string; every
+`composesWell` entry resolves to a real skill folder. **Absence is valid** — a skill
+without a `manifest.yaml` is still a complete, working skill.
 
 ## 5. Consumption surfaces (interfaces out)
 | Surface | How the skill is installed | Invocation |

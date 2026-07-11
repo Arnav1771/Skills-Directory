@@ -1,0 +1,15 @@
+# Discovery metadata for the Skills-Directory catalog.
+# Optional companion to SKILL.md — the agent triggers on SKILL.md frontmatter;
+# this file powers human-facing catalog grouping, search, and cross-linking.
+name: code-translator
+description: "Translates code between programming languages while preserving exact logical equivalence. Trigger when the user asks to translate, port, or convert code between languages."
+categories:
+  - developer-tools
+tags:
+  - translation
+  - porting
+  - languages
+  - refactoring
+icon: Languages
+version: "1.0.0"
+composesWell: []

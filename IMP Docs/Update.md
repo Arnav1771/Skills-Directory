@@ -7,6 +7,29 @@
 
 ---
 
+## 2026-07-11 — catalog metadata layer  _(PR pending)_
+### Added
+- `manifest.yaml` for all five skills (`mod`, `grimoire`, `claude-assassin`,
+  `code-translator`, `supply-chain-prober`) — an optional, human/catalog-facing
+  discovery layer (`name`, `description`, `categories`, `tags`, `icon` [Lucide],
+  `version`, `composesWell`). Modeled on the formatting concept used by community
+  skill directories; **no third-party skills or content were copied.**
+- `IMP Docs/validate_manifests.py` (+ `run_validate.sh`) — validates every
+  manifest against the catalog contract (required fields, name/folder match, no
+  angle brackets in description, quoted version, `composesWell` resolves). All
+  five pass; it caught and fixed one angle-bracket violation in `mod`.
+### Changed
+- README: replaced the flat "Available Skills" table with a **category-grouped
+  catalog** (Developer & Build Tools · Business & Data) showing tags + version,
+  plus a "composes well" note; documented the `manifest.yaml` format and added it
+  to the folder-structure/Ritual convention.
+- `TECHSPEC.md` → v2: added §4a (`manifest.yaml` interface) and listed it in the
+  skill folder contract; clarified it is catalog-only, not part of the runtime.
+### Notes
+- Deliberately **not** adopted from the reference: the three-way
+  `skills/`/`commands/`/`agents/` top-level split (all items here are skills, and
+  it would break documented install paths) and any hosted-marketplace install URL.
+
 ## 2026-07-05
 ### Added
 - `grimoire` skill — generate/modify a full app from plain English and push it to a private GitHub repo (with IMP_DOCS/), via the Grimoire MCP tools or CLI. BYO-keys (GitHub + one AI provider). SKILL.md + references/ + flow SVG.

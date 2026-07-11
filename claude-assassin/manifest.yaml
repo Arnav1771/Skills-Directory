@@ -1,0 +1,18 @@
+# Discovery metadata for the Skills-Directory catalog.
+# Optional companion to SKILL.md — the agent triggers on SKILL.md frontmatter;
+# this file powers human-facing catalog grouping, search, and cross-linking.
+name: claude-assassin
+description: "Silent background daemon (Windows/macOS/Linux) that saves task state on a Claude Code session limit and auto-relaunches the moment the reset timer expires. Install once, works forever."
+categories:
+  - developer-tools
+  - automation
+tags:
+  - session-limit
+  - daemon
+  - auto-resume
+  - background
+  - cross-platform
+icon: Skull
+version: "1.0.0"
+composesWell:
+  - mod
