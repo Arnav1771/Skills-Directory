@@ -1,0 +1,17 @@
+# Discovery metadata for the Skills-Directory catalog.
+# Optional companion to SKILL.md — the agent triggers on SKILL.md frontmatter;
+# this file powers human-facing catalog grouping, search, and cross-linking.
+name: supply-chain-prober
+description: "Conducts conversational supply chain interviews with non-technical users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building."
+categories:
+  - business
+  - data-collection
+tags:
+  - interview
+  - supply-chain
+  - data-intake
+  - non-technical
+  - sme-routing
+icon: ClipboardList
+version: "1.0.0"
+composesWell: []

@@ -2,18 +2,29 @@
 
 A curated repository of agent skills — reusable capabilities that can be plugged into any AI coding agent.
 
-> **Built to spec.** These skills follow Anthropic's [**Complete Guide to Building Skills for Claude**](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en) — progressive disclosure (`SKILL.md` + `references/` + `scripts/` + `assets/`), kebab-case names, and trigger-rich descriptions. Read it before adding a skill.
+> **Built to spec.** These skills follow Anthropic's [**Complete Guide to Building Skills for Claude**](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en) — progressive disclosure (`SKILL.md` + `references/` + `scripts/` + `assets/`), kebab-case names, and trigger-rich descriptions. Each skill also ships an optional **[`manifest.yaml`](#the-manifestyaml-format-optional--recommended)** — a small discovery layer (categories, tags, icon, version, composes-with) that powers the catalog below. Read the guide before adding a skill.
 
 ## Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| **[code-translator](./code-translator/SKILL.md)** | Translates code between 15+ programming languages while preserving exact logical equivalence. |
-| **[supply-chain-prober](./supply-chain-prober/SKILL.md)** | Conducts conversational supply chain interviews with non-tech users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building. |
-| **[claude-assassin](./claude-assassin/SKILL.md)** | Silent background daemon (Windows/macOS/Linux) that saves task state on a session limit and automatically relaunches Claude Code the moment the reset timer expires. |
-| **[mod](./mod/SKILL.md)** | End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Reads the full codebase, runs Canary-driven tests, fixes bugs, writes versioned docs in `IMP Docs/`, publishes a premium showcase, and opens a PR. Invoke as `Mod: <repo link>`. |
-| **[grimoire](./grimoire/SKILL.md)** | Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an `IMP_DOCS/` folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys (GitHub + one AI provider: GitHub Models / Gemini / Groq / Anthropic). Say `Grimoire, build me …`. |
+Browse by category. `SKILL.md` is the brain; `manifest.yaml` is the catalog card.
 
+### 🛠 Developer & Build Tools
+
+| Skill | What it does | Tags | Ver |
+|-------|--------------|------|-----|
+| **[mod](./mod/SKILL.md)** | End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Reads the full codebase, runs Canary-driven tests, fixes bugs, writes versioned docs in `IMP Docs/`, publishes a showcase, and opens a PR. Invoke as `Mod:` + repo link. | `build` `test` `ship` `qa` `wsl` | 1.1.0 |
+| **[grimoire](./grimoire/SKILL.md)** | Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an `IMP_DOCS/` folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys (GitHub + one AI provider). Say `Grimoire, build me …`. | `app-generation` `scaffolding` `github` `mcp` | 1.0.0 |
+| **[code-translator](./code-translator/SKILL.md)** | Translates code between programming languages while preserving exact logical equivalence. | `translation` `porting` `languages` | 1.0.0 |
+| **[claude-assassin](./claude-assassin/SKILL.md)** | Silent background daemon (Windows/macOS/Linux) that saves task state on a session limit and automatically relaunches Claude Code the moment the reset timer expires. | `session-limit` `daemon` `auto-resume` | 1.0.0 |
+
+### 📊 Business & Data
+
+| Skill | What it does | Tags | Ver |
+|-------|--------------|------|-----|
+| **[supply-chain-prober](./supply-chain-prober/SKILL.md)** | Conducts conversational supply chain interviews with non-tech users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building. | `interview` `supply-chain` `data-intake` | 1.0.0 |
+
+> **Composes well:** `mod` ↔ `grimoire` ↔ `claude-assassin` — generate an app, ship/QA it, and keep long sessions alive through limits.
+>
 > Repo docs live in [`IMP Docs/`](./IMP%20Docs/) — [HANDOFF](./IMP%20Docs/HANDOFF.md) · [TECHSPEC](./IMP%20Docs/TECHSPEC.md) · [Update log](./IMP%20Docs/Update.md).
 
 ---
@@ -59,6 +70,7 @@ Create a new folder using **kebab-case**. At minimum you need a `SKILL.md`. Add 
 ```
 my-skill-name/
 ├── SKILL.md              # Required — the brain of the skill (exact name, case-sensitive)
+├── manifest.yaml         # Optional (recommended) — catalog metadata for discovery
 ├── scripts/              # Optional — executable helpers (bash, python)
 ├── references/           # Optional — docs loaded on demand (progressive disclosure)
 ├── assets/               # Optional — templates, icons, fonts used in output
@@ -85,6 +97,32 @@ description: What it does AND when to trigger it. Include the phrases users say.
 
 **4. File Reference Table** — if you have supporting files, link them (usually at the bottom) so the agent can discover them on demand.
 
+### The `manifest.yaml` Format (optional — recommended)
+
+`SKILL.md` frontmatter is what the *agent* reads to trigger the skill. `manifest.yaml`
+is a separate, purely human/catalog-facing metadata layer — it never changes runtime
+behavior, it just lets this README (and any future skill browser) group, tag, and
+cross-link skills. It's optional but recommended for every skill.
+
+```yaml
+name: my-skill-name            # kebab-case, matches the folder and SKILL.md name
+description: "One-line catalog card — what it does and when to use it. No angle brackets."
+categories:                    # broad buckets used to group skills in the catalog
+  - developer-tools
+tags:                          # free-form keywords for search/filtering
+  - build
+  - test
+icon: Rocket                   # a Lucide icon name (https://lucide.dev/icons)
+version: "1.1.0"               # quoted string; mirror SKILL.md metadata.version
+composesWell:                  # other skills in this repo that pair well (by name)
+  - grimoire
+```
+
+Rules: `name` must match the folder; `description` follows the same no-`<`/`>`
+angle-bracket rule as `SKILL.md`; `version` is a **quoted** string; every
+`composesWell` entry must be a real skill folder in this repo. Validate with
+[`IMP Docs/validate_manifests.py`](./IMP%20Docs/validate_manifests.py) (`bash "IMP Docs/run_validate.sh"`).
+
 ### Guidelines
 
 - **Keep `SKILL.md` under 500 lines** (the guide says under ~5,000 words). Move detail into `references/` and link to it — progressive disclosure keeps token usage low.
@@ -98,8 +136,8 @@ description: What it does AND when to trigger it. Include the phrases users say.
 
 ```bash
 git checkout -b add-my-skill-name
-git add my-skill-name/
-# Update this README's "Available Skills" table (and IMP Docs/Update.md)
+git add my-skill-name/          # includes SKILL.md + optional manifest.yaml
+# Add the skill to this README's category catalog (and IMP Docs/Update.md)
 git commit -m "Add my-skill-name skill"
 git push -u origin add-my-skill-name
 gh pr create --fill        # open a PR — merges land on main via review

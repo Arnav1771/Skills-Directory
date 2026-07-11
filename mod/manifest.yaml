@@ -1,0 +1,22 @@
+# Discovery metadata for the Skills-Directory catalog.
+# Optional companion to SKILL.md — the agent triggers on SKILL.md frontmatter;
+# this file powers human-facing catalog grouping, search, and cross-linking.
+name: mod
+description: "End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Invoke as `Mod:` followed by a repo link."
+categories:
+  - developer-tools
+  - automation
+  - testing
+tags:
+  - build
+  - test
+  - ship
+  - qa
+  - wsl
+  - pull-request
+  - release
+icon: Rocket
+version: "1.1.0"
+composesWell:
+  - grimoire
+  - claude-assassin
