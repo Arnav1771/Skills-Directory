@@ -1,0 +1,82 @@
+1:"$Sreact.fragment"
+2:I[50697,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/0xjz75uz-2kmz.js","/Skills-Directory/_next/static/chunks/13i7tl0aot861.js"],"default"]
+7:I[97367,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+8:"$Sreact.suspense"
+3:T1467,<h1>Grimoire — speak the app into existence</h1>
+<p>Turn a plain-English description into a working app, pushed to a <strong>private
+GitHub repo</strong> on the user&#39;s own account, complete with an <code>IMP_DOCS/</code> folder
+(HANDOFF, TECH_SPEC, ARCHITECTURE + diagram, DESIGN_SYSTEM, ADRs, TODO,
+CHANGELOG, PROMPT_TRAIL). This skill drives the Grimoire / AppBuilder engine
+(repo: <code>github.com/Arnav1771/turmux_builder</code>).</p>
+<h2>When to use</h2>
+<ul>
+<li>&quot;Grimoire, build me a …&quot;, &quot;build me an app that …&quot;, &quot;scaffold a … project&quot;</li>
+<li>&quot;generate an app and push it to GitHub&quot;</li>
+<li>&quot;update my generated repo to …&quot; / &quot;try an experiment on … in a new branch&quot;</li>
+</ul>
+<h2>Two ways to invoke (prefer the MCP tools)</h2>
+<ol>
+<li><strong>MCP tools (preferred)</strong> — if the Grimoire MCP server is connected, these
+tools are available: <code>check_credentials</code>, <code>list_available_models</code>,
+<code>build_app</code>, <code>update_app</code>, <code>experiment_app</code>. Use them directly.</li>
+<li><strong>CLI fallback (Claude Code)</strong> — if no MCP server is present but the
+<code>grimoire</code> command is installed, run it in the shell:
+<code>grimoire keys</code>, <code>grimoire models</code>, <code>grimoire build &quot;...&quot;</code>.</li>
+</ol>
+<p>If neither is available, tell the user how to set it up (see
+<a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a>) and stop.</p>
+<h2>Bring-your-own-keys</h2>
+<p>The engine needs the user&#39;s own <strong>GitHub token + username</strong> (to create and push
+the repo) and <strong>one AI provider key</strong> matching the active provider. No Anthropic
+key is required unless the user picks the <code>anthropic</code> provider. Details and the
+key matrix: <a href="references/providers.md"><code>references/providers.md</code></a>.</p>
+<h2>Workflow</h2>
+<ol>
+<li><strong>Check readiness.</strong> Call <code>check_credentials</code> (or <code>grimoire keys</code>). If it
+reports missing keys, tell the user exactly what to set and stop — do not
+attempt a build that will fail.</li>
+<li><strong>Nail the spec.</strong> If the request is vague, ask 1–2 sharp questions (stack
+preference? auth? persistence?). A precise prompt yields a better app — see
+<a href="references/prompting.md"><code>references/prompting.md</code></a>. Do not over-interrogate.</li>
+<li><strong>Pick provider/model (optional).</strong> Default is fine. Offer alternatives from
+<code>list_available_models</code> only if the user cares. Pass <code>provider</code>/<code>model</code> to
+the build tool when overriding.</li>
+<li><strong>Build.</strong> Call <code>build_app(prompt=..., provider=?, model=?)</code> (or
+<code>grimoire build &quot;...&quot;</code>). This can take a minute — say so.</li>
+<li><strong>Report.</strong> Return the <code>repo_url</code> (and <code>live_url</code> if deployed), the tech
+stack, file count, and point the user at <code>IMP_DOCS/HANDOFF.md</code> for how to run
+it. Note repos are <strong>private</strong> by default.</li>
+<li><strong>Iterate.</strong> For changes to an existing repo use <code>update_app(repo_url, changes)</code>; for a throwaway trial use <code>experiment_app(repo_url, branch, changes)</code> (non-destructive — new branch).</li>
+</ol>
+<h2>Ground rules</h2>
+<ul>
+<li><strong>Never ask for keys in chat.</strong> Credentials live in the MCP server&#39;s env (or
+the user&#39;s <code>.env</code>) — never request or echo them in the conversation.</li>
+<li><strong>Confirm before overwriting.</strong> <code>update_app</code> edits an existing repo; make sure
+the user means that repo. Prefer <code>experiment_app</code> for anything speculative.</li>
+<li><strong>Report honestly.</strong> Relay the real <code>repo_url</code> and any partial failures from
+the tool result; don&#39;t claim success you can&#39;t see.</li>
+<li><strong>No AI attribution</strong> on anything you commit on the user&#39;s behalf.</li>
+</ul>
+<h2>Examples</h2>
+<ul>
+<li>&quot;Grimoire, build a FastAPI bookstore API with SQLite.&quot; →
+<code>check_credentials</code> → <code>build_app(prompt=&quot;a FastAPI bookstore API with SQLite&quot;)</code>
+→ report repo URL + <code>IMP_DOCS/HANDOFF.md</code>.</li>
+<li>&quot;Use Claude to build a React dashboard.&quot; →
+<code>build_app(prompt=&quot;a React dashboard ...&quot;, provider=&quot;anthropic&quot;)</code>.</li>
+<li>&quot;Add dark mode to <a href="https://github.com/me/my-app">https://github.com/me/my-app</a>.&quot; →
+<code>update_app(repo_url=&quot;https://github.com/me/my-app&quot;, changes=&quot;add a dark-mode toggle&quot;)</code>.</li>
+</ul>
+<h2>Reference material</h2>
+<ul>
+<li><a href="references/providers.md"><code>references/providers.md</code></a> — providers, keys, models.</li>
+<li><a href="references/prompting.md"><code>references/prompting.md</code></a> — writing good build prompts.</li>
+<li><a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a> — setup + common errors.</li>
+<li>Flow diagram: <a href="grimoire_flow.svg"><code>grimoire_flow.svg</code></a>.</li>
+</ul>
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex flex-col gap-6 py-10","children":[["$","div",null,{"children":[["$","h1",null,{"className":"text-2xl font-bold tracking-tight","children":"Ai"}],["$","p",null,{"className":"mt-1 text-sm text-muted","children":[1," skill",""," in this category."]}]]}],["$","$L2",null,{"skills":[{"slug":"grimoire","name":"grimoire","description":"Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an IMP_DOCS/ folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys. Say `Grimoire, build me …`.","categories":["developer-tools","code-generation","ai"],"tags":["app-generation","scaffolding","github","mcp","byo-keys","cli"],"icon":"Wand2","version":"1.0.0","composesWell":["mod"],"hasManifest":true,"triggerDescription":"Generate or modify a full application from a plain-English description and push it to a private GitHub repo — powered by the Grimoire / AppBuilder engine. Trigger when the user says 'Grimoire', 'build me an app', 'scaffold a project', 'generate an app and push it to GitHub', or asks to update or experiment on a generated repo. Uses the Grimoire MCP tools (build_app / update_app / experiment_app / list_available_models / check_credentials) when configured, otherwise the `grimoire` CLI. Bring-your-own-keys: a GitHub token plus one AI provider (GitHub Models, Gemini, Groq, or Anthropic). Every generated repo ships an IMP_DOCS documentation folder.","bodyHtml":"$3","folderPath":"grimoire","githubUrl":"https://github.com/Arnav1771/Skills-Directory/tree/main/grimoire","installCommand":"cp -r Skills-Directory/grimoire ~/.claude/skills/grimoire","lastUpdated":"2026-07-11T09:48:13+00:00","hasScripts":false,"hasReferences":true,"hasExamples":false,"diagrams":["grimoire_flow.svg"],"rankScore":9}],"lockedCategory":"ai"}]]}],["$L4","$L5"],"$L6"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TO66HVlCkNB_zie8D9FfY"}
+4:["$","script","script-0",{"src":"/Skills-Directory/_next/static/chunks/0xjz75uz-2kmz.js","async":true}]
+5:["$","script","script-1",{"src":"/Skills-Directory/_next/static/chunks/13i7tl0aot861.js","async":true}]
+6:["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]
+9:null

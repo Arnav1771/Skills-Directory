@@ -1,0 +1,88 @@
+1:"$Sreact.fragment"
+2:I[5014,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+3:I[22016,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],""]
+b:I[23165,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+d:I[97367,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"grid gap-10 py-10 lg:grid-cols-[1fr_290px]","children":[["$","article",null,{"className":"min-w-0","children":[["$","header",null,{"className":"mb-8 flex flex-col gap-4","children":[["$","div",null,{"className":"flex items-center gap-4","children":[["$","span",null,{"className":"flex h-14 w-14 items-center justify-center rounded-xl bg-accent-soft text-accent","children":["$","$L2",null,{"iconNode":[["path",{"d":"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72","key":"ul74o6"}],["path",{"d":"m14 7 3 3","key":"1r5n42"}],["path",{"d":"M5 6v4","key":"ilb8ba"}],["path",{"d":"M19 14v4","key":"blhpug"}],["path",{"d":"M10 2v2","key":"7u0qdc"}],["path",{"d":"M7 8H3","key":"zfb6yr"}],["path",{"d":"M21 16h-4","key":"1cnmox"}],["path",{"d":"M11 3H9","key":"1obp7u"}]],"className":"lucide-wand-sparkles h-7 w-7","aria-hidden":true}]}],["$","div",null,{"children":[["$","h1",null,{"className":"font-mono text-2xl font-bold tracking-tight","children":"grimoire"}],["$","div",null,{"className":"mt-1 flex flex-wrap items-center gap-2 text-xs text-muted","children":[["$","span",null,{"className":"rounded-full border border-line px-2 py-0.5","children":["v","1.0.0"]}],[["$","$L3","developer-tools",{"href":"/categories/developer-tools/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Developer Tools"}],["$","$L3","code-generation",{"href":"/categories/code-generation/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Code Generation"}],["$","$L3","ai",{"href":"/categories/ai/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Ai"}]],["$","span",null,{"children":["updated ","2026-07-11"]}]]}]]}]]}],["$","p",null,{"className":"text-muted","children":"Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an IMP_DOCS/ folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys. Say `Grimoire, build me …`."}],["$","div",null,{"className":"flex flex-wrap gap-1.5","children":[["$","$L3","app-generation",{"href":"/skills/?tags=app-generation","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"app-generation"}],["$","$L3","scaffolding",{"href":"/skills/?tags=scaffolding","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"scaffolding"}],["$","$L3","github",{"href":"/skills/?tags=github","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"github"}],["$","$L3","mcp",{"href":"/skills/?tags=mcp","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"mcp"}],["$","$L3","byo-keys",{"href":"/skills/?tags=byo-keys","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"byo-keys"}],["$","$L3","cli",{"href":"/skills/?tags=cli","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"cli"}]]}]]}],["$","section",null,{"className":"mb-8 rounded-xl border border-line bg-surface p-5","children":[["$","h2",null,{"className":"mb-3 flex items-center gap-2 text-sm font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M12 19h8","key":"baeox8"}],["path",{"d":"m4 17 6-6-6-6","key":"1yngyt"}]],"className":"lucide-terminal text-accent","size":15}]," Install"]}],["$","ol",null,{"className":"mb-3 list-decimal pl-5 text-sm text-muted","children":[["$","li",null,{"children":["Clone the repo:"," ",["$","code",null,{"className":"font-mono text-xs","children":"git clone https://github.com/Arnav1771/Skills-Directory.git"}]]}],["$","li",null,{"children":"Copy the skill folder into your agent's skills directory:"}]]}],"$L4","$L5"]}],"$L6","$L7"]}],"$L8"]}],["$L9"],"$La"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TO66HVlCkNB_zie8D9FfY"}
+4:["$","div",null,{"className":"flex items-center gap-2 rounded-lg border border-line bg-background px-3 py-2","children":[["$","code",null,{"className":"min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs","children":"cp -r Skills-Directory/grimoire ~/.claude/skills/grimoire"}],["$","$Lb",null,{"text":"cp -r Skills-Directory/grimoire ~/.claude/skills/grimoire"}]]}]
+5:["$","p",null,{"className":"mt-3 text-xs text-muted","children":["On Claude.ai: zip the ",["$","code",null,{"className":"font-mono","children":["grimoire","/"]}]," ","folder and upload it under Settings → Capabilities → Skills. The skill then activates automatically on matching requests."]}]
+6:["$","h2",null,{"className":"mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35","key":"1wthlu"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5","key":"wfsgrz"}],["path",{"d":"m5 16-3 3 3 3","key":"331omg"}],["path",{"d":"m9 22 3-3-3-3","key":"lsp7cz"}]],"className":"lucide-file-code-corner","size":14}]," SKILL.md"]}]
+c:T1467,<h1>Grimoire — speak the app into existence</h1>
+<p>Turn a plain-English description into a working app, pushed to a <strong>private
+GitHub repo</strong> on the user&#39;s own account, complete with an <code>IMP_DOCS/</code> folder
+(HANDOFF, TECH_SPEC, ARCHITECTURE + diagram, DESIGN_SYSTEM, ADRs, TODO,
+CHANGELOG, PROMPT_TRAIL). This skill drives the Grimoire / AppBuilder engine
+(repo: <code>github.com/Arnav1771/turmux_builder</code>).</p>
+<h2>When to use</h2>
+<ul>
+<li>&quot;Grimoire, build me a …&quot;, &quot;build me an app that …&quot;, &quot;scaffold a … project&quot;</li>
+<li>&quot;generate an app and push it to GitHub&quot;</li>
+<li>&quot;update my generated repo to …&quot; / &quot;try an experiment on … in a new branch&quot;</li>
+</ul>
+<h2>Two ways to invoke (prefer the MCP tools)</h2>
+<ol>
+<li><strong>MCP tools (preferred)</strong> — if the Grimoire MCP server is connected, these
+tools are available: <code>check_credentials</code>, <code>list_available_models</code>,
+<code>build_app</code>, <code>update_app</code>, <code>experiment_app</code>. Use them directly.</li>
+<li><strong>CLI fallback (Claude Code)</strong> — if no MCP server is present but the
+<code>grimoire</code> command is installed, run it in the shell:
+<code>grimoire keys</code>, <code>grimoire models</code>, <code>grimoire build &quot;...&quot;</code>.</li>
+</ol>
+<p>If neither is available, tell the user how to set it up (see
+<a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a>) and stop.</p>
+<h2>Bring-your-own-keys</h2>
+<p>The engine needs the user&#39;s own <strong>GitHub token + username</strong> (to create and push
+the repo) and <strong>one AI provider key</strong> matching the active provider. No Anthropic
+key is required unless the user picks the <code>anthropic</code> provider. Details and the
+key matrix: <a href="references/providers.md"><code>references/providers.md</code></a>.</p>
+<h2>Workflow</h2>
+<ol>
+<li><strong>Check readiness.</strong> Call <code>check_credentials</code> (or <code>grimoire keys</code>). If it
+reports missing keys, tell the user exactly what to set and stop — do not
+attempt a build that will fail.</li>
+<li><strong>Nail the spec.</strong> If the request is vague, ask 1–2 sharp questions (stack
+preference? auth? persistence?). A precise prompt yields a better app — see
+<a href="references/prompting.md"><code>references/prompting.md</code></a>. Do not over-interrogate.</li>
+<li><strong>Pick provider/model (optional).</strong> Default is fine. Offer alternatives from
+<code>list_available_models</code> only if the user cares. Pass <code>provider</code>/<code>model</code> to
+the build tool when overriding.</li>
+<li><strong>Build.</strong> Call <code>build_app(prompt=..., provider=?, model=?)</code> (or
+<code>grimoire build &quot;...&quot;</code>). This can take a minute — say so.</li>
+<li><strong>Report.</strong> Return the <code>repo_url</code> (and <code>live_url</code> if deployed), the tech
+stack, file count, and point the user at <code>IMP_DOCS/HANDOFF.md</code> for how to run
+it. Note repos are <strong>private</strong> by default.</li>
+<li><strong>Iterate.</strong> For changes to an existing repo use <code>update_app(repo_url, changes)</code>; for a throwaway trial use <code>experiment_app(repo_url, branch, changes)</code> (non-destructive — new branch).</li>
+</ol>
+<h2>Ground rules</h2>
+<ul>
+<li><strong>Never ask for keys in chat.</strong> Credentials live in the MCP server&#39;s env (or
+the user&#39;s <code>.env</code>) — never request or echo them in the conversation.</li>
+<li><strong>Confirm before overwriting.</strong> <code>update_app</code> edits an existing repo; make sure
+the user means that repo. Prefer <code>experiment_app</code> for anything speculative.</li>
+<li><strong>Report honestly.</strong> Relay the real <code>repo_url</code> and any partial failures from
+the tool result; don&#39;t claim success you can&#39;t see.</li>
+<li><strong>No AI attribution</strong> on anything you commit on the user&#39;s behalf.</li>
+</ul>
+<h2>Examples</h2>
+<ul>
+<li>&quot;Grimoire, build a FastAPI bookstore API with SQLite.&quot; →
+<code>check_credentials</code> → <code>build_app(prompt=&quot;a FastAPI bookstore API with SQLite&quot;)</code>
+→ report repo URL + <code>IMP_DOCS/HANDOFF.md</code>.</li>
+<li>&quot;Use Claude to build a React dashboard.&quot; →
+<code>build_app(prompt=&quot;a React dashboard ...&quot;, provider=&quot;anthropic&quot;)</code>.</li>
+<li>&quot;Add dark mode to <a href="https://github.com/me/my-app">https://github.com/me/my-app</a>.&quot; →
+<code>update_app(repo_url=&quot;https://github.com/me/my-app&quot;, changes=&quot;add a dark-mode toggle&quot;)</code>.</li>
+</ul>
+<h2>Reference material</h2>
+<ul>
+<li><a href="references/providers.md"><code>references/providers.md</code></a> — providers, keys, models.</li>
+<li><a href="references/prompting.md"><code>references/prompting.md</code></a> — writing good build prompts.</li>
+<li><a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a> — setup + common errors.</li>
+<li>Flow diagram: <a href="grimoire_flow.svg"><code>grimoire_flow.svg</code></a>.</li>
+</ul>
+7:["$","div",null,{"className":"skill-doc min-w-0","dangerouslySetInnerHTML":{"__html":"$c"}}]
+8:["$","aside",null,{"className":"flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start","children":[["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 font-semibold","children":"On GitHub"}],["$","a",null,{"href":"https://github.com/Arnav1771/Skills-Directory/tree/main/grimoire","target":"_blank","rel":"noreferrer","className":"inline-flex items-center gap-1.5 text-accent hover:underline underline-offset-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M18 19a5 5 0 0 1-5-5v8","key":"sz5oeg"}],["path",{"d":"M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5","key":"1w6njk"}],["circle",{"cx":"13","cy":"12","r":"2","key":"1j92g6"}],["circle",{"cx":"20","cy":"19","r":"2","key":"1obnsp"}]],"className":"lucide-folder-git2 lucide-folder-git-2","size":15}]," ","grimoire","/ ",["$","$L2",null,{"iconNode":[["path",{"d":"M7 7h10v10","key":"1tivn9"}],["path",{"d":"M7 17 17 7","key":"1vkiza"}]],"className":"lucide-arrow-up-right","size":13}]]}],["$","ul",null,{"className":"mt-3 space-y-1 text-xs text-muted","children":[["$","li",null,{"children":["SKILL.md ","· manifest.yaml"]}],false,["$","li",null,{"children":"references/ — on-demand docs"}],false,[["$","li","grimoire_flow.svg",{"children":"grimoire_flow.svg"}]]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"m16 6 4 14","key":"ji33uf"}],["path",{"d":"M12 6v14","key":"1n7gus"}],["path",{"d":"M8 8v12","key":"1gg7y9"}],["path",{"d":"M4 4v16","key":"6qkkli"}]],"className":"lucide-library text-accent","size":14}]," Composes well with"]}],["$","ul",null,{"className":"space-y-2","children":[["$","li","mod",{"children":["$","$L3",null,{"href":"/skills/mod/","className":"group flex items-center gap-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5","key":"qeys4"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09","key":"u4xsad"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z","key":"676m9"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05","key":"92ym6u"}]],"className":"lucide-rocket h-4 w-4 text-accent","aria-hidden":true}],["$","span",null,{"className":"font-mono text-xs group-hover:text-accent","children":"mod"}]]}]}]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-2 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2","key":"by2w9f"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4","key":"xkn7yn"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2","key":"1cgmvn"}]],"className":"lucide-workflow text-accent","size":14}]," Trigger"]}],["$","p",null,{"className":"text-xs leading-relaxed text-muted","children":"Generate or modify a full application from a plain-English description and push it to a private GitHub repo — powered by the Grimoire / AppBuilder engine. Trigger when the user says 'Grimoire', 'build me an app', 'scaffold a project', 'generate an app and push it to GitHub', or asks to update or experiment on a generated repo. Uses the Grimoire MCP tools (build_app / update_app / experiment_app / list_available_models / check_credentials) when configured, otherwise the `grimoire` CLI. Bring-your-own-keys: a GitHub token plus one AI provider (GitHub Models, Gemini, Groq, or Anthropic). Every generated repo ships an IMP_DOCS documentation folder."}]]}]]}]
+9:["$","script","script-0",{"src":"/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js","async":true}]
+a:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+f:null

@@ -1,0 +1,106 @@
+1:"$Sreact.fragment"
+2:I[5014,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+3:I[22016,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],""]
+4:I[23165,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+c:I[97367,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+d:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"grid gap-10 py-10 lg:grid-cols-[1fr_290px]","children":[["$","article",null,{"className":"min-w-0","children":[["$","header",null,{"className":"mb-8 flex flex-col gap-4","children":[["$","div",null,{"className":"flex items-center gap-4","children":[["$","span",null,{"className":"flex h-14 w-14 items-center justify-center rounded-xl bg-accent-soft text-accent","children":["$","$L2",null,{"iconNode":[["path",{"d":"m12.5 17-.5-1-.5 1h1z","key":"3me087"}],["path",{"d":"M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z","key":"1o5pge"}],["circle",{"cx":"15","cy":"12","r":"1","key":"1tmaij"}],["circle",{"cx":"9","cy":"12","r":"1","key":"1vctgf"}]],"className":"lucide-skull h-7 w-7","aria-hidden":true}]}],["$","div",null,{"children":[["$","h1",null,{"className":"font-mono text-2xl font-bold tracking-tight","children":"claude-assassin"}],["$","div",null,{"className":"mt-1 flex flex-wrap items-center gap-2 text-xs text-muted","children":[["$","span",null,{"className":"rounded-full border border-line px-2 py-0.5","children":["v","1.0.0"]}],[["$","$L3","developer-tools",{"href":"/categories/developer-tools/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Developer Tools"}],["$","$L3","automation",{"href":"/categories/automation/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Automation"}]],["$","span",null,{"children":["updated ","2026-07-11"]}]]}]]}]]}],["$","p",null,{"className":"text-muted","children":"Silent background daemon (Windows/macOS/Linux) that saves task state on a Claude Code session limit and auto-relaunches the moment the reset timer expires. Install once, works forever."}],["$","div",null,{"className":"flex flex-wrap gap-1.5","children":[["$","$L3","session-limit",{"href":"/skills/?tags=session-limit","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"session-limit"}],["$","$L3","daemon",{"href":"/skills/?tags=daemon","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"daemon"}],["$","$L3","auto-resume",{"href":"/skills/?tags=auto-resume","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"auto-resume"}],["$","$L3","background",{"href":"/skills/?tags=background","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"background"}],["$","$L3","cross-platform",{"href":"/skills/?tags=cross-platform","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"cross-platform"}]]}]]}],["$","section",null,{"className":"mb-8 rounded-xl border border-line bg-surface p-5","children":[["$","h2",null,{"className":"mb-3 flex items-center gap-2 text-sm font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M12 19h8","key":"baeox8"}],["path",{"d":"m4 17 6-6-6-6","key":"1yngyt"}]],"className":"lucide-terminal text-accent","size":15}]," Install"]}],["$","ol",null,{"className":"mb-3 list-decimal pl-5 text-sm text-muted","children":[["$","li",null,{"children":["Clone the repo:"," ",["$","code",null,{"className":"font-mono text-xs","children":"git clone https://github.com/Arnav1771/Skills-Directory.git"}]]}],["$","li",null,{"children":"Copy the skill folder into your agent's skills directory:"}]]}],["$","div",null,{"className":"flex items-center gap-2 rounded-lg border border-line bg-background px-3 py-2","children":[["$","code",null,{"className":"min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs","children":"cp -r Skills-Directory/claude-assassin ~/.claude/skills/claude-assassin"}],["$","$L4",null,{"text":"cp -r Skills-Directory/claude-assassin ~/.claude/skills/claude-assassin"}]]}],["$","p",null,{"className":"mt-3 text-xs text-muted","children":["On Claude.ai: zip the ","$L5"," ","folder and upload it under Settings → Capabilities → Skills. The skill then activates automatically on matching requests."]}]]}],"$L6","$L7"]}],"$L8"]}],["$L9"],"$La"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TO66HVlCkNB_zie8D9FfY"}
+5:["$","code",null,{"className":"font-mono","children":["claude-assassin","/"]}]
+6:["$","h2",null,{"className":"mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35","key":"1wthlu"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5","key":"wfsgrz"}],["path",{"d":"m5 16-3 3 3 3","key":"331omg"}],["path",{"d":"m9 22 3-3-3-3","key":"lsp7cz"}]],"className":"lucide-file-code-corner","size":14}]," SKILL.md"]}]
+b:Tc69,<h1>Claude Assassin — Silent Session Resume Daemon</h1>
+<p>A silent background process that installs itself once and forever handles Claude Code session limits automatically. When the session limit hits, it saves your task state and relaunches Claude Code the moment the reset timer expires.</p>
+<hr>
+<h2>On First Run — Install the Daemon</h2>
+<p>If the daemon is not yet installed, run this immediately:</p>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/install_daemon.sh
+</code></pre>
+<p>This is a one-time setup. After this, everything is automatic.</p>
+<hr>
+<h2>When Session Limit Is Detected</h2>
+<p>If you see &quot;You&#39;ve hit your session limit · resets X:XXpm&quot;, immediately:</p>
+<h3>Step 1: Save current task state</h3>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/save_state.sh &quot;DESCRIBE_CURRENT_TASK_HERE&quot;
+</code></pre>
+<h3>Step 2: Schedule the resume</h3>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/schedule_resume.sh &quot;X:XXpm&quot;
+</code></pre>
+<p>Replace <code>X:XXpm</code> with the exact reset time shown in the terminal.</p>
+<p>That&#39;s it. Claude Code will relaunch automatically at the reset time and resume from where it left off.</p>
+<hr>
+<h2>How It Works</h2>
+<pre><code>Session limit hit
+      ↓
+Claude saves task state → ~/.claude/assassin/session_state.md
+      ↓
+schedule_resume.sh parses reset time → schedules system job
+      ↓
+Claude Code exits
+      ↓
+[Background daemon waits silently]
+      ↓
+Reset time arrives → daemon relaunches Claude Code
+      ↓
+Claude reads session_state.md → resumes task automatically
+</code></pre>
+<hr>
+<h2>Files Created on Your System</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.claude/assassin/session_state.md</code></td>
+<td>Saved task state</td>
+</tr>
+<tr>
+<td><code>~/.claude/assassin/assassin.log</code></td>
+<td>Daemon activity log</td>
+</tr>
+<tr>
+<td><code>~/.claude/assassin/last_reset_time.txt</code></td>
+<td>Parsed reset time</td>
+</tr>
+<tr>
+<td><code>~/.config/systemd/user/claude-assassin.service</code></td>
+<td>Linux daemon (systemd)</td>
+</tr>
+<tr>
+<td><code>~/Library/LaunchAgents/com.claude.assassin.plist</code></td>
+<td>macOS daemon (launchd)</td>
+</tr>
+<tr>
+<td><code>%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\claude_assassin.vbs</code></td>
+<td>Windows auto-start (no admin needed)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Checking Daemon Status</h2>
+<pre><code class="language-bash"># Windows (Git Bash)
+bash ~/.claude/skills/claude-assassin/scripts/status.sh
+
+# Linux
+systemctl --user status claude-assassin
+
+# macOS
+launchctl list | grep claude-assassin
+
+# View logs (all platforms)
+tail -f ~/.claude/assassin/assassin.log
+</code></pre>
+<h2>Uninstalling</h2>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/uninstall_daemon.sh
+</code></pre>
+<hr>
+<h2>Reference Files</h2>
+<ul>
+<li><code>references/how_it_works.md</code> — Full technical architecture</li>
+<li><code>references/troubleshooting.md</code> — Common issues and fixes</li>
+</ul>
+7:["$","div",null,{"className":"skill-doc min-w-0","dangerouslySetInnerHTML":{"__html":"$b"}}]
+8:["$","aside",null,{"className":"flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start","children":[["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 font-semibold","children":"On GitHub"}],["$","a",null,{"href":"https://github.com/Arnav1771/Skills-Directory/tree/main/claude-assassin","target":"_blank","rel":"noreferrer","className":"inline-flex items-center gap-1.5 text-accent hover:underline underline-offset-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M18 19a5 5 0 0 1-5-5v8","key":"sz5oeg"}],["path",{"d":"M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5","key":"1w6njk"}],["circle",{"cx":"13","cy":"12","r":"2","key":"1j92g6"}],["circle",{"cx":"20","cy":"19","r":"2","key":"1obnsp"}]],"className":"lucide-folder-git2 lucide-folder-git-2","size":15}]," ","claude-assassin","/ ",["$","$L2",null,{"iconNode":[["path",{"d":"M7 7h10v10","key":"1tivn9"}],["path",{"d":"M7 17 17 7","key":"1vkiza"}]],"className":"lucide-arrow-up-right","size":13}]]}],["$","ul",null,{"className":"mt-3 space-y-1 text-xs text-muted","children":[["$","li",null,{"children":["SKILL.md ","· manifest.yaml"]}],["$","li",null,{"children":"scripts/ — executable helpers"}],["$","li",null,{"children":"references/ — on-demand docs"}],false,[["$","li","claude_assassin_infographic.svg",{"children":"claude_assassin_infographic.svg"}],["$","li","claude_assassin_script_flowchart.svg",{"children":"claude_assassin_script_flowchart.svg"}]]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"m16 6 4 14","key":"ji33uf"}],["path",{"d":"M12 6v14","key":"1n7gus"}],["path",{"d":"M8 8v12","key":"1gg7y9"}],["path",{"d":"M4 4v16","key":"6qkkli"}]],"className":"lucide-library text-accent","size":14}]," Composes well with"]}],["$","ul",null,{"className":"space-y-2","children":[["$","li","mod",{"children":["$","$L3",null,{"href":"/skills/mod/","className":"group flex items-center gap-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5","key":"qeys4"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09","key":"u4xsad"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z","key":"676m9"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05","key":"92ym6u"}]],"className":"lucide-rocket h-4 w-4 text-accent","aria-hidden":true}],["$","span",null,{"className":"font-mono text-xs group-hover:text-accent","children":"mod"}]]}]}]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-2 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2","key":"by2w9f"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4","key":"xkn7yn"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2","key":"1cgmvn"}]],"className":"lucide-workflow text-accent","size":14}]," Trigger"]}],["$","p",null,{"className":"text-xs leading-relaxed text-muted","children":"Silent background daemon that automatically resumes Claude Code sessions after session limits reset. Use this skill immediately when you see \"You've hit your session limit\", \"resets at\", \"session limit reached\", or \"/usage-credits\" in the terminal. Also triggers on first run to install the daemon silently. Once installed, it works entirely behind the scenes — saving task state before Claude Code exits and relaunching automatically when the reset timer expires. Install once, works forever org-wide."}]]}]]}]
+9:["$","script","script-0",{"src":"/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js","async":true}]
+a:["$","$Lc",null,{"children":["$","$d",null,{"name":"Next.MetadataOutlet","children":"$@e"}]}]
+e:null

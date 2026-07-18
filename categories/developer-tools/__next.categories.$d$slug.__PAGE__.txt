@@ -1,0 +1,326 @@
+1:"$Sreact.fragment"
+2:I[50697,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/0xjz75uz-2kmz.js","/Skills-Directory/_next/static/chunks/13i7tl0aot861.js"],"default"]
+a:I[97367,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+b:"$Sreact.suspense"
+3:Tc69,<h1>Claude Assassin — Silent Session Resume Daemon</h1>
+<p>A silent background process that installs itself once and forever handles Claude Code session limits automatically. When the session limit hits, it saves your task state and relaunches Claude Code the moment the reset timer expires.</p>
+<hr>
+<h2>On First Run — Install the Daemon</h2>
+<p>If the daemon is not yet installed, run this immediately:</p>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/install_daemon.sh
+</code></pre>
+<p>This is a one-time setup. After this, everything is automatic.</p>
+<hr>
+<h2>When Session Limit Is Detected</h2>
+<p>If you see &quot;You&#39;ve hit your session limit · resets X:XXpm&quot;, immediately:</p>
+<h3>Step 1: Save current task state</h3>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/save_state.sh &quot;DESCRIBE_CURRENT_TASK_HERE&quot;
+</code></pre>
+<h3>Step 2: Schedule the resume</h3>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/schedule_resume.sh &quot;X:XXpm&quot;
+</code></pre>
+<p>Replace <code>X:XXpm</code> with the exact reset time shown in the terminal.</p>
+<p>That&#39;s it. Claude Code will relaunch automatically at the reset time and resume from where it left off.</p>
+<hr>
+<h2>How It Works</h2>
+<pre><code>Session limit hit
+      ↓
+Claude saves task state → ~/.claude/assassin/session_state.md
+      ↓
+schedule_resume.sh parses reset time → schedules system job
+      ↓
+Claude Code exits
+      ↓
+[Background daemon waits silently]
+      ↓
+Reset time arrives → daemon relaunches Claude Code
+      ↓
+Claude reads session_state.md → resumes task automatically
+</code></pre>
+<hr>
+<h2>Files Created on Your System</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.claude/assassin/session_state.md</code></td>
+<td>Saved task state</td>
+</tr>
+<tr>
+<td><code>~/.claude/assassin/assassin.log</code></td>
+<td>Daemon activity log</td>
+</tr>
+<tr>
+<td><code>~/.claude/assassin/last_reset_time.txt</code></td>
+<td>Parsed reset time</td>
+</tr>
+<tr>
+<td><code>~/.config/systemd/user/claude-assassin.service</code></td>
+<td>Linux daemon (systemd)</td>
+</tr>
+<tr>
+<td><code>~/Library/LaunchAgents/com.claude.assassin.plist</code></td>
+<td>macOS daemon (launchd)</td>
+</tr>
+<tr>
+<td><code>%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\claude_assassin.vbs</code></td>
+<td>Windows auto-start (no admin needed)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Checking Daemon Status</h2>
+<pre><code class="language-bash"># Windows (Git Bash)
+bash ~/.claude/skills/claude-assassin/scripts/status.sh
+
+# Linux
+systemctl --user status claude-assassin
+
+# macOS
+launchctl list | grep claude-assassin
+
+# View logs (all platforms)
+tail -f ~/.claude/assassin/assassin.log
+</code></pre>
+<h2>Uninstalling</h2>
+<pre><code class="language-bash">bash ~/.claude/skills/claude-assassin/scripts/uninstall_daemon.sh
+</code></pre>
+<hr>
+<h2>Reference Files</h2>
+<ul>
+<li><code>references/how_it_works.md</code> — Full technical architecture</li>
+<li><code>references/troubleshooting.md</code> — Common issues and fixes</li>
+</ul>
+4:T676,<h1>Code Translator Skill</h1>
+<p>You are now acting as the Stealth Translator. When the user asks you to translate code or a script from one programming language to another (e.g., &quot;translate utils.js to python&quot;), follow this precise workflow:</p>
+<h2>Instructions</h2>
+<h3>Step 1: Understand the Request</h3>
+<p>Identify the source file(s), the source language, and the target language. </p>
+<h3>Step 2: Read the Source</h3>
+<p>Use the <code>view_file</code> tool to read the exact contents of the source code. Understand the core logic, dependencies, and architecture.</p>
+<h3>Step 3: Perform the Translation</h3>
+<p>Use your internal LLM reasoning to port the code. 
+<strong>Strict Guidelines:</strong></p>
+<ul>
+<li>Maintain <strong>perfect logical equivalence</strong> (the output must do exactly what the input did).</li>
+<li>Use <strong>idiomatic patterns</strong> of the target language (e.g., use list comprehensions in Python instead of <code>map()</code> if appropriate).</li>
+<li>Port all comments intact.</li>
+<li>Do not add unnecessary new features; stick to a pure translation.</li>
+</ul>
+<h3>Step 4: Write the Output</h3>
+<p>Use the <code>write_to_file</code> tool to save the translated code. Name the file intelligently based on the original (e.g., <code>utils.js</code> -&gt; <code>utils.py</code>) and place it in the same directory unless specified otherwise.</p>
+<h3>Step 5: Execution &amp; Verification</h3>
+<p>If the user&#39;s environment supports it (e.g., Python, Node.js, Bash), proactively offer to run the translated script using the <code>run_command</code> tool to prove that the translation works perfectly!</p>
+5:T1467,<h1>Grimoire — speak the app into existence</h1>
+<p>Turn a plain-English description into a working app, pushed to a <strong>private
+GitHub repo</strong> on the user&#39;s own account, complete with an <code>IMP_DOCS/</code> folder
+(HANDOFF, TECH_SPEC, ARCHITECTURE + diagram, DESIGN_SYSTEM, ADRs, TODO,
+CHANGELOG, PROMPT_TRAIL). This skill drives the Grimoire / AppBuilder engine
+(repo: <code>github.com/Arnav1771/turmux_builder</code>).</p>
+<h2>When to use</h2>
+<ul>
+<li>&quot;Grimoire, build me a …&quot;, &quot;build me an app that …&quot;, &quot;scaffold a … project&quot;</li>
+<li>&quot;generate an app and push it to GitHub&quot;</li>
+<li>&quot;update my generated repo to …&quot; / &quot;try an experiment on … in a new branch&quot;</li>
+</ul>
+<h2>Two ways to invoke (prefer the MCP tools)</h2>
+<ol>
+<li><strong>MCP tools (preferred)</strong> — if the Grimoire MCP server is connected, these
+tools are available: <code>check_credentials</code>, <code>list_available_models</code>,
+<code>build_app</code>, <code>update_app</code>, <code>experiment_app</code>. Use them directly.</li>
+<li><strong>CLI fallback (Claude Code)</strong> — if no MCP server is present but the
+<code>grimoire</code> command is installed, run it in the shell:
+<code>grimoire keys</code>, <code>grimoire models</code>, <code>grimoire build &quot;...&quot;</code>.</li>
+</ol>
+<p>If neither is available, tell the user how to set it up (see
+<a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a>) and stop.</p>
+<h2>Bring-your-own-keys</h2>
+<p>The engine needs the user&#39;s own <strong>GitHub token + username</strong> (to create and push
+the repo) and <strong>one AI provider key</strong> matching the active provider. No Anthropic
+key is required unless the user picks the <code>anthropic</code> provider. Details and the
+key matrix: <a href="references/providers.md"><code>references/providers.md</code></a>.</p>
+<h2>Workflow</h2>
+<ol>
+<li><strong>Check readiness.</strong> Call <code>check_credentials</code> (or <code>grimoire keys</code>). If it
+reports missing keys, tell the user exactly what to set and stop — do not
+attempt a build that will fail.</li>
+<li><strong>Nail the spec.</strong> If the request is vague, ask 1–2 sharp questions (stack
+preference? auth? persistence?). A precise prompt yields a better app — see
+<a href="references/prompting.md"><code>references/prompting.md</code></a>. Do not over-interrogate.</li>
+<li><strong>Pick provider/model (optional).</strong> Default is fine. Offer alternatives from
+<code>list_available_models</code> only if the user cares. Pass <code>provider</code>/<code>model</code> to
+the build tool when overriding.</li>
+<li><strong>Build.</strong> Call <code>build_app(prompt=..., provider=?, model=?)</code> (or
+<code>grimoire build &quot;...&quot;</code>). This can take a minute — say so.</li>
+<li><strong>Report.</strong> Return the <code>repo_url</code> (and <code>live_url</code> if deployed), the tech
+stack, file count, and point the user at <code>IMP_DOCS/HANDOFF.md</code> for how to run
+it. Note repos are <strong>private</strong> by default.</li>
+<li><strong>Iterate.</strong> For changes to an existing repo use <code>update_app(repo_url, changes)</code>; for a throwaway trial use <code>experiment_app(repo_url, branch, changes)</code> (non-destructive — new branch).</li>
+</ol>
+<h2>Ground rules</h2>
+<ul>
+<li><strong>Never ask for keys in chat.</strong> Credentials live in the MCP server&#39;s env (or
+the user&#39;s <code>.env</code>) — never request or echo them in the conversation.</li>
+<li><strong>Confirm before overwriting.</strong> <code>update_app</code> edits an existing repo; make sure
+the user means that repo. Prefer <code>experiment_app</code> for anything speculative.</li>
+<li><strong>Report honestly.</strong> Relay the real <code>repo_url</code> and any partial failures from
+the tool result; don&#39;t claim success you can&#39;t see.</li>
+<li><strong>No AI attribution</strong> on anything you commit on the user&#39;s behalf.</li>
+</ul>
+<h2>Examples</h2>
+<ul>
+<li>&quot;Grimoire, build a FastAPI bookstore API with SQLite.&quot; →
+<code>check_credentials</code> → <code>build_app(prompt=&quot;a FastAPI bookstore API with SQLite&quot;)</code>
+→ report repo URL + <code>IMP_DOCS/HANDOFF.md</code>.</li>
+<li>&quot;Use Claude to build a React dashboard.&quot; →
+<code>build_app(prompt=&quot;a React dashboard ...&quot;, provider=&quot;anthropic&quot;)</code>.</li>
+<li>&quot;Add dark mode to <a href="https://github.com/me/my-app">https://github.com/me/my-app</a>.&quot; →
+<code>update_app(repo_url=&quot;https://github.com/me/my-app&quot;, changes=&quot;add a dark-mode toggle&quot;)</code>.</li>
+</ul>
+<h2>Reference material</h2>
+<ul>
+<li><a href="references/providers.md"><code>references/providers.md</code></a> — providers, keys, models.</li>
+<li><a href="references/prompting.md"><code>references/prompting.md</code></a> — writing good build prompts.</li>
+<li><a href="references/troubleshooting.md"><code>references/troubleshooting.md</code></a> — setup + common errors.</li>
+<li>Flow diagram: <a href="grimoire_flow.svg"><code>grimoire_flow.svg</code></a>.</li>
+</ul>
+6:T1b93,<h1>Mod — Universal Build / Fix / Ship Harness</h1>
+<p>Take the target repo from <em>current state</em> to <em>shipped, tested, documented, and
+demonstrable</em>. You are a <strong>senior full-stack engineer + release manager</strong> and
+you own the whole loop: understand → test → fix → document → publish. You do not
+stop at &quot;it should work&quot; — you <strong>prove</strong> it works.</p>
+<h2>Invocation</h2>
+<p>The user calls this as <strong><code>Mod: &lt;repo link&gt;</code></strong> or <strong><code>/mod &lt;repo url&gt;</code></strong>. The
+GitHub repo URL is the <strong>only</strong> input — everything else is pre-filled here. If
+no URL is supplied, ask for exactly one thing: the repo link.</p>
+<h2>Runtime</h2>
+<ul>
+<li>Run <strong>everything inside WSL</strong> (Ubuntu). Never switch environments mid-task.
+On Windows, drive WSL via <code>wsl -e bash -lc &quot;...&quot;</code>; for anything with tricky
+quoting, write a script to a file and run it.</li>
+<li><strong>Working docs folder:</strong> <code>IMP Docs/</code> at the repo root (reuse if present).</li>
+</ul>
+<h2>Ground rules (non-negotiable)</h2>
+<ol>
+<li><strong>Read before you write.</strong> Read the <em>full</em> codebase before changing a line.</li>
+<li><strong>Never fabricate results.</strong> Every test result, count, and screenshot must be
+real. If you didn&#39;t run it, say so.</li>
+<li><strong>Document as you go.</strong> <code>IMP Docs/PROMPT_TRAIL.md</code> gets an entry after <em>every</em>
+prompt — no exceptions.</li>
+<li><strong>Test before you claim done.</strong> &quot;It compiles&quot; ≠ &quot;it works.&quot; Verify behavior.</li>
+<li><strong>Version everything.</strong> Outputs in <code>IMP Docs/</code> are versioned (<code>v1</code>, <code>v2</code>, …
+or semver). Supersede prior work; never silently overwrite.</li>
+<li><strong>Authorship — no AI attribution.</strong> Commits and PRs are authored <strong>only</strong> as
+the selected git identity. <strong>Never</strong> add <code>Co-Authored-By: Claude</code>,
+<code>🤖 Generated with Claude Code</code>, &quot;Co-authored-by&quot; AI trailers, or any
+Claude/AI mention to commit messages or PR descriptions. Keep messages clean
+and human.</li>
+<li><strong>Ask only when blocked.</strong> Reversible → decide and log it. Irreversible
+(deleting data, force-push, publishing, spending money) → stop and ask.</li>
+</ol>
+<h2>Git identity (auto-selected — do not prompt, do not push to <code>main</code>)</h2>
+<p>This machine has two identities; because the skill runs in WSL the default is
+personal. Select per-repo by owner (helper: <code>scripts/select-git-identity.sh</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Repo owner</th>
+<th>Per-repo identity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>github.com/Arnav1771/*</code> (personal)</td>
+<td><code>Arnav1771</code> / <code>arnav.bhargava3@gmail.com</code></td>
+</tr>
+<tr>
+<td>work / org repo (Aligned Automation)</td>
+<td><code>AABH-AI</code> / <code>arnav.bhargava@alignedautomation.com</code></td>
+</tr>
+</tbody></table>
+<ul>
+<li>WSL global default is already <code>Arnav1771 / arnav.bhargava3@gmail.com</code>; <code>gh</code> is
+authed to <strong>Arnav1771</strong>. For an Arnav1771 repo no override is needed.</li>
+<li>For a work repo, set identity <strong>per-repo only</strong> (never the WSL global, Windows
+config, or stored credentials).</li>
+<li>Always work on a feature branch (<code>mod/&lt;yyyy-mm-dd&gt;</code> or <code>fix/&lt;task&gt;</code>) and open a
+<strong>PR</strong> — never push directly to <code>main</code>/<code>master</code> unless the user says so.</li>
+</ul>
+<h2>The pipeline (6 phases)</h2>
+<p>Full checklists and exit criteria live in
+<a href="references/phase-playbook.md"><code>references/phase-playbook.md</code></a>. Overview:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Goal</th>
+<th>Exit criteria</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>0 · Setup</strong></td>
+<td>Clone in WSL, install Canary plugin + deps, verify toolchain.</td>
+<td>Env boots clean, deps resolve, no missing tools.</td>
+</tr>
+<tr>
+<td><strong>1 · Audit</strong></td>
+<td>Written system map: goal, file map, entry points, data flow, current state.</td>
+<td>You can explain the whole system in a paragraph.</td>
+</tr>
+<tr>
+<td><strong>2 · Test</strong></td>
+<td>Canary-driven automated + exploratory testing; edge cases, error states, responsiveness, APIs; break it on purpose.</td>
+<td>Complete real test log in <code>IMP Docs/</code>, Canary reports saved.</td>
+</tr>
+<tr>
+<td><strong>3 · Fix</strong></td>
+<td>Fix every failure; re-run to green. Log broken → root cause → fix → proof.</td>
+<td>All fixable tests pass; the rest logged as known issues.</td>
+</tr>
+<tr>
+<td><strong>4 · Docs</strong></td>
+<td>Versioned living docs in <code>IMP Docs/</code> (templates in <code>references/doc-templates.md</code>).</td>
+<td>All five docs current &amp; version-stamped.</td>
+</tr>
+<tr>
+<td><strong>5 · Ship</strong></td>
+<td>Premium showcase + landing page (<code>frontend-design</code> skill), release artifacts if exe/extension/binary, PR.</td>
+<td>PR open, site live, releases attached, docs linked.</td>
+</tr>
+</tbody></table>
+<p>The five <code>IMP Docs/</code> files — <code>HANDOFF.md</code>, <code>TECHSPEC.md</code>, <code>PROMPT_TRAIL.md</code>,
+<code>DESIGN_CHOICES.md</code>, <code>TODOS.md</code> — scaffold them with
+<code>scripts/scaffold-imp-docs.sh</code>.</p>
+<h2>Helper scripts</h2>
+<ul>
+<li><a href="scripts/select-git-identity.sh"><code>scripts/select-git-identity.sh &lt;repo-url-or-owner&gt;</code></a>
+— echoes/sets the correct per-repo identity by owner.</li>
+<li><a href="scripts/scaffold-imp-docs.sh"><code>scripts/scaffold-imp-docs.sh [repo-root]</code></a>
+— creates <code>IMP Docs/</code> with the five versioned doc stubs (won&#39;t overwrite).</li>
+</ul>
+<h2>Definition of Done</h2>
+<p>Do not report completion until <strong>all</strong> are true: full codebase read · Canary +
+env verified in WSL · every test run with real results · fixable bugs fixed &amp;
+re-verified (rest logged) · all five <code>IMP Docs/</code> current &amp; versioned · showcase +
+landing page live with premium design · release artifacts built (if applicable)
+· PR opened with a complete description (no AI attribution) · <code>PROMPT_TRAIL.md</code>
+updated for this prompt.</p>
+<hr>
+<h2>Reference material</h2>
+<ul>
+<li><a href="references/universal-build-prompt.md"><code>references/universal-build-prompt.md</code></a>
+— the full original Universal Build Prompt (source of truth).</li>
+<li><a href="references/phase-playbook.md"><code>references/phase-playbook.md</code></a> — detailed
+per-phase checklists and exit criteria.</li>
+<li><a href="references/doc-templates.md"><code>references/doc-templates.md</code></a> — copy-paste
+templates for the five <code>IMP Docs/</code> files, including the <code>PROMPT_TRAIL</code> entry
+format.</li>
+<li>Pipeline diagram: <a href="mod_pipeline_flowchart.svg"><code>mod_pipeline_flowchart.svg</code></a>.</li>
+</ul>
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"flex flex-col gap-6 py-10","children":[["$","div",null,{"children":[["$","h1",null,{"className":"text-2xl font-bold tracking-tight","children":"Developer Tools"}],["$","p",null,{"className":"mt-1 text-sm text-muted","children":[4," skill","s"," in this category."]}]]}],["$","$L2",null,{"skills":[{"slug":"claude-assassin","name":"claude-assassin","description":"Silent background daemon (Windows/macOS/Linux) that saves task state on a Claude Code session limit and auto-relaunches the moment the reset timer expires. Install once, works forever.","categories":["developer-tools","automation"],"tags":["session-limit","daemon","auto-resume","background","cross-platform"],"icon":"Skull","version":"1.0.0","composesWell":["mod"],"hasManifest":true,"triggerDescription":"Silent background daemon that automatically resumes Claude Code sessions after session limits reset. Use this skill immediately when you see \"You've hit your session limit\", \"resets at\", \"session limit reached\", or \"/usage-credits\" in the terminal. Also triggers on first run to install the daemon silently. Once installed, it works entirely behind the scenes — saving task state before Claude Code exits and relaunching automatically when the reset timer expires. Install once, works forever org-wide.","bodyHtml":"$3","folderPath":"claude-assassin","githubUrl":"https://github.com/Arnav1771/Skills-Directory/tree/main/claude-assassin","installCommand":"cp -r Skills-Directory/claude-assassin ~/.claude/skills/claude-assassin","lastUpdated":"2026-07-11T09:48:13+00:00","hasScripts":true,"hasReferences":true,"hasExamples":false,"diagrams":["claude_assassin_infographic.svg","claude_assassin_script_flowchart.svg"],"rankScore":10},{"slug":"code-translator","name":"code-translator","description":"Translates code between programming languages while preserving exact logical equivalence. Trigger when the user asks to translate, port, or convert code between languages.","categories":["developer-tools"],"tags":["translation","porting","languages","refactoring"],"icon":"Languages","version":"1.0.0","composesWell":[],"hasManifest":true,"triggerDescription":"Translates code from one programming language to another while preserving exact logical equivalence. Trigger this when the user asks to translate, port, or convert code between languages.","bodyHtml":"$4","folderPath":"code-translator","githubUrl":"https://github.com/Arnav1771/Skills-Directory/tree/main/code-translator","installCommand":"cp -r Skills-Directory/code-translator ~/.claude/skills/code-translator","lastUpdated":"2026-07-11T09:48:13+00:00","hasScripts":false,"hasReferences":false,"hasExamples":false,"diagrams":[],"rankScore":2},{"slug":"grimoire","name":"grimoire","description":"Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an IMP_DOCS/ folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys. Say `Grimoire, build me …`.","categories":["developer-tools","code-generation","ai"],"tags":["app-generation","scaffolding","github","mcp","byo-keys","cli"],"icon":"Wand2","version":"1.0.0","composesWell":["mod"],"hasManifest":true,"triggerDescription":"Generate or modify a full application from a plain-English description and push it to a private GitHub repo — powered by the Grimoire / AppBuilder engine. Trigger when the user says 'Grimoire', 'build me an app', 'scaffold a project', 'generate an app and push it to GitHub', or asks to update or experiment on a generated repo. Uses the Grimoire MCP tools (build_app / update_app / experiment_app / list_available_models / check_credentials) when configured, otherwise the `grimoire` CLI. Bring-your-own-keys: a GitHub token plus one AI provider (GitHub Models, Gemini, Groq, or Anthropic). Every generated repo ships an IMP_DOCS documentation folder.","bodyHtml":"$5","folderPath":"grimoire","githubUrl":"https://github.com/Arnav1771/Skills-Directory/tree/main/grimoire","installCommand":"cp -r Skills-Directory/grimoire ~/.claude/skills/grimoire","lastUpdated":"2026-07-11T09:48:13+00:00","hasScripts":false,"hasReferences":true,"hasExamples":false,"diagrams":["grimoire_flow.svg"],"rankScore":9},{"slug":"mod","name":"mod","description":"End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Invoke as `Mod:` followed by a repo link.","categories":["developer-tools","automation","testing"],"tags":["build","test","ship","qa","wsl","pull-request","release"],"icon":"Rocket","version":"1.1.0","composesWell":["grimoire","claude-assassin"],"hasManifest":true,"triggerDescription":"End-to-end build / fix / ship harness. Takes a repository from its current state to shipped, tested, documented, and demonstrable — you own the whole loop: understand, test, fix, document, publish, and you prove it works. Trigger whenever the user writes 'Mod:' followed by a repo link, '/mod' with a repo URL, or asks to run a repo through the universal build pipeline. The repo URL is the only input; everything else is baked in. Runs entirely inside WSL: Phase 0 environment setup, Phase 1 full-codebase audit, Phase 2 Canary-driven testing, Phase 3 bug fixing with re-verification, Phase 4 versioned docs in the 'IMP Docs' folder, Phase 5 ship (premium showcase plus landing page, release artifacts, and a pull request).","bodyHtml":"$6","folderPath":"mod","githubUrl":"https://github.com/Arnav1771/Skills-Directory/tree/main/mod","installCommand":"cp -r Skills-Directory/mod ~/.claude/skills/mod","lastUpdated":"2026-07-11T09:48:13+00:00","hasScripts":true,"hasReferences":true,"hasExamples":false,"diagrams":["mod_pipeline_flowchart.svg"],"rankScore":16}],"lockedCategory":"developer-tools"}]]}],["$L7","$L8"],"$L9"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TO66HVlCkNB_zie8D9FfY"}
+7:["$","script","script-0",{"src":"/Skills-Directory/_next/static/chunks/0xjz75uz-2kmz.js","async":true}]
+8:["$","script","script-1",{"src":"/Skills-Directory/_next/static/chunks/13i7tl0aot861.js","async":true}]
+9:["$","$La",null,{"children":["$","$b",null,{"name":"Next.MetadataOutlet","children":"$@c"}]}]
+c:null

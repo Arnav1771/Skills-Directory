@@ -1,0 +1,147 @@
+1:"$Sreact.fragment"
+2:I[5014,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+3:I[22016,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],""]
+b:I[23165,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js","/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js"],"default"]
+d:I[97367,["/Skills-Directory/_next/static/chunks/2cozjdj5t_zqn.js","/Skills-Directory/_next/static/chunks/14mrh2-p_w84d.js"],"OutletBoundary"]
+e:"$Sreact.suspense"
+0:{"rsc":["$","$1","c",{"children":[["$","div",null,{"className":"grid gap-10 py-10 lg:grid-cols-[1fr_290px]","children":[["$","article",null,{"className":"min-w-0","children":[["$","header",null,{"className":"mb-8 flex flex-col gap-4","children":[["$","div",null,{"className":"flex items-center gap-4","children":[["$","span",null,{"className":"flex h-14 w-14 items-center justify-center rounded-xl bg-accent-soft text-accent","children":["$","$L2",null,{"iconNode":[["path",{"d":"M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5","key":"qeys4"}],["path",{"d":"M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09","key":"u4xsad"}],["path",{"d":"M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z","key":"676m9"}],["path",{"d":"M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05","key":"92ym6u"}]],"className":"lucide-rocket h-7 w-7","aria-hidden":true}]}],["$","div",null,{"children":[["$","h1",null,{"className":"font-mono text-2xl font-bold tracking-tight","children":"mod"}],["$","div",null,{"className":"mt-1 flex flex-wrap items-center gap-2 text-xs text-muted","children":[["$","span",null,{"className":"rounded-full border border-line px-2 py-0.5","children":["v","1.1.0"]}],[["$","$L3","developer-tools",{"href":"/categories/developer-tools/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Developer Tools"}],["$","$L3","automation",{"href":"/categories/automation/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Automation"}],["$","$L3","testing",{"href":"/categories/testing/","className":"rounded-full border border-line px-2 py-0.5 hover:border-accent hover:text-accent","children":"Testing"}]],["$","span",null,{"children":["updated ","2026-07-11"]}]]}]]}]]}],["$","p",null,{"className":"text-muted","children":"End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Invoke as `Mod:` followed by a repo link."}],["$","div",null,{"className":"flex flex-wrap gap-1.5","children":[["$","$L3","build",{"href":"/skills/?tags=build","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"build"}],["$","$L3","test",{"href":"/skills/?tags=test","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"test"}],["$","$L3","ship",{"href":"/skills/?tags=ship","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"ship"}],["$","$L3","qa",{"href":"/skills/?tags=qa","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"qa"}],["$","$L3","wsl",{"href":"/skills/?tags=wsl","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"wsl"}],["$","$L3","pull-request",{"href":"/skills/?tags=pull-request","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"pull-request"}],["$","$L3","release",{"href":"/skills/?tags=release","className":"rounded-md bg-accent-soft px-2 py-0.5 font-mono text-[11px] text-accent hover:opacity-80","children":"release"}]]}]]}],["$","section",null,{"className":"mb-8 rounded-xl border border-line bg-surface p-5","children":[["$","h2",null,{"className":"mb-3 flex items-center gap-2 text-sm font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M12 19h8","key":"baeox8"}],["path",{"d":"m4 17 6-6-6-6","key":"1yngyt"}]],"className":"lucide-terminal text-accent","size":15}]," Install"]}],["$","ol",null,{"className":"mb-3 list-decimal pl-5 text-sm text-muted","children":[["$","li",null,{"children":["Clone the repo:"," ",["$","code",null,{"className":"font-mono text-xs","children":"git clone https://github.com/Arnav1771/Skills-Directory.git"}]]}],["$","li",null,{"children":"Copy the skill folder into your agent's skills directory:"}]]}],"$L4","$L5"]}],"$L6","$L7"]}],"$L8"]}],["$L9"],"$La"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"TO66HVlCkNB_zie8D9FfY"}
+4:["$","div",null,{"className":"flex items-center gap-2 rounded-lg border border-line bg-background px-3 py-2","children":[["$","code",null,{"className":"min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs","children":"cp -r Skills-Directory/mod ~/.claude/skills/mod"}],["$","$Lb",null,{"text":"cp -r Skills-Directory/mod ~/.claude/skills/mod"}]]}]
+5:["$","p",null,{"className":"mt-3 text-xs text-muted","children":["On Claude.ai: zip the ",["$","code",null,{"className":"font-mono","children":["mod","/"]}]," ","folder and upload it under Settings → Capabilities → Skills. The skill then activates automatically on matching requests."]}]
+6:["$","h2",null,{"className":"mb-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35","key":"1wthlu"}],["path",{"d":"M14 2v5a1 1 0 0 0 1 1h5","key":"wfsgrz"}],["path",{"d":"m5 16-3 3 3 3","key":"331omg"}],["path",{"d":"m9 22 3-3-3-3","key":"lsp7cz"}]],"className":"lucide-file-code-corner","size":14}]," SKILL.md"]}]
+c:T1b93,<h1>Mod — Universal Build / Fix / Ship Harness</h1>
+<p>Take the target repo from <em>current state</em> to <em>shipped, tested, documented, and
+demonstrable</em>. You are a <strong>senior full-stack engineer + release manager</strong> and
+you own the whole loop: understand → test → fix → document → publish. You do not
+stop at &quot;it should work&quot; — you <strong>prove</strong> it works.</p>
+<h2>Invocation</h2>
+<p>The user calls this as <strong><code>Mod: &lt;repo link&gt;</code></strong> or <strong><code>/mod &lt;repo url&gt;</code></strong>. The
+GitHub repo URL is the <strong>only</strong> input — everything else is pre-filled here. If
+no URL is supplied, ask for exactly one thing: the repo link.</p>
+<h2>Runtime</h2>
+<ul>
+<li>Run <strong>everything inside WSL</strong> (Ubuntu). Never switch environments mid-task.
+On Windows, drive WSL via <code>wsl -e bash -lc &quot;...&quot;</code>; for anything with tricky
+quoting, write a script to a file and run it.</li>
+<li><strong>Working docs folder:</strong> <code>IMP Docs/</code> at the repo root (reuse if present).</li>
+</ul>
+<h2>Ground rules (non-negotiable)</h2>
+<ol>
+<li><strong>Read before you write.</strong> Read the <em>full</em> codebase before changing a line.</li>
+<li><strong>Never fabricate results.</strong> Every test result, count, and screenshot must be
+real. If you didn&#39;t run it, say so.</li>
+<li><strong>Document as you go.</strong> <code>IMP Docs/PROMPT_TRAIL.md</code> gets an entry after <em>every</em>
+prompt — no exceptions.</li>
+<li><strong>Test before you claim done.</strong> &quot;It compiles&quot; ≠ &quot;it works.&quot; Verify behavior.</li>
+<li><strong>Version everything.</strong> Outputs in <code>IMP Docs/</code> are versioned (<code>v1</code>, <code>v2</code>, …
+or semver). Supersede prior work; never silently overwrite.</li>
+<li><strong>Authorship — no AI attribution.</strong> Commits and PRs are authored <strong>only</strong> as
+the selected git identity. <strong>Never</strong> add <code>Co-Authored-By: Claude</code>,
+<code>🤖 Generated with Claude Code</code>, &quot;Co-authored-by&quot; AI trailers, or any
+Claude/AI mention to commit messages or PR descriptions. Keep messages clean
+and human.</li>
+<li><strong>Ask only when blocked.</strong> Reversible → decide and log it. Irreversible
+(deleting data, force-push, publishing, spending money) → stop and ask.</li>
+</ol>
+<h2>Git identity (auto-selected — do not prompt, do not push to <code>main</code>)</h2>
+<p>This machine has two identities; because the skill runs in WSL the default is
+personal. Select per-repo by owner (helper: <code>scripts/select-git-identity.sh</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Repo owner</th>
+<th>Per-repo identity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>github.com/Arnav1771/*</code> (personal)</td>
+<td><code>Arnav1771</code> / <code>arnav.bhargava3@gmail.com</code></td>
+</tr>
+<tr>
+<td>work / org repo (Aligned Automation)</td>
+<td><code>AABH-AI</code> / <code>arnav.bhargava@alignedautomation.com</code></td>
+</tr>
+</tbody></table>
+<ul>
+<li>WSL global default is already <code>Arnav1771 / arnav.bhargava3@gmail.com</code>; <code>gh</code> is
+authed to <strong>Arnav1771</strong>. For an Arnav1771 repo no override is needed.</li>
+<li>For a work repo, set identity <strong>per-repo only</strong> (never the WSL global, Windows
+config, or stored credentials).</li>
+<li>Always work on a feature branch (<code>mod/&lt;yyyy-mm-dd&gt;</code> or <code>fix/&lt;task&gt;</code>) and open a
+<strong>PR</strong> — never push directly to <code>main</code>/<code>master</code> unless the user says so.</li>
+</ul>
+<h2>The pipeline (6 phases)</h2>
+<p>Full checklists and exit criteria live in
+<a href="references/phase-playbook.md"><code>references/phase-playbook.md</code></a>. Overview:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Goal</th>
+<th>Exit criteria</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>0 · Setup</strong></td>
+<td>Clone in WSL, install Canary plugin + deps, verify toolchain.</td>
+<td>Env boots clean, deps resolve, no missing tools.</td>
+</tr>
+<tr>
+<td><strong>1 · Audit</strong></td>
+<td>Written system map: goal, file map, entry points, data flow, current state.</td>
+<td>You can explain the whole system in a paragraph.</td>
+</tr>
+<tr>
+<td><strong>2 · Test</strong></td>
+<td>Canary-driven automated + exploratory testing; edge cases, error states, responsiveness, APIs; break it on purpose.</td>
+<td>Complete real test log in <code>IMP Docs/</code>, Canary reports saved.</td>
+</tr>
+<tr>
+<td><strong>3 · Fix</strong></td>
+<td>Fix every failure; re-run to green. Log broken → root cause → fix → proof.</td>
+<td>All fixable tests pass; the rest logged as known issues.</td>
+</tr>
+<tr>
+<td><strong>4 · Docs</strong></td>
+<td>Versioned living docs in <code>IMP Docs/</code> (templates in <code>references/doc-templates.md</code>).</td>
+<td>All five docs current &amp; version-stamped.</td>
+</tr>
+<tr>
+<td><strong>5 · Ship</strong></td>
+<td>Premium showcase + landing page (<code>frontend-design</code> skill), release artifacts if exe/extension/binary, PR.</td>
+<td>PR open, site live, releases attached, docs linked.</td>
+</tr>
+</tbody></table>
+<p>The five <code>IMP Docs/</code> files — <code>HANDOFF.md</code>, <code>TECHSPEC.md</code>, <code>PROMPT_TRAIL.md</code>,
+<code>DESIGN_CHOICES.md</code>, <code>TODOS.md</code> — scaffold them with
+<code>scripts/scaffold-imp-docs.sh</code>.</p>
+<h2>Helper scripts</h2>
+<ul>
+<li><a href="scripts/select-git-identity.sh"><code>scripts/select-git-identity.sh &lt;repo-url-or-owner&gt;</code></a>
+— echoes/sets the correct per-repo identity by owner.</li>
+<li><a href="scripts/scaffold-imp-docs.sh"><code>scripts/scaffold-imp-docs.sh [repo-root]</code></a>
+— creates <code>IMP Docs/</code> with the five versioned doc stubs (won&#39;t overwrite).</li>
+</ul>
+<h2>Definition of Done</h2>
+<p>Do not report completion until <strong>all</strong> are true: full codebase read · Canary +
+env verified in WSL · every test run with real results · fixable bugs fixed &amp;
+re-verified (rest logged) · all five <code>IMP Docs/</code> current &amp; versioned · showcase +
+landing page live with premium design · release artifacts built (if applicable)
+· PR opened with a complete description (no AI attribution) · <code>PROMPT_TRAIL.md</code>
+updated for this prompt.</p>
+<hr>
+<h2>Reference material</h2>
+<ul>
+<li><a href="references/universal-build-prompt.md"><code>references/universal-build-prompt.md</code></a>
+— the full original Universal Build Prompt (source of truth).</li>
+<li><a href="references/phase-playbook.md"><code>references/phase-playbook.md</code></a> — detailed
+per-phase checklists and exit criteria.</li>
+<li><a href="references/doc-templates.md"><code>references/doc-templates.md</code></a> — copy-paste
+templates for the five <code>IMP Docs/</code> files, including the <code>PROMPT_TRAIL</code> entry
+format.</li>
+<li>Pipeline diagram: <a href="mod_pipeline_flowchart.svg"><code>mod_pipeline_flowchart.svg</code></a>.</li>
+</ul>
+7:["$","div",null,{"className":"skill-doc min-w-0","dangerouslySetInnerHTML":{"__html":"$c"}}]
+8:["$","aside",null,{"className":"flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start","children":[["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 font-semibold","children":"On GitHub"}],["$","a",null,{"href":"https://github.com/Arnav1771/Skills-Directory/tree/main/mod","target":"_blank","rel":"noreferrer","className":"inline-flex items-center gap-1.5 text-accent hover:underline underline-offset-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"M18 19a5 5 0 0 1-5-5v8","key":"sz5oeg"}],["path",{"d":"M9 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v5","key":"1w6njk"}],["circle",{"cx":"13","cy":"12","r":"2","key":"1j92g6"}],["circle",{"cx":"20","cy":"19","r":"2","key":"1obnsp"}]],"className":"lucide-folder-git2 lucide-folder-git-2","size":15}]," ","mod","/ ",["$","$L2",null,{"iconNode":[["path",{"d":"M7 7h10v10","key":"1tivn9"}],["path",{"d":"M7 17 17 7","key":"1vkiza"}]],"className":"lucide-arrow-up-right","size":13}]]}],["$","ul",null,{"className":"mt-3 space-y-1 text-xs text-muted","children":[["$","li",null,{"children":["SKILL.md ","· manifest.yaml"]}],["$","li",null,{"children":"scripts/ — executable helpers"}],["$","li",null,{"children":"references/ — on-demand docs"}],false,[["$","li","mod_pipeline_flowchart.svg",{"children":"mod_pipeline_flowchart.svg"}]]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-3 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["path",{"d":"m16 6 4 14","key":"ji33uf"}],["path",{"d":"M12 6v14","key":"1n7gus"}],["path",{"d":"M8 8v12","key":"1gg7y9"}],["path",{"d":"M4 4v16","key":"6qkkli"}]],"className":"lucide-library text-accent","size":14}]," Composes well with"]}],["$","ul",null,{"className":"space-y-2","children":[["$","li","grimoire",{"children":["$","$L3",null,{"href":"/skills/grimoire/","className":"group flex items-center gap-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72","key":"ul74o6"}],["path",{"d":"m14 7 3 3","key":"1r5n42"}],["path",{"d":"M5 6v4","key":"ilb8ba"}],["path",{"d":"M19 14v4","key":"blhpug"}],["path",{"d":"M10 2v2","key":"7u0qdc"}],["path",{"d":"M7 8H3","key":"zfb6yr"}],["path",{"d":"M21 16h-4","key":"1cnmox"}],["path",{"d":"M11 3H9","key":"1obp7u"}]],"className":"lucide-wand-sparkles h-4 w-4 text-accent","aria-hidden":true}],["$","span",null,{"className":"font-mono text-xs group-hover:text-accent","children":"grimoire"}]]}]}],["$","li","claude-assassin",{"children":["$","$L3",null,{"href":"/skills/claude-assassin/","className":"group flex items-center gap-2","children":[["$","$L2",null,{"iconNode":[["path",{"d":"m12.5 17-.5-1-.5 1h1z","key":"3me087"}],["path",{"d":"M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z","key":"1o5pge"}],["circle",{"cx":"15","cy":"12","r":"1","key":"1tmaij"}],["circle",{"cx":"9","cy":"12","r":"1","key":"1vctgf"}]],"className":"lucide-skull h-4 w-4 text-accent","aria-hidden":true}],["$","span",null,{"className":"font-mono text-xs group-hover:text-accent","children":"claude-assassin"}]]}]}]]}]]}],["$","div",null,{"className":"rounded-xl border border-line bg-surface p-5 text-sm","children":[["$","h3",null,{"className":"mb-2 flex items-center gap-1.5 font-semibold","children":[["$","$L2",null,{"iconNode":[["rect",{"width":"8","height":"8","x":"3","y":"3","rx":"2","key":"by2w9f"}],["path",{"d":"M7 11v4a2 2 0 0 0 2 2h4","key":"xkn7yn"}],["rect",{"width":"8","height":"8","x":"13","y":"13","rx":"2","key":"1cgmvn"}]],"className":"lucide-workflow text-accent","size":14}]," Trigger"]}],["$","p",null,{"className":"text-xs leading-relaxed text-muted","children":"End-to-end build / fix / ship harness. Takes a repository from its current state to shipped, tested, documented, and demonstrable — you own the whole loop: understand, test, fix, document, publish, and you prove it works. Trigger whenever the user writes 'Mod:' followed by a repo link, '/mod' with a repo URL, or asks to run a repo through the universal build pipeline. The repo URL is the only input; everything else is baked in. Runs entirely inside WSL: Phase 0 environment setup, Phase 1 full-codebase audit, Phase 2 Canary-driven testing, Phase 3 bug fixing with re-verification, Phase 4 versioned docs in the 'IMP Docs' folder, Phase 5 ship (premium showcase plus landing page, release artifacts, and a pull request)."}]]}]]}]
+9:["$","script","script-0",{"src":"/Skills-Directory/_next/static/chunks/1fp1ij1dbcmsu.js","async":true}]
+a:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+f:null
