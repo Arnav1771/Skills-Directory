@@ -2,6 +2,8 @@
 
 A curated repository of agent skills — reusable capabilities that can be plugged into any AI coding agent.
 
+**🌐 Browse the catalog on the web: [arnav1771.github.io/Skills-Directory](https://arnav1771.github.io/Skills-Directory/)** — searchable, filterable directory with per-skill docs, install commands, categories, and a leaderboard. Built from each skill's `manifest.yaml` + `SKILL.md` by the Next.js site in [`site/`](./site/).
+
 > **Built to spec.** These skills follow Anthropic's [**Complete Guide to Building Skills for Claude**](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en) — progressive disclosure (`SKILL.md` + `references/` + `scripts/` + `assets/`), kebab-case names, and trigger-rich descriptions. Each skill also ships an optional **[`manifest.yaml`](#the-manifestyaml-format-optional--recommended)** — a small discovery layer (categories, tags, icon, version, composes-with) that powers the catalog below. Read the guide before adding a skill.
 
 ## Available Skills
