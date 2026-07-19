@@ -13,3 +13,14 @@ tags:
 icon: Languages
 version: "1.0.0"
 composesWell: []
+# Cross-agent portability. Pure prompt-only skill (no Claude-specific tooling),
+# so it is fully portable to any agent that loads Agent Skills.
+compat:
+  claude-code: full
+  claude-ai: full
+  cursor: full
+  codex: full
+  copilot: full
+  gemini-cli: full
+  windsurf: full
+  roo-code: full

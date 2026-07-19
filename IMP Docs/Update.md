@@ -7,6 +7,34 @@
 
 ---
 
+## 2026-07-19 — plugin marketplace, trigger evals, cross-agent compat  _(PR pending)_
+### Added
+- **`.claude-plugin/marketplace.json`** — the repo is now a Claude Code plugin
+  marketplace. Install any skill with `/plugin marketplace add
+  Arnav1771/Skills-Directory` + `/plugin install <skill>@skills-directory`
+  (one plugin entry per skill, `strict: false`, `skills: ["./<skill>"]`).
+- **Trigger-eval harness** — `IMP Docs/skill_evals.yaml` (per-skill
+  should_trigger / should_not phrases) + `IMP Docs/eval_skills.py` asserting
+  each `SKILL.md` description still contains its trigger phrases, excludes other
+  skills' phrases, and flags ambiguous cross-skill matches. 25 assertions pass.
+- **Cross-agent compat matrix** — a `compat:` map (`full`/`partial`/`na` across
+  claude-code, claude-ai, cursor, codex, copilot, gemini-cli, windsurf,
+  roo-code) in every `manifest.yaml`; rendered + explained in
+  `IMP Docs/AGENT_COMPAT.md`; README gains a "Works across agents" table.
+- **`IMP Docs/validate_catalog.py`** + `run_checks.sh` — validates
+  marketplace↔skill consistency (entry per skill, skills paths resolve,
+  version/description mirror the manifest) and the compat matrix (known agents,
+  valid levels, `claude-code: full`).
+### Changed
+- README: added the one-command plugin-marketplace install as the recommended
+  path (manual `cp -r` kept as the fallback); added the cross-agent compat table.
+### Notes
+- CI wiring (a `.github/workflows` gate running `run_checks.sh`) is **deferred**:
+  the local token lacks `workflow` scope (see `USE_CASES.md` #3). The scripts are
+  CI-ready — add the workflow via the GitHub web UI or a workflow-scoped token.
+- Built in an isolated worktree off `main` to avoid the in-flight directory-site
+  branch; does not touch `site/`.
+
 ## 2026-07-11 — catalog metadata layer  _(PR pending)_
 ### Added
 - `manifest.yaml` for all five skills (`mod`, `grimoire`, `claude-assassin`,

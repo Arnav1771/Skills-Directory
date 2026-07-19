@@ -1,0 +1,61 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "skills-directory",
+  "description": "Curated catalog of portable agent skills. Install any one as a Claude Code plugin, no manual copying.",
+  "owner": {
+    "name": "Arnav1771",
+    "url": "https://github.com/Arnav1771"
+  },
+  "plugins": [
+    {
+      "name": "mod",
+      "source": "./",
+      "skills": ["./mod"],
+      "strict": false,
+      "description": "End-to-end build/fix/ship harness — takes a repo from its current state to shipped, tested, documented, and demonstrable, all inside WSL. Invoke as `Mod:` followed by a repo link.",
+      "version": "1.1.0",
+      "category": "developer-tools",
+      "tags": ["build", "test", "ship", "qa", "wsl", "pull-request", "release"]
+    },
+    {
+      "name": "grimoire",
+      "source": "./",
+      "skills": ["./grimoire"],
+      "strict": false,
+      "description": "Generate or modify a full app from a plain-English description and push it to a private GitHub repo (with an IMP_DOCS/ folder), via the Grimoire / AppBuilder MCP tools or CLI. Bring-your-own-keys. Say `Grimoire, build me …`.",
+      "version": "1.0.0",
+      "category": "developer-tools",
+      "tags": ["app-generation", "scaffolding", "github", "mcp", "byo-keys", "cli"]
+    },
+    {
+      "name": "code-translator",
+      "source": "./",
+      "skills": ["./code-translator"],
+      "strict": false,
+      "description": "Translates code between programming languages while preserving exact logical equivalence. Trigger when the user asks to translate, port, or convert code between languages.",
+      "version": "1.0.0",
+      "category": "developer-tools",
+      "tags": ["translation", "porting", "languages", "refactoring"]
+    },
+    {
+      "name": "claude-assassin",
+      "source": "./",
+      "skills": ["./claude-assassin"],
+      "strict": false,
+      "description": "Silent background daemon (Windows/macOS/Linux) that saves task state on a Claude Code session limit and auto-relaunches the moment the reset timer expires. Install once, works forever.",
+      "version": "1.0.0",
+      "category": "developer-tools",
+      "tags": ["session-limit", "daemon", "auto-resume", "background", "cross-platform"]
+    },
+    {
+      "name": "supply-chain-prober",
+      "source": "./",
+      "skills": ["./supply-chain-prober"],
+      "strict": false,
+      "description": "Conducts conversational supply chain interviews with non-technical users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building.",
+      "version": "1.0.0",
+      "category": "business",
+      "tags": ["interview", "supply-chain", "data-intake", "non-technical", "sme-routing"]
+    }
+  ]
+}

@@ -18,3 +18,14 @@ icon: Wand2
 version: "1.0.0"
 composesWell:
   - mod
+# Cross-agent portability. Needs either the Grimoire MCP tools or the `grimoire`
+# CLI (shell), so it runs anywhere with MCP or shell access.
+compat:
+  claude-code: full
+  claude-ai: full
+  cursor: full
+  codex: full
+  copilot: partial
+  gemini-cli: full
+  windsurf: full
+  roo-code: full
