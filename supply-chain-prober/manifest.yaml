@@ -15,3 +15,14 @@ tags:
 icon: ClipboardList
 version: "1.0.0"
 composesWell: []
+# Cross-agent portability. Prompt-only conversational skill (reads local files,
+# no Claude-specific tooling), so it is fully portable across agents.
+compat:
+  claude-code: full
+  claude-ai: full
+  cursor: full
+  codex: full
+  copilot: full
+  gemini-cli: full
+  windsurf: full
+  roo-code: full

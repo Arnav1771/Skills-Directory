@@ -20,3 +20,15 @@ version: "1.1.0"
 composesWell:
   - grimoire
   - claude-assassin
+# Cross-agent portability (full = works as-is · partial = core works, some
+# steps are Claude-specific · na = not applicable). mod's Canary-recorded QA
+# step is Claude-only; the rest of the pipeline is agent-agnostic shell.
+compat:
+  claude-code: full
+  claude-ai: na
+  cursor: partial
+  codex: partial
+  copilot: partial
+  gemini-cli: partial
+  windsurf: partial
+  roo-code: partial

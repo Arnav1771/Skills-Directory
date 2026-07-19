@@ -1,0 +1,57 @@
+# Trigger-eval golden set for every skill.
+#
+# For each skill:
+#   should_trigger — phrases a user would say that MUST appear in the skill's
+#                    SKILL.md `description` (so the agent can match them). A miss
+#                    means the description has drifted from its intended triggers.
+#   should_not     — phrases that MUST NOT appear in this skill's description
+#                    (guards against an over-broad description that would steal
+#                    another skill's requests).
+#
+# Matching is case-insensitive with word boundaries (so "port" matches "port,"
+# but not "report"). Run: python3 "IMP Docs/eval_skills.py"
+
+mod:
+  should_trigger:
+    - "Mod:"
+    - "/mod"
+    - "universal build pipeline"
+  should_not:
+    - "translate"
+    - "supply chain"
+
+grimoire:
+  should_trigger:
+    - "Grimoire"
+    - "build me an app"
+    - "scaffold a project"
+  should_not:
+    - "translate"
+    - "session limit"
+
+code-translator:
+  should_trigger:
+    - "translate"
+    - "port"
+    - "convert code"
+  should_not:
+    - "session limit"
+    - "supply chain"
+
+claude-assassin:
+  should_trigger:
+    - "session limit"
+    - "resets at"
+    - "/usage-credits"
+  should_not:
+    - "translate"
+    - "supply chain"
+
+supply-chain-prober:
+  should_trigger:
+    - "interview"
+    - "supply chain"
+    - "probe"
+  should_not:
+    - "translate"
+    - "session limit"

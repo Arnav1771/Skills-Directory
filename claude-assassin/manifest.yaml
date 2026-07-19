@@ -16,3 +16,14 @@ icon: Skull
 version: "1.0.0"
 composesWell:
   - mod
+# Cross-agent portability. This daemon is inherently about Claude Code session
+# limits and relaunching the `claude` CLI, so it is Claude-Code-specific.
+compat:
+  claude-code: full
+  claude-ai: na
+  cursor: na
+  codex: na
+  copilot: na
+  gemini-cli: na
+  windsurf: na
+  roo-code: na

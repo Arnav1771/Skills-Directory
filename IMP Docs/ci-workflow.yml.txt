@@ -1,0 +1,30 @@
+# CI-ready workflow for Skills-Directory. NOT committed under .github/workflows
+# because the current local token lacks `workflow` scope (see USE_CASES.md #3).
+# To enable: copy this file's contents to .github/workflows/validate.yml via the
+# GitHub web UI, or push it with a workflow-scoped token.
+#
+# ----------------------------------------------------------------------------
+name: validate-catalog
+
+on:
+  pull_request:
+    paths:
+      - "*/SKILL.md"
+      - "*/manifest.yaml"
+      - ".claude-plugin/marketplace.json"
+      - "IMP Docs/*.py"
+      - "IMP Docs/skill_evals.yaml"
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Run all catalog checks
+        run: bash "IMP Docs/run_checks.sh"

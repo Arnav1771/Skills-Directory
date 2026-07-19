@@ -33,7 +33,17 @@ Browse by category. `SKILL.md` is the brain; `manifest.yaml` is the catalog card
 
 Skills are portable — the same folder works in Claude Code, Claude.ai, and the API.
 
-**Claude Code (local)**
+**Claude Code — plugin marketplace (recommended, one command)**
+
+This repo is a [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces). Add it once, then install any skill by name:
+```bash
+/plugin marketplace add Arnav1771/Skills-Directory
+/plugin install mod@skills-directory
+# browse everything with:  /plugin
+```
+No cloning or copying — Claude Code fetches the skill and keeps it updated (`/plugin marketplace update`). The catalog is defined in [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json).
+
+**Claude Code — manual (local copy)**
 ```bash
 git clone https://github.com/Arnav1771/Skills-Directory.git
 # Global (all projects):
@@ -58,6 +68,18 @@ also invoke it by name (e.g. `/mod`), or just say its trigger phrase.
 | `code-translator` | "Translate this Python file to Go, keeping logic identical." |
 | `supply-chain-prober` | "Interview me about my supply chain and structure the data." |
 | `claude-assassin` | (auto) fires when you hit a Claude Code session limit. |
+
+### Works across agents
+
+These skills follow the open [Agent Skills](https://agentskills.io) format, so the prompt-only ones run in any agent that loads skills — not just Claude. Each skill's `manifest.yaml` declares a `compat` matrix (`full` · `partial` · `na`); the full grid lives in [`IMP Docs/AGENT_COMPAT.md`](./IMP%20Docs/AGENT_COMPAT.md).
+
+| Skill | Claude Code | Cursor · Codex · Gemini CLI · Windsurf · Roo | Notes |
+|-------|:-----------:|:--------------------------------------------:|-------|
+| `code-translator` | ✅ | ✅ | Prompt-only — fully portable |
+| `supply-chain-prober` | ✅ | ✅ | Prompt-only — fully portable |
+| `grimoire` | ✅ | ✅ | Needs MCP tools or the `grimoire` CLI |
+| `mod` | ✅ | ◐ | Core pipeline portable; Canary-recorded QA is Claude-only |
+| `claude-assassin` | ✅ | — | Claude Code session daemon — Claude-only by design |
 
 ---
 

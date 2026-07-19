@@ -1,4 +1,4 @@
-# TECHSPEC — Skills-Directory (v2 · 2026-07-11)
+# TECHSPEC — Skills-Directory (v3 · 2026-07-19)
 
 > **What this doc is:** the technical specification. It describes the system's
 > architecture and the *contract* every skill in this repo must satisfy. Rules:
@@ -70,10 +70,36 @@ Constraints (enforced by `IMP Docs/validate_manifests.py`): all seven fields pre
 `composesWell` entry resolves to a real skill folder. **Absence is valid** — a skill
 without a `manifest.yaml` is still a complete, working skill.
 
+The manifest also carries a `compat:` map — cross-agent portability, one key per
+host (`claude-code`, `claude-ai`, `cursor`, `codex`, `copilot`, `gemini-cli`,
+`windsurf`, `roo-code`) valued `full` | `partial` | `na`. Rendered and explained
+in `AGENT_COMPAT.md`; `claude-code` must be `full` for every skill.
+
+## 4b. Plugin marketplace (`.claude-plugin/marketplace.json`)
+A repo-level [Claude Code marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
+manifest that makes every skill installable with `/plugin install
+<name>@skills-directory`. Top level: `name`, `owner`, `plugins[]`. Each plugin
+entry mirrors one skill: `name` (== folder), `source: "./"`, `skills:
+["./<name>"]`, `strict: false` (no per-skill `plugin.json`), plus `description`,
+`version`, `category`, `tags` mirrored from the manifest. Consistency (entry per
+skill, skills path resolves, version/description match the manifest) is enforced
+by `IMP Docs/validate_catalog.py`.
+
+## 4c. Validation & trigger evals (repo tooling)
+- `validate_manifests.py` — manifest schema/rules (§4a).
+- `validate_catalog.py` — marketplace ↔ skill consistency + compat matrix.
+- `eval_skills.py` + `skill_evals.yaml` — asserts each `SKILL.md` description
+  still contains its intended trigger phrases (`should_trigger`), excludes other
+  skills' phrases (`should_not`), and warns on cross-skill ambiguity. Matching is
+  case-insensitive, word-boundary-aware, and deterministic (CI-safe).
+- `run_checks.sh` runs all three. CI wiring is deferred until a `workflow`-scoped
+  token exists (see `USE_CASES.md` #3).
+
 ## 5. Consumption surfaces (interfaces out)
 | Surface | How the skill is installed | Invocation |
 |---------|----------------------------|------------|
-| Claude Code | copy folder to `~/.claude/skills/` (global) or `.claude/skills/` (project) | auto-trigger on match, or `/<name>` |
+| Claude Code (marketplace) | `/plugin marketplace add Arnav1771/Skills-Directory` then `/plugin install <name>@skills-directory` | auto-trigger on match, or `/<name>` |
+| Claude Code (manual) | copy folder to `~/.claude/skills/` (global) or `.claude/skills/` (project) | auto-trigger on match, or `/<name>` |
 | Claude.ai | zip folder → Settings → Capabilities → Skills → Upload | auto-trigger on match |
 | API | `container.skills` param (Messages API) / Agent SDK; requires Code Execution beta | programmatic |
 
