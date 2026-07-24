@@ -1,4 +1,4 @@
-# TECHSPEC — Skills-Directory (v3 · 2026-07-19)
+# TECHSPEC — Skills-Directory (v4 · 2026-07-19)
 
 > **What this doc is:** the technical specification. It describes the system's
 > architecture and the *contract* every skill in this repo must satisfy. Rules:
@@ -94,6 +94,19 @@ by `IMP Docs/validate_catalog.py`.
   case-insensitive, word-boundary-aware, and deterministic (CI-safe).
 - `run_checks.sh` runs all three. CI wiring is deferred until a `workflow`-scoped
   token exists (see `USE_CASES.md` #3).
+
+## 4d. Cross-CLI export & install
+Skills are authored once as Claude `SKILL.md` and ported to every other agent CLI:
+- `scripts/export_skills.py` emits `exports/{agents,cursor,windsurf,gemini}/<skill>`
+  + `exports/AGENTS.md` + `exports/index.txt` from `SKILL.md` + `manifest.yaml` +
+  `skill_evals.yaml`. Committed so files are copyable without tooling.
+- `install.sh <skill|all> [--tool T] [--global|--project] [--dir P]` places the
+  right export in each tool's expected location (auto-detected when `--tool` is
+  omitted); works from a local clone or via `curl … | bash`.
+- Target locations: Cursor `.cursor/rules/*.mdc` (frontmatter required), Windsurf
+  `.windsurf/rules/*.md` (≤12k), Gemini `GEMINI.md`, AGENTS.md-family (Codex /
+  Aider / opencode / Copilot / Roo / Zed / …) `AGENTS.md`, Claude native folder.
+  Full matrix in `PORTABILITY.md`.
 
 ## 5. Consumption surfaces (interfaces out)
 | Surface | How the skill is installed | Invocation |
