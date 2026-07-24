@@ -7,6 +7,36 @@
 
 ---
 
+## 2026-07-19 — universal installer (inject skills into any agent CLI)  _(PR pending)_
+### Added
+- **`scripts/export_skills.py`** — converts every skill's `SKILL.md` into each
+  major CLI's native format, writing `exports/{agents,cursor,windsurf,gemini}/`
+  + a whole-catalog `exports/AGENTS.md` + `exports/index.txt`. Adds an
+  activation preamble (from the trigger phrases in `skill_evals.yaml`), rewrites
+  relative links to absolute GitHub URLs, and wraps appendable output in
+  `<!-- skills-directory:<name> -->` markers. Flags Windsurf files over 12k.
+- **`install.sh`** (repo root) — one command to install a skill into any CLI:
+  `curl … | bash -s -- <skill>` or `./install.sh <skill> --tool cursor`.
+  Auto-detects the tool (`.cursor` / `.windsurf` / `AGENTS.md` / `~/.gemini` /
+  `~/.claude`), supports `--global`/`--project`/`--dir`, `all`, and `--list`,
+  and is idempotent (replaces a skill's block on re-install).
+- **`exports/`** — committed pre-converted files so users with no tooling can
+  copy the one they need by hand.
+- **`IMP Docs/PORTABILITY.md`** — where each tool reads instructions, how the
+  port works, and honest limitations.
+### Changed
+- README: new "Install into any agent CLI (one command)" section under the
+  cross-agent compat table.
+### Verified
+- Ran the installer end-to-end into a sandbox for cursor / windsurf / agents /
+  gemini, plus idempotency (block replaced, single marker), `all` (5 skills
+  bundled), and auto-detect (spotted `.cursor/`). Existing checks still pass
+  (25 trigger evals, marketplace + compat + manifests).
+### Notes
+- Built in a worktree off `main` (has PR #6); does not touch `site/`.
+- Ported files are the `SKILL.md` body (references/scripts link back to GitHub);
+  script-heavy skills run best in native Claude form.
+
 ## 2026-07-19 — plugin marketplace, trigger evals, cross-agent compat  _(PR pending)_
 ### Added
 - **`.claude-plugin/marketplace.json`** — the repo is now a Claude Code plugin

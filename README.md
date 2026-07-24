@@ -81,6 +81,25 @@ These skills follow the open [Agent Skills](https://agentskills.io) format, so t
 | `mod` | ✅ | ◐ | Core pipeline portable; Canary-recorded QA is Claude-only |
 | `claude-assassin` | ✅ | — | Claude Code session daemon — Claude-only by design |
 
+### Install into any agent CLI (one command)
+
+Different CLIs read instructions from different places — Cursor wants `.cursor/rules/*.mdc`, Windsurf `.windsurf/rules/*.md`, Gemini CLI `GEMINI.md`, and Codex / Aider / opencode / Copilot / Roo / Zed the open `AGENTS.md` file. Copying a raw `SKILL.md` into those tools does nothing. The installer converts a skill into the **target tool's native format** and drops it in the **right location**:
+
+```bash
+# from anywhere — auto-detects your tool (.cursor / .windsurf / AGENTS.md / …)
+curl -fsSL https://raw.githubusercontent.com/Arnav1771/Skills-Directory/main/install.sh | bash -s -- mod
+
+# or pick the tool explicitly, from a local clone:
+./install.sh mod --tool cursor           # → .cursor/rules/mod.mdc
+./install.sh mod --tool windsurf         # → .windsurf/rules/mod.md
+./install.sh mod --tool gemini           # → GEMINI.md  (--global → ~/.gemini/GEMINI.md)
+./install.sh mod --tool agents           # → AGENTS.md  (Codex/Aider/opencode/Copilot/Roo/Zed/…)
+./install.sh all  --tool agents          # every skill in one AGENTS.md
+./install.sh --list                      # show skills + tools
+```
+
+Re-running replaces a skill's block in place (idempotent), so updating is just re-installing. **No tooling?** The pre-converted files live in [`exports/`](./exports/) — copy the one your tool needs by hand (e.g. [`exports/cursor/mod.mdc`](./exports/cursor/mod.mdc), or the whole-catalog [`exports/AGENTS.md`](./exports/AGENTS.md)). Full path/format matrix: [`IMP Docs/PORTABILITY.md`](./IMP%20Docs/PORTABILITY.md).
+
 ---
 
 ## 🛠 The Ritual: How to Add a New Skill
