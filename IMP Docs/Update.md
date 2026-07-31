@@ -64,6 +64,39 @@
   CI-ready — add the workflow via the GitHub web UI or a workflow-scoped token.
 - Built in an isolated worktree off `main` to avoid the in-flight directory-site
   branch; does not touch `site/`.
+## 2026-07-18 — directory website, live on GitHub Pages  _(PR pending)_
+### Added
+- **`site/`** — a full directory/marketplace website for the catalog (modeled on
+  mcpmarket.com): Next.js App Router + TypeScript + Tailwind v4, statically
+  exported and **live at
+  [arnav1771.github.io/Skills-Directory](https://arnav1771.github.io/Skills-Directory/)**.
+  - Build-time pipeline (`site/scripts/build-content.mjs`) walks every skill
+    folder, parses `manifest.yaml` + `SKILL.md` (frontmatter stripped, body
+    rendered to HTML), augments with git last-commit dates and GitHub repo
+    stats, and emits `site/content/skills.json` — the single data source the UI
+    consumes (swappable for a DB later without touching components).
+  - Routes: `/` (hero, featured/top/latest rows, category chips, FAQ),
+    `/skills` (+ `/skills/[slug]` detail with rendered SKILL.md, install
+    copy-button, composes-well cross-links), `/categories` (+ per-category),
+    `/leaderboard` (composite score: inbound/outbound composesWell, semver
+    maturity, toolkit completeness), `/search` (Fuse.js fuzzy), `/submit`,
+    `/what-is-an-agent-skill`, `sitemap.xml`.
+  - Client-side fuzzy search + combinable category/tag filters reflected in the
+    URL; dark/light theme persisted to localStorage; per-page SEO metadata.
+  - Deployed as a static export (`output: "export"`, basePath
+    `/Skills-Directory`, `.nojekyll`) pushed to the **`gh-pages`** branch via
+    `site/scripts/deploy-ghpages.sh` (no Actions — the local `gh` token lacks
+    `workflow` scope); Pages serves from that branch.
+  - HTTP-layer smoke tests (`site/scripts/smoke-test*.sh`): 15/15 routes 200,
+    basePath-prefixed assets resolve, SKILL.md bodies render, sitemap lists 19
+    URLs.
+- `IMP Docs/USE_CASES.md` — roadmap of candidate use cases for the directory.
+- `IMP Docs/PROMPT_TRAIL.md` — per-prompt work log (mod-pipeline convention).
+### Changed
+- README: added the live-site link at the top.
+### Notes
+- `/daily` (trending) deliberately omitted — no install/view analytics exist
+  yet, and the spec says don't fake counters.
 
 ## 2026-07-11 — catalog metadata layer  _(PR pending)_
 ### Added
