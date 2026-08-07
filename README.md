@@ -4,6 +4,11 @@ A curated repository of agent skills — reusable capabilities that can be plugg
 
 **🌐 Browse the catalog on the web: [arnav1771.github.io/Skills-Directory](https://arnav1771.github.io/Skills-Directory/)** — searchable, filterable directory with per-skill docs, install commands, categories, and a leaderboard. Built from each skill's `manifest.yaml` + `SKILL.md` by the Next.js site in [`site/`](./site/).
 
+Running it locally: `cd site && npm ci && npm run build && npm run preview`. The
+Pages build carries a `/Skills-Directory` basePath that 404s every asset when the
+export is served from a document root, so a plain `npm run build` deliberately
+omits it and `npm run build:pages` adds it back — see [`site/README.md`](./site/README.md#the-basepath-constraint-read-this-before-you-deploy).
+
 > **Built to spec.** These skills follow Anthropic's [**Complete Guide to Building Skills for Claude**](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf?hsLang=en) — progressive disclosure (`SKILL.md` + `references/` + `scripts/` + `assets/`), kebab-case names, and trigger-rich descriptions. Each skill also ships an optional **[`manifest.yaml`](#the-manifestyaml-format-optional--recommended)** — a small discovery layer (categories, tags, icon, version, composes-with) that powers the catalog below. Read the guide before adding a skill.
 
 ## Available Skills

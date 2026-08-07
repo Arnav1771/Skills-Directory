@@ -87,6 +87,10 @@ jobs:
 
       - name: Build site (prebuild generates content/skills.json, then static export)
         working-directory: site
+        env:
+          # Neutralise the GITHUB_ACTIONS fallback in next.config.ts so this step
+          # really does exercise the root-relative flavour.
+          NEXT_PUBLIC_BASE_PATH: ''
         run: npm run build
 
       - name: Static export produced
@@ -94,3 +98,33 @@ jobs:
         run: |
           test -d out
           test -f out/index.html
+
+      # The export is served two ways and both must keep working:
+      #   * site/out as the document root (npm run preview, any static host)
+      #   * https://arnav1771.github.io/Skills-Directory/ (Pages project page)
+      # A basePath baked in unconditionally breaks the first; no basePath at all
+      # breaks the second. These two steps pin that down.
+      - name: Default build emits root-relative assets that exist on disk
+        working-directory: site
+        shell: bash
+        env:
+          NEXT_PUBLIC_BASE_PATH: ''
+        run: |
+          asset=$(grep -o '/_next/static/[^"]*\.css' out/index.html | head -1)
+          test -n "$asset"
+          echo "asset: $asset"
+          test -f "out$asset"
+          if grep -q '"/Skills-Directory/_next/' out/index.html; then
+            echo "FAIL: default build baked in the /Skills-Directory basePath"
+            exit 1
+          fi
+
+      - name: Pages build emits /Skills-Directory-prefixed assets that exist on disk
+        working-directory: site
+        shell: bash
+        run: |
+          npm run build:pages
+          asset=$(grep -o '/Skills-Directory/_next/static/[^"]*\.css' out/index.html | head -1)
+          test -n "$asset"
+          echo "asset: $asset"
+          test -f "out${asset#/Skills-Directory}"

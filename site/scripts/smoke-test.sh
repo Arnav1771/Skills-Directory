@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # HTTP-layer smoke test for the static export, served at the same /Skills-Directory
-# base path GitHub Pages will use. Run after `npm run build`.
+# base path GitHub Pages will use. Run after `npm run build:pages` — a plain
+# `npm run build` emits root-relative assets, so serve that one with
+# `npm run preview` instead.
 set -u
 mkdir -p /tmp/pagesroot
 ln -sfn "$HOME/Skills-Directory/site/out" /tmp/pagesroot/Skills-Directory

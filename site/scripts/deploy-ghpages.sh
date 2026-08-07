@@ -11,6 +11,12 @@ git log -1 --format='subject: %s'
 echo "== push feature branch =="
 git push -f -u origin mod/2026-07-18-directory-site 2>&1 | tail -2
 
+echo "== build the Pages flavour of the export =="
+# Must be build:pages, never a plain `npm run build`. Pages serves this repo at
+# /Skills-Directory/, so the export needs the basePath prefix; a plain build
+# emits root-relative asset URLs that 404 there.
+(cd site && npm run build:pages)
+
 echo "== build gh-pages tree =="
 DEPLOY="$HOME/.cache/ghpages-deploy"
 rm -rf "$DEPLOY"

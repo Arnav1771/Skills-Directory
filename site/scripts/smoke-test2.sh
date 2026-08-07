@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Second-pass route check against the Pages base path. Run after
+# `npm run build:pages` (a plain `npm run build` is root-relative).
 set -u
 mkdir -p /tmp/pagesroot
 ln -sfn "$HOME/Skills-Directory/site/out" /tmp/pagesroot/Skills-Directory

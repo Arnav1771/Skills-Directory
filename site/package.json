@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "node scripts/build-pages.mjs",
+    "preview": "node scripts/preview.mjs",
+    "preview:pages": "node scripts/preview.mjs --base-path=/Skills-Directory",
     "start": "next start",
     "lint": "eslint",
     "prebuild": "node scripts/build-content.mjs",

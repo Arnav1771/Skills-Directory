@@ -7,6 +7,50 @@
 
 ---
 
+## 2026-08-07 — fix: site was unstyled when served from a document root  _(PR #8)_
+### Fixed
+- **The export only worked on GitHub Pages.** `site/next.config.ts` hard-coded
+  `basePath: "/Skills-Directory"`, so every asset URL in `out/index.html` was
+  `/Skills-Directory/_next/...`. Serving `site/out` as the document root — the
+  obvious thing to do after `npm run build` — 404'd all 12 of them: no
+  stylesheet (`document.styleSheets[0].cssRules.length === 0`, page fell back to
+  Times New Roman), no JS, nothing interactive. The HTML itself was fine; it was
+  purely a serving-root/basePath mismatch.
+- The prefix is now **opt-in** via `NEXT_PUBLIC_BASE_PATH` (with a
+  `GITHUB_ACTIONS=true` fallback so a Pages deploy can't ship a root-relative
+  build by accident). `npm run build` emits root-relative assets;
+  `npm run build:pages` emits the `/Skills-Directory`-prefixed ones.
+### Added
+- `site/scripts/build-pages.mjs` + `npm run build:pages` — the Pages flavour, as
+  a node script so it works on any shell.
+- `site/scripts/preview.mjs` + `npm run preview` / `npm run preview:pages` — a
+  dependency-free static server for `out/`, at the root or at a base path, so
+  previewing either flavour is one command.
+### Changed
+- `site/scripts/deploy-ghpages.sh` now runs `npm run build:pages` itself instead
+  of shipping whatever happened to be in `out/`.
+- `.github/workflows/ci.yml` builds **both** flavours and asserts the default
+  build's asset URLs are root-relative, the Pages build's are prefixed, and both
+  resolve to files that exist on disk.
+- `site/README.md` rewritten (was still the create-next-app boilerplate) and the
+  root README gained the local-run recipe.
+### Verified
+- `npm run build`: 23 static pages exported, exit 0. Served `out/` at
+  `127.0.0.1:8231` — `GET /` → 200 (76,735 bytes) and **all 10** asset URLs
+  grepped out of `out/index.html` → 200, e.g.
+  `/_next/static/chunks/3kky2t8mmyzem.css` → 200, 26,545 bytes (the same file
+  under `/Skills-Directory/...` correctly 404s). Routes `/skills/`,
+  `/categories/`, `/leaderboard/`, `/search/`, `/skills/mod/`, `/sitemap.xml`
+  all 200.
+- `npm run build:pages` + `npm run preview:pages`: `GET /Skills-Directory/` →
+  200 (78,146 bytes), all 10 prefixed asset URLs → 200, nav hrefs prefixed.
+- `IMP Docs/validate_manifests.py`: all 5 manifests valid.
+### Notes
+- No browser verification — visual rendering was not checked. The proof is that
+  every asset URL referenced by the served HTML returns 200 in both arrangements.
+- Branch `mod/2026-07-18-directory-site` was rebased onto `main` (it was 5 ahead
+  / 4 behind and conflicting); the only conflict was this file.
+
 ## 2026-07-19 — universal installer (inject skills into any agent CLI)  _(PR pending)_
 ### Added
 - **`scripts/export_skills.py`** — converts every skill's `SKILL.md` into each
