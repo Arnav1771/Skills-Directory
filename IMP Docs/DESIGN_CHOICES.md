@@ -1,7 +1,7 @@
 # DESIGN_CHOICES
 
-**Document version:** v1
-**Date:** 2026-08-04
+**Document version:** v2
+**Date:** 2026-08-07 (v2 adds §7, the opt-in base path; v1 sections unchanged)
 **Branch:** `mod/2026-07-18-directory-site`
 
 Why the repository and the site are built this way, and what each choice costs.
@@ -63,6 +63,9 @@ on merge, and the live site can silently fall behind `main`. `TODOS.md` §1.
 would add hosting, an origin to secure and a build to keep alive, in exchange for
 nothing the export cannot do. Search is client-side (`fuse.js`) for the same reason.
 
+**Where the export is served from** is a separate decision with its own failure mode —
+§7.
+
 ## 4. Skills stay in this repo instead of one repo each
 
 **Why.** Five skills, most of them small, sharing an authoring convention and a
@@ -96,3 +99,53 @@ why "it works" is defined as "the skill loads and triggers".
 The one open consequence: there is still no `LICENSE` file, which `HANDOFF.md` has
 listed as next step 1 through two passes. A catalog meant to be copied from needs to
 say what copying is permitted.
+
+## 7. The GitHub Pages base path is opt-in, not the default _(2026-08-07)_
+
+**Decision.** `site/next.config.ts` reads `NEXT_PUBLIC_BASE_PATH`. If it is unset the
+export carries no `basePath` and no `assetPrefix` at all, so every asset URL is
+root-relative. `npm run build:pages` (`site/scripts/build-pages.mjs`) sets the variable
+to `/Skills-Directory` and produces the prefixed flavour. `GITHUB_ACTIONS === "true"`
+supplies the same value as a fallback. The plain build is the portable one; the
+prefixed build is the one you have to ask for.
+
+**Why that way round.** Before this, the prefix was hard-coded and unconditional, which
+made the *only* arrangement that worked the one nobody develops in. `npm run build`
+followed by serving `site/out` as a document root — the obvious first move after a
+clone — 404'd all 12 asset URLs: `document.styleSheets[0].cssRules.length === 0`, the
+page fell back to Times New Roman, no JS ran, nothing was interactive. And it failed
+*silently*: the HTML itself returned 200 and was correct, so there was no error to
+read anywhere but the network tab.
+
+The general rule this encodes: **when a config value has a portable setting and a
+setting that is correct in exactly one place, the one-place setting is the surprising
+half, and the surprising half is what should be opt-in.** A root-relative export is
+right under `npx serve out`, `python3 -m http.server` inside `out/`, an nginx docroot,
+an S3/Netlify drop, and a user-or-org Pages site. `/Skills-Directory` is right at
+exactly one URL — <https://arnav1771.github.io/Skills-Directory/>. Defaulting to the
+single-URL value optimises for the deploy, which happens rarely and is run by someone
+who knows the deploy, at the expense of every reader, who is not.
+
+**The guard on the other side.** Opt-in has a symmetric risk: shipping a root-relative
+build *to* Pages breaks the live site the same way. Two things stop it. (1)
+`site/scripts/deploy-ghpages.sh` now runs `npm run build:pages` itself rather than
+publishing whatever happened to be sitting in `out/`. (2) `GITHUB_ACTIONS=true` turns
+the prefix back on by default, so if the `workflow`-scope blocker in `TODOS.md` §1 ever
+clears and a deploy Action appears, it gets the correct flavour even if nobody
+remembers to set the env var. CI asserts both directions rather than trusting either:
+the default build's asset URLs must be root-relative, the Pages build's must be
+prefixed, and both must resolve to files that exist on disk.
+
+**The cost.** Two build commands and two preview commands where there was one, and
+`site/out` now means different things depending on which you ran last — there is no
+marker in the directory saying which flavour it holds. `site/README.md` documents the
+pairing; the preview scripts (`npm run preview`, `npm run preview:pages`) exist so that
+checking is one command rather than a manual static server plus a guess about the path.
+
+**Evidence (2026-08-07, HTTP layer only — no browser was used).** Default build served
+at a document root: `GET /` → 200, and all 10 asset URLs grepped out of
+`out/index.html` → 200, e.g. `/_next/static/chunks/3kky2t8mmyzem.css` → 200,
+26,545 bytes — the same file under `/Skills-Directory/...` correctly 404s. Pages build
+under `/Skills-Directory/`: all 10 prefixed asset URLs → 200. Both flavours export 23
+static pages, exit 0. `IMP Docs/validate_manifests.py` → 5 skills, all manifests valid.
+Full detail in `Update.md`, entry 2026-08-07.

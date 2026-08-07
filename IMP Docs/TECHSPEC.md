@@ -123,10 +123,47 @@ Skills are authored once as Claude `SKILL.md` and ported to every other agent CL
 4. Scripts run in the agent's environment (e.g. `mod` requires WSL); outputs feed back into the workflow.
 
 ## 7. Dependencies & build
-- **None at repo level** — no package manager, lockfile, or CI. Skills are Markdown + optional scripts.
-- Per-skill runtime needs are the skill's own contract (e.g. `mod` runs inside WSL and uses `git`/`gh`/Canary).
+- **None for the catalog half** — skills are Markdown + optional scripts, with no
+  package manager or lockfile. Per-skill runtime needs are the skill's own contract
+  (e.g. `mod` runs inside WSL and uses `git`/`gh`/Canary).
+- **The `site/` half has both** (added after this section was first written): its own
+  `package.json` + `package-lock.json`, and CI. See §9.
 
 ## 8. Distribution
 Public GitHub repo under **Arnav1771**. Changes land on `main` via feature-branch
 PRs (direct pushes to `main` are blocked). Consumers clone the repo (or download a
 skill folder / ZIP) and install per §5.
+
+## 9. The directory site (`site/`) — updated 2026-08-07
+Next 16 App Router, TypeScript, Tailwind, **static export** (`output: "export"`,
+`trailingSlash: true`, unoptimized images) → `site/out`. Content is generated, not
+hand-maintained: the npm `prebuild` step runs `site/scripts/build-content.mjs`, which
+walks every skill folder, parses `manifest.yaml` + `SKILL.md`, and writes
+`site/content/skills.json` — the single source the UI reads. 23 static pages export.
+
+**Two build flavours.** The Pages base path is opt-in, read from
+`NEXT_PUBLIC_BASE_PATH` in `site/next.config.ts`, with `GITHUB_ACTIONS === "true"` as a
+fallback default:
+
+| Command | `basePath` / `assetPrefix` | Serve it from |
+|---|---|---|
+| `npm run build` | none — asset URLs are root-relative | any document root (`npm run preview`, `python3 -m http.server`, nginx, S3, a user/org Pages site) |
+| `npm run build:pages` (`scripts/build-pages.mjs`) | `/Skills-Directory` | a `/Skills-Directory/` sub-path (`npm run preview:pages`, GitHub project Pages) |
+
+Both write to the same `site/out`, and nothing in the directory records which flavour
+produced it. Rationale for the default is in `DESIGN_CHOICES.md` §7.
+
+**Preview.** `site/scripts/preview.mjs` is a dependency-free static server for `out/`;
+`npm run preview` serves at the root, `npm run preview:pages` under
+`/Skills-Directory`.
+
+**Deploy.** `site/scripts/deploy-ghpages.sh` runs `npm run build:pages` itself, copies
+`site/out` to a scratch directory, `git init`s a `gh-pages` branch and force-pushes.
+Manual, because the available token lacks `workflow` scope (`TODOS.md` §1).
+
+**CI.** `.github/workflows/ci.yml`, two jobs:
+- *manifests + shell scripts* — `IMP Docs/validate_manifests.py`, a "every manifest has
+  a `SKILL.md`" check, and `bash -n` over the shell scripts.
+- *Next.js static export* — builds **both** flavours and asserts the default build's
+  asset URLs are root-relative, the Pages build's are prefixed, and both resolve to
+  files that exist on disk.

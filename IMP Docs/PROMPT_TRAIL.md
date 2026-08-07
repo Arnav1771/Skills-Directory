@@ -5,6 +5,51 @@
 
 ---
 
+## 2026-08-07 — "the site is broken / unstyled when I serve it locally"
+
+**Asked:** the static export, served locally, came up as unstyled plain text with
+nothing interactive. Find out why and fix it. Then update `IMP Docs`.
+
+**Diagnosed:** not a CSS or build failure — a serving-root mismatch.
+`site/next.config.ts` hard-coded `basePath: "/Skills-Directory"`, correct for a GitHub
+Pages *project* page and wrong everywhere else. Serving `site/out` as a document root
+meant every asset URL in `out/index.html` pointed at `/Skills-Directory/_next/...`, so
+all 12 of them 404'd: `document.styleSheets[0].cssRules.length === 0`, Times New Roman
+fallback, no JS, nothing interactive. The HTML itself was correct throughout.
+
+**Fixed:** made the prefix opt-in via `NEXT_PUBLIC_BASE_PATH`, with
+`GITHUB_ACTIONS === "true"` as a fallback so a deploy can't ship a root-relative build
+by accident. `npm run build` → root-relative (serves anywhere);
+`npm run build:pages` (new, `site/scripts/build-pages.mjs`) → prefixed. Added a
+dependency-free static server `site/scripts/preview.mjs` behind `npm run preview` /
+`npm run preview:pages`. `deploy-ghpages.sh` now runs `build:pages` itself instead of
+publishing whatever happened to be in `out/`. CI builds and asserts **both** flavours.
+Rewrote `site/README.md` (still create-next-app boilerplate) and added the local-run
+recipe to the root README.
+
+**Verified (HTTP layer only — no browser was used, so nothing is claimed about how the
+page looks):** default build served at a document root — `GET /` → 200, all 10 asset
+URLs from `out/index.html` → 200, e.g. `/_next/static/chunks/3kky2t8mmyzem.css` → 200,
+26,545 bytes; the same path under `/Skills-Directory/` correctly 404s. Pages build
+under `/Skills-Directory/` → all 10 prefixed assets 200. Both flavours: 23 static
+pages, exit 0. `IMP Docs/validate_manifests.py` → 5 skills, all manifests valid.
+
+**Shipped:** rebased `mod/2026-07-18-directory-site` onto `main` — it was 5 ahead / 4
+behind and **CONFLICTING** (the only conflict was `IMP Docs/Update.md`); PR #8 is now
+**MERGEABLE** with all 4 CI checks passing (2 jobs × 2 runs: "Next.js static export",
+"manifests + shell scripts").
+
+**Docs:** `Update.md` 2026-08-07 entry, `DESIGN_CHOICES.md` §7 (why opt-in is the right
+default), `TODOS.md` v2 (skills.json re-confirmed still tracked; two new smaller items),
+this entry, and a current-state block at the top of `HANDOFF.md`.
+
+**Left / known:** `site/content/skills.json` is still a tracked generated file and still
+dirties the tree on every build (`TODOS.md` §2) — untracking it is the next cleanup.
+Deploy is still a manual script pending a `workflow`-scoped token (`TODOS.md` §1). Still
+no `LICENSE`.
+
+---
+
 ## 2026-07-18 — `/mod` + "build the Skills & MCP Directory website, host on GitHub Pages"
 
 **Asked:** Run the repo through the mod pipeline with a full build spec: an

@@ -1,7 +1,7 @@
 # TODOS
 
-**Document version:** v1
-**Date:** 2026-08-04
+**Document version:** v2
+**Date:** 2026-08-07
 **Branch:** `mod/2026-07-18-directory-site`
 
 Open items. Completed work is in `Update.md`; candidate directions with sizing are in
@@ -47,6 +47,15 @@ Second-best option if it must stay tracked: drop `generatedAt` and the live GitH
 stats from the committed artefact and fetch them at runtime, which makes the file
 deterministic and the diff meaningful again.
 
+**Still open, re-confirmed 2026-08-07.** The 2026-08-07 base-path work added a *second*
+build command (`npm run build:pages`) and a preview loop, so the tree now gets dirtied
+by more paths than before, not fewer — anyone verifying both flavours runs `prebuild`
+twice and restamps `generatedAt` twice. The file is still tracked:
+`git ls-files site/content/` → `site/content/skills.json`. Recommendation unchanged and
+now slightly more urgent: untrack it. `site/README.md` and the CI comment both already
+treat it as generated output, so the repo's own documentation is out of step with the
+fact that git owns the file.
+
 ## 3. An MCP-server catalog (`/servers`) was planned and does not exist
 
 The site currently lists **skills** only. The planned second surface catalogs MCP
@@ -85,11 +94,21 @@ Apache-2.0 and reference it from the README's authoring section.
   references or examples. An `examples/` sample translation brings it to parity —
   `HANDOFF.md` next step 3.
 - **Two smoke-test scripts.** `site/scripts/smoke-test.sh` and `smoke-test2.sh` both
-  exist; only one is referenced by the prompt trail's 15/15 route check. Fold them
-  into one, or name the second for what it does.
+  exist; only one is referenced by the prompt trail's 15/15 route check. On 2026-08-07
+  both gained header comments saying they test the **Pages** flavour and must be run
+  after `npm run build:pages` — comments only, no behaviour change: both still hard-code
+  `/Skills-Directory` and both still symlink `$HOME/Skills-Directory/site/out`, so
+  neither works from a checkout at any other path. Fold them into one, take the base
+  path and the repo root as parameters, or name the second for what it does.
 - **The site is built but never linted in CI.** `package.json` declares
-  `lint: eslint`; the workflow runs `npm run build` only. One more step, near-zero
-  cost.
+  `lint: eslint`; the workflow builds both flavours (2026-08-07) but still never lints.
+  One more step, near-zero cost.
+- **`site/out` does not record which flavour it holds.** After the 2026-08-07 change
+  the same directory can contain either a root-relative or a `/Skills-Directory`-prefixed
+  export, and nothing in it says which. A one-line marker file written by each build
+  (or a `flavour` field in the build output) would make `preview` vs `preview:pages`
+  a checkable choice rather than a remembered one. See `DESIGN_CHOICES.md` §7, "The
+  cost".
 - **Skill trigger quality is untested by anything.** Mechanical checks pass — 5
   manifests valid, 13 scripts `bash -n` clean, 23 static pages exported (verified
   2026-08-04) — and none of them say whether a skill fires on the right request. If
