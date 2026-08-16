@@ -1,0 +1,130 @@
+name: CI
+
+# Two things live in this repo:
+#   1. Five agent skills, each a SKILL.md + manifest.yaml (+ shell scripts).
+#   2. A Next.js 16 site in site/ that static-exports to site/out.
+#
+# The manifest gate reuses the repo's own validator, "IMP Docs/validate_manifests.py",
+# rather than duplicating the contract here.
+#
+# Note: `site/content/skills.json` is a TRACKED generated file that the site's
+# prebuild step rewrites (it stamps generatedAt and pulls live repo metadata),
+# so CI deliberately does NOT assert that it is unchanged after a build --
+# that check would be non-deterministic.
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    name: manifests + shell scripts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Validate skill manifests
+        run: python3 "IMP Docs/validate_manifests.py"
+
+      - name: Every skill has a SKILL.md
+        shell: bash
+        run: |
+          status=0
+          for m in */manifest.yaml; do
+            d=$(dirname "$m")
+            if [ -f "$d/SKILL.md" ]; then
+              echo "OK   $d"
+            else
+              echo "FAIL $d: manifest.yaml without SKILL.md"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Shell script syntax check (bash -n)
+        shell: bash
+        run: |
+          status=0
+          while IFS= read -r -d '' f; do
+            if bash -n "$f"; then
+              echo "OK   $f"
+            else
+              echo "FAIL $f"
+              status=1
+            fi
+          done < <(find . -name '*.sh' -not -path './site/node_modules/*' -not -path './.git/*' -print0)
+          exit $status
+
+  site:
+    name: Next.js static export
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build site (prebuild generates content/skills.json, then static export)
+        working-directory: site
+        env:
+          # Neutralise the GITHUB_ACTIONS fallback in next.config.ts so this step
+          # really does exercise the root-relative flavour.
+          NEXT_PUBLIC_BASE_PATH: ''
+        run: npm run build
+
+      - name: Static export produced
+        working-directory: site
+        run: |
+          test -d out
+          test -f out/index.html
+
+      # The export is served two ways and both must keep working:
+      #   * site/out as the document root (npm run preview, any static host)
+      #   * https://arnav1771.github.io/Skills-Directory/ (Pages project page)
+      # A basePath baked in unconditionally breaks the first; no basePath at all
+      # breaks the second. These two steps pin that down.
+      - name: Default build emits root-relative assets that exist on disk
+        working-directory: site
+        shell: bash
+        env:
+          NEXT_PUBLIC_BASE_PATH: ''
+        run: |
+          asset=$(grep -o '/_next/static/[^"]*\.css' out/index.html | head -1)
+          test -n "$asset"
+          echo "asset: $asset"
+          test -f "out$asset"
+          if grep -q '"/Skills-Directory/_next/' out/index.html; then
+            echo "FAIL: default build baked in the /Skills-Directory basePath"
+            exit 1
+          fi
+
+      - name: Pages build emits /Skills-Directory-prefixed assets that exist on disk
+        working-directory: site
+        shell: bash
+        run: |
+          npm run build:pages
+          asset=$(grep -o '/Skills-Directory/_next/static/[^"]*\.css' out/index.html | head -1)
+          test -n "$asset"
+          echo "asset: $asset"
+          test -f "out${asset#/Skills-Directory}"

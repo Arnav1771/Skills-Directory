@@ -6,6 +6,33 @@
 > every claim reflects the repo as it actually is, and it ends with numbered next
 > steps. Version-stamped; superseded, never silently overwritten.
 
+> ## Current state — 2026-08-07 (read this first; the v1 body below predates the site and CI)
+>
+> - **5 skills**, not 4: `claude-assassin`, `code-translator`, `grimoire`, `mod`,
+>   `supply-chain-prober`. `IMP Docs/validate_manifests.py` reports all five valid
+>   (verified 2026-08-07).
+> - **There is now a site.** `site/` is a Next 16 static export (23 pages) generated
+>   from the skill manifests. `TECHSPEC.md` §9 has the architecture.
+> - **There is now CI.** `.github/workflows/ci.yml` runs two jobs — "manifests + shell
+>   scripts" and "Next.js static export" — so the v1 body's "no CI, validation is
+>   manual" is out of date for the *mechanical* checks. Trigger quality is still
+>   manual, as `DESIGN_CHOICES.md` §5 explains.
+> - **Two build flavours since 2026-08-07.** `npm run build` emits a root-relative
+>   export that serves from any document root; `npm run build:pages` emits the
+>   `/Skills-Directory`-prefixed export for GitHub Pages. Preview them with
+>   `npm run preview` / `npm run preview:pages`. Reasoning in `DESIGN_CHOICES.md` §7.
+>   Do not assume `site/out` holds the flavour you want — nothing in the directory
+>   records which build produced it.
+> - **Open work:** PR #8 (`mod/2026-07-18-directory-site` → `main`) is OPEN and
+>   MERGEABLE with 4/4 checks passing. `LICENSE` is still missing (v1 next step 1,
+>   now carried across three passes). `site/content/skills.json` is still a tracked
+>   generated file — `TODOS.md` §2.
+> - **Deploy is still a manual script** (`site/scripts/deploy-ghpages.sh`, which now
+>   runs `build:pages` itself); the gh token lacks `workflow` scope. `TODOS.md` §1.
+>
+> _Everything below is the v1 · 2026-07-04 handoff, kept for provenance. Where the two
+> disagree, this block is current._
+
 ## Goal
 `Skills-Directory` is a curated catalog of **agent skills** — reusable, portable
 capabilities (following Anthropic's Agent Skills standard) that plug into Claude

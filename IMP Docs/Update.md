@@ -7,6 +7,50 @@
 
 ---
 
+## 2026-08-07 — fix: site was unstyled when served from a document root  _(PR #8)_
+### Fixed
+- **The export only worked on GitHub Pages.** `site/next.config.ts` hard-coded
+  `basePath: "/Skills-Directory"`, so every asset URL in `out/index.html` was
+  `/Skills-Directory/_next/...`. Serving `site/out` as the document root — the
+  obvious thing to do after `npm run build` — 404'd all 12 of them: no
+  stylesheet (`document.styleSheets[0].cssRules.length === 0`, page fell back to
+  Times New Roman), no JS, nothing interactive. The HTML itself was fine; it was
+  purely a serving-root/basePath mismatch.
+- The prefix is now **opt-in** via `NEXT_PUBLIC_BASE_PATH` (with a
+  `GITHUB_ACTIONS=true` fallback so a Pages deploy can't ship a root-relative
+  build by accident). `npm run build` emits root-relative assets;
+  `npm run build:pages` emits the `/Skills-Directory`-prefixed ones.
+### Added
+- `site/scripts/build-pages.mjs` + `npm run build:pages` — the Pages flavour, as
+  a node script so it works on any shell.
+- `site/scripts/preview.mjs` + `npm run preview` / `npm run preview:pages` — a
+  dependency-free static server for `out/`, at the root or at a base path, so
+  previewing either flavour is one command.
+### Changed
+- `site/scripts/deploy-ghpages.sh` now runs `npm run build:pages` itself instead
+  of shipping whatever happened to be in `out/`.
+- `.github/workflows/ci.yml` builds **both** flavours and asserts the default
+  build's asset URLs are root-relative, the Pages build's are prefixed, and both
+  resolve to files that exist on disk.
+- `site/README.md` rewritten (was still the create-next-app boilerplate) and the
+  root README gained the local-run recipe.
+### Verified
+- `npm run build`: 23 static pages exported, exit 0. Served `out/` at
+  `127.0.0.1:8231` — `GET /` → 200 (76,735 bytes) and **all 10** asset URLs
+  grepped out of `out/index.html` → 200, e.g.
+  `/_next/static/chunks/3kky2t8mmyzem.css` → 200, 26,545 bytes (the same file
+  under `/Skills-Directory/...` correctly 404s). Routes `/skills/`,
+  `/categories/`, `/leaderboard/`, `/search/`, `/skills/mod/`, `/sitemap.xml`
+  all 200.
+- `npm run build:pages` + `npm run preview:pages`: `GET /Skills-Directory/` →
+  200 (78,146 bytes), all 10 prefixed asset URLs → 200, nav hrefs prefixed.
+- `IMP Docs/validate_manifests.py`: all 5 manifests valid.
+### Notes
+- No browser verification — visual rendering was not checked. The proof is that
+  every asset URL referenced by the served HTML returns 200 in both arrangements.
+- Branch `mod/2026-07-18-directory-site` was rebased onto `main` (it was 5 ahead
+  / 4 behind and conflicting); the only conflict was this file.
+
 ## 2026-07-19 — universal installer (inject skills into any agent CLI)  _(PR pending)_
 ### Added
 - **`scripts/export_skills.py`** — converts every skill's `SKILL.md` into each
@@ -64,6 +108,39 @@
   CI-ready — add the workflow via the GitHub web UI or a workflow-scoped token.
 - Built in an isolated worktree off `main` to avoid the in-flight directory-site
   branch; does not touch `site/`.
+## 2026-07-18 — directory website, live on GitHub Pages  _(PR pending)_
+### Added
+- **`site/`** — a full directory/marketplace website for the catalog (modeled on
+  mcpmarket.com): Next.js App Router + TypeScript + Tailwind v4, statically
+  exported and **live at
+  [arnav1771.github.io/Skills-Directory](https://arnav1771.github.io/Skills-Directory/)**.
+  - Build-time pipeline (`site/scripts/build-content.mjs`) walks every skill
+    folder, parses `manifest.yaml` + `SKILL.md` (frontmatter stripped, body
+    rendered to HTML), augments with git last-commit dates and GitHub repo
+    stats, and emits `site/content/skills.json` — the single data source the UI
+    consumes (swappable for a DB later without touching components).
+  - Routes: `/` (hero, featured/top/latest rows, category chips, FAQ),
+    `/skills` (+ `/skills/[slug]` detail with rendered SKILL.md, install
+    copy-button, composes-well cross-links), `/categories` (+ per-category),
+    `/leaderboard` (composite score: inbound/outbound composesWell, semver
+    maturity, toolkit completeness), `/search` (Fuse.js fuzzy), `/submit`,
+    `/what-is-an-agent-skill`, `sitemap.xml`.
+  - Client-side fuzzy search + combinable category/tag filters reflected in the
+    URL; dark/light theme persisted to localStorage; per-page SEO metadata.
+  - Deployed as a static export (`output: "export"`, basePath
+    `/Skills-Directory`, `.nojekyll`) pushed to the **`gh-pages`** branch via
+    `site/scripts/deploy-ghpages.sh` (no Actions — the local `gh` token lacks
+    `workflow` scope); Pages serves from that branch.
+  - HTTP-layer smoke tests (`site/scripts/smoke-test*.sh`): 15/15 routes 200,
+    basePath-prefixed assets resolve, SKILL.md bodies render, sitemap lists 19
+    URLs.
+- `IMP Docs/USE_CASES.md` — roadmap of candidate use cases for the directory.
+- `IMP Docs/PROMPT_TRAIL.md` — per-prompt work log (mod-pipeline convention).
+### Changed
+- README: added the live-site link at the top.
+### Notes
+- `/daily` (trending) deliberately omitted — no install/view analytics exist
+  yet, and the spec says don't fake counters.
 
 ## 2026-07-11 — catalog metadata layer  _(PR pending)_
 ### Added
