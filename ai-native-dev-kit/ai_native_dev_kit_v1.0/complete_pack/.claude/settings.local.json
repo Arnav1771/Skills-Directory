@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(ls \"D:\\\\OneDrive - Aligned Automation Services Private Limited\\\\Desktop\\\\Tax Filing System\\\\screenshots\\\\\")",
+      "PowerShell(ls \"D:\\\\OneDrive - Aligned Automation Services Private Limited\\\\Desktop\\\\updated readmes\\\\run3\\\\prompts\\\\\")",
+      "PowerShell(ls \"D:\\\\OneDrive - Aligned Automation Services Private Limited\\\\Desktop\\\\updated readmes\\\\run3\\\\.claude\\\\\")"
+    ]
+  }
+}

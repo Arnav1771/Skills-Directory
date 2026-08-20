@@ -1,0 +1,23 @@
+{
+  "_comment": "artifacts/ai-manifest.json (sample). Produced by DevCopilot/NexusDeploy. Records which artifacts exist for a task. Optional input — unlocks the 'generated?' signal.",
+  "artifacts": [
+    {
+      "task_id": "TSK-006",
+      "files": ["src/ingest/poller.py"],
+      "generated_by": "Builder-1",
+      "generated_at": "2026-07-02T10:15:00Z"
+    },
+    {
+      "task_id": "TSK-007",
+      "files": ["src/ingest/classifier.py"],
+      "generated_by": "Builder-2",
+      "generated_at": "2026-07-02T11:40:00Z"
+    },
+    {
+      "task_id": "TSK-020",
+      "files": ["src/extract/engine.py"],
+      "generated_by": "Builder-1",
+      "generated_at": "2026-07-08T09:05:00Z"
+    }
+  ]
+}

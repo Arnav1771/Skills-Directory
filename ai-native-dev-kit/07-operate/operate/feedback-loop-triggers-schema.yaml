@@ -1,0 +1,99 @@
+# operate/feedback-loop-triggers.yaml — Schema Reference
+# AAxon Operate Phase v2.1.0
+#
+# This file is the single output that all 7 Operate skills contribute to.
+# It is read at the start of every Monday planning session.
+# Each skill owns exactly one top-level key.
+# Skills append to their key on each cycle; only the latest entry is kept.
+#
+# LOCATION: operate/feedback-loop-triggers.yaml
+# WRITTEN BY: All Operate skills
+# READ BY: Conductor (next sprint planning), POD Lead (Monday review)
+
+# ── Schema ────────────────────────────────────────────────────────────────────
+
+runtime_iq:
+  generated_at: "ISO-8601"                 # When this entry was written
+  summary: "string"                        # One-line status summary
+  triggers:
+    - feature_id: "string"
+      metric: "string"
+      current_value: 0.0
+      threshold: 0.0
+      breach_delta: 0.0
+      severity: "info | warning | critical"
+  severity: "info | warning | critical"   # Highest severity in triggers
+
+drift_guard:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - feature_id: "string"
+      dimension: "semantic | format | latency | accuracy | tone"
+      drift_score: 0.0                     # 0.0–1.0
+      baseline_score: 0.0
+      delta: 0.0
+      direction: "regression | improvement"
+      severity: "info | warning | critical"
+  severity: "info | warning | critical"
+
+control_plane:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - agent_id: "string"
+      month_to_date_spend: 0.0
+      ceiling: 0.0
+      utilisation_pct: 0.0
+      projected_overrun_date: "ISO-8601 | null"
+      severity: "info | warning | critical"
+  severity: "info | warning | critical"
+
+runbook_synth:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - runbook_id: "string"
+      feature_id: "string"
+      version: "string"
+      sections_generated: []
+      known_issues_count: 0
+  severity: "info"                          # RunbookSynth is always info
+
+incident_lens:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - cluster_id: "string"
+      classification: "one-off | pattern | systemic"
+      affected_features: []
+      root_cause_type: "spec_gap | missing_test | infrastructure_limit | dependency_failure"
+      recurrence_count: 0
+      recommended_action: "string"
+      severity: "info | warning | critical"
+  severity: "info | warning | critical"
+
+value_tracker:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - feature_id: "string"
+      metric: "string"
+      forecasted_delta: 0.0
+      actual_delta: 0.0
+      variance_pct: 0.0
+      classification: "over-performing | on-track | under-performing"
+      severity: "info | warning | critical"
+  severity: "info | warning | critical"
+
+experiment_ops:
+  generated_at: "ISO-8601"
+  summary: "string"
+  triggers:
+    - experiment_id: "string"
+      status: "running | complete | auto-stopped | guardrail-breached"
+      primary_metric_delta: 0.0
+      winning_variant: "string | null"
+      significance_reached: false
+      recommendation: "string"
+  severity: "info | warning | critical"

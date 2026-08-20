@@ -1,0 +1,19 @@
+# artifacts/review-verdict.yaml (sample)
+# Produced by ReviewPilot. Records the review pass/fail per requirement/task.
+# Optional input — without it, generated tasks are capped at amber (can't confirm green).
+
+verdicts:
+  - task_id: TSK-006
+    verdict: pass
+    reviewer: ReviewPilot
+    reviewed_at: "2026-07-02T14:00:00Z"
+
+  - task_id: TSK-007
+    verdict: pass
+    reviewer: ReviewPilot
+    reviewed_at: "2026-07-02T15:10:00Z"
+
+  - task_id: TSK-020
+    verdict: pending
+    reviewer: ReviewPilot
+    note: "Awaiting re-check after field-mapper edge case fix."

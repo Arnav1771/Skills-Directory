@@ -30,7 +30,21 @@ Browse by category. `SKILL.md` is the brain; `manifest.yaml` is the catalog card
 |-------|--------------|------|-----|
 | **[supply-chain-prober](./supply-chain-prober/SKILL.md)** | Conducts conversational supply chain interviews with non-tech users, collects structured data, and routes it to SMEs for validation before handing off to the tech team for agent building. | `interview` `supply-chain` `data-intake` | 1.0.0 |
 
-> **Composes well:** `mod` ↔ `grimoire` ↔ `claude-assassin` — generate an app, ship/QA it, and keep long sessions alive through limits.
+### 🚀 AI Native Dev Kit v1.0 (Full Agent SDLC Lifecycle)
+
+| Module / Skill | Phase & Function | Description |
+|----------------|------------------|-------------|
+| **[01-init](./ai-native-dev-kit/01-init/)** | Phase 1: Initialization | Project initialization, environment setup & initial AI harness creation. |
+| **[02-knowledge-capture](./ai-native-dev-kit/02-knowledge-capture/)** | Phase 2: Discovery | Codebase mapping, architectural discovery & context graph extraction. |
+| **[03-planning](./ai-native-dev-kit/03-planning/)** | Phase 3: Spec & Plan | Multi-phase milestone planning, technical specs & prompt trail creation. |
+| **[04-build](./ai-native-dev-kit/04-build/)** | Phase 4: Autonomous Build | Autonomous coding loops, refactoring & feature implementation. |
+| **[05-validate](./ai-native-dev-kit/05-validate/)** | Phase 5: Validation | Canary-driven test suite, eval harness, red teaming & policy enforcement. |
+| **[06-release](./ai-native-dev-kit/06-release/)** | Phase 6: Release Eng | Package creation, release harness, artifact building & PR generation. |
+| **[07-operate](./ai-native-dev-kit/07-operate/)** | Phase 7: Operation | Runtime telemetry, live diagnostics, monitoring & operation. |
+| **[09-optimization](./ai-native-dev-kit/09-optimization/)** | Phase 9: Optimization | 14 optimization engines (BudgetGovernor, ContextProfiler, SemanticCache, etc.). |
+| **[skill-orchestrator](./ai-native-dev-kit/skill-orchestrator/)** | Orchestrator Engine | Dynamic skill loading, orchestration engine & CLI execution kit. |
+
+> **Composes well:** `mod` ↔ `grimoire` ↔ `ai-native-dev-kit` — generate an app, run the full 9-phase AI SDLC harness, ship/QA it, and keep long sessions alive through limits.
 >
 > Repo docs live in [`IMP Docs/`](./IMP%20Docs/) — [HANDOFF](./IMP%20Docs/HANDOFF.md) · [TECHSPEC](./IMP%20Docs/TECHSPEC.md) · [Update log](./IMP%20Docs/Update.md).
 

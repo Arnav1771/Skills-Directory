@@ -1,0 +1,81 @@
+# AAxon Release Phase — Deploy Manifest
+# Locked by: POD Lead
+# Sprint: {sprint_id}
+# Lock date: {date}
+# Status: DRAFT | LOCKED
+#
+# Instructions:
+#   1. Fill in all fields before Friday Gate 3 review.
+#   2. Once POD Lead signs off, status → LOCKED. No modifications permitted after lock.
+#   3. If this file is absent, ReleaseIntel and RolloutAdvisor will infer scope
+#      from sprint-board.md + task-breakdown.yaml and declare the inference in their reports.
+#
+# IMPORTANT: Locking this file is optional but strongly recommended for HIGH/CRITICAL
+# blast-radius releases. It eliminates the "scope inferred" P1 risk flag in ReleaseIntel.
+
+sprint_id: {sprint_id}
+locked_by: {pod_lead_name}
+locked_at: null  # ISO datetime — set when status → LOCKED
+status: DRAFT    # DRAFT | LOCKED
+
+# ── Deployment Components ───────────────────────────────────────────────────
+# List every component being deployed this sprint.
+# type: API | UI | Service | Database | Integration | Infrastructure
+
+components:
+  - name: {ComponentName}
+    type: API
+    image_tag: {repo/image:tag}
+    tasks:
+      - {T-xxx}
+      - {T-xxx}
+    spec_refs:
+      - {FR-xxx}
+    deployment_method: rolling  # rolling | blue-green | canary | feature-flag
+    feature_flag: null          # flag name if controlled by feature flag, else null
+    rollback_image_tag: {repo/image:previous-tag}
+    notes: ""
+
+# ── Database Migrations ─────────────────────────────────────────────────────
+migrations:
+  - migration_id: {nnnn}
+    description: {brief description}
+    type: additive   # additive | destructive | schema-only | data-only
+    reversible: true # true | false
+    rollback_script: {path to rollback script, e.g. scripts/rollback_migration_0045.sql}
+    estimated_duration_minutes: 5
+    tasks:
+      - {T-xxx}
+
+# ── Feature Flags ────────────────────────────────────────────────────────────
+# List all feature flags that gate functionality in this release.
+feature_flags:
+  - name: {flag_name}
+    initial_state: 0%    # 0% | 100% | {n}% for partial ramp
+    ramp_plan: "10% → 50% → 100% in 2-hour windows"
+    controls_component: {ComponentName}
+
+# ── External Service Changes ─────────────────────────────────────────────────
+# Document any changes to external service integrations in this release.
+external_service_changes:
+  - service: {ServiceName}
+    change_type: endpoint_update  # endpoint_update | sdk_upgrade | secret_rotation | new_integration
+    description: {brief description}
+    tasks:
+      - {T-xxx}
+    rollback_action: {brief description of how to revert}
+
+# ── Deployment Window ────────────────────────────────────────────────────────
+deployment_window:
+  planned_date: {YYYY-MM-DD}
+  planned_time: {HH:MM local time}
+  timezone: {e.g. America/New_York}
+  on_call_engineer: {name}
+  on_call_available_until: {HH:MM}
+
+# ── Exclusions ───────────────────────────────────────────────────────────────
+# Tasks explicitly excluded from this deployment.
+excluded_tasks:
+  - task_id: {T-xxx}
+    reason: {e.g. "Descoped to S08 — dependency on NotifStream not ready"}
+    deferred_to: {sprint_id or null}

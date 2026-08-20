@@ -1,0 +1,78 @@
+# Sample Retrieval Response — KnowledgeMesh
+# Query: Q-20250916-042 | Agent: DevCopilot | Requirement: REQ-API-003
+
+retrieval_response:
+  query_id: "Q-20250916-042"
+  requesting_agent: "DevCopilot"
+  task_id: "TASK-042"
+  requirement_id: "REQ-API-003"
+  retrieved_at: "2025-09-16T09:14:22Z"
+  total_chunks_served: 4
+  coverage_confidence: 0.91
+
+  chunks:
+    - chunk_id: "spec-REQ-API-003"
+      source: "artifacts/openspec.yaml"
+      section: "REQ-API-003"
+      relevance_score: 0.97
+      status: "CURRENT"
+      version_hash: "a3f9c1..."
+      content: |
+        id: REQ-API-003
+        feature: user_management
+        description: "POST /api/v1/users — create a new user account"
+        acceptance_criteria:
+          - "Accepts email, password, first_name, last_name"
+          - "Validates email uniqueness before insert"
+          - "Hashes password with bcrypt rounds=12 before storage"
+          - "Returns 201 with user_id on success; 409 on duplicate email"
+          - "Never returns password hash in response payload"
+        nfr:
+          latency: "p95 < 300ms"
+          rate_limit: "10 requests/minute per IP"
+
+    - chunk_id: "api-POST-users"
+      source: "specs/api.md"
+      section: "POST /api/v1/users"
+      relevance_score: 0.94
+      status: "CURRENT"
+      version_hash: "b7d2e4..."
+      content: |
+        POST /api/v1/users
+        Request body: { email: string, password: string, first_name: string, last_name: string }
+        Response 201: { user_id: uuid, email: string, created_at: datetime }
+        Response 409: { error: "EMAIL_ALREADY_EXISTS" }
+        Response 422: { error: "VALIDATION_ERROR", fields: [...] }
+
+    - chunk_id: "db-users"
+      source: "specs/database.md"
+      section: "users table"
+      relevance_score: 0.89
+      status: "CURRENT"
+      version_hash: "c1a5f8..."
+      content: |
+        Table: users
+        Columns:
+          id: UUID PRIMARY KEY DEFAULT gen_random_uuid()
+          email: VARCHAR(255) UNIQUE NOT NULL
+          password_hash: VARCHAR(255) NOT NULL
+          first_name: VARCHAR(100) NOT NULL
+          last_name: VARCHAR(100) NOT NULL
+          created_at: TIMESTAMPTZ DEFAULT NOW()
+          updated_at: TIMESTAMPTZ DEFAULT NOW()
+        Indexes: UNIQUE(email)
+
+    - chunk_id: "know-auth"
+      source: "specs/knowledge.md"
+      section: "Authentication Domain"
+      relevance_score: 0.82
+      status: "CURRENT"
+      version_hash: "d4e7a2..."
+      content: |
+        Password hashing convention: bcrypt, cost factor 12, via passlib[bcrypt].
+        Email validation: pydantic EmailStr + DNS MX check for registration flows.
+        Rate limiting: slowapi middleware, applied at router level.
+        Existing pattern: see UserService in knowledge.md for create_user() reference.
+
+  stale_alerts: []
+  low_confidence_areas: []

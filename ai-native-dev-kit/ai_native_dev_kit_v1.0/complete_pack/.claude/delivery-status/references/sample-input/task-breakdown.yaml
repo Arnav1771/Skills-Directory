@@ -1,0 +1,38 @@
+# artifacts/task-breakdown.yaml (sample)
+# Produced by SpecFlow. Adds builder assignment, effort, and cluster mapping on top
+# of the raw task inventory in tasks.md. Optional input — unlocks builder/effort columns.
+
+clusters:
+  - id: CLU-001
+    epic: EP-1
+    story: ST-1
+    tasks: [TSK-006, TSK-007]
+    builder: Builder-1
+    effort_hours: { TSK-006: 8, TSK-007: 10 }
+    wave: 0
+
+  - id: CLU-002
+    epic: EP-1
+    story: ST-2
+    tasks: [TSK-020]
+    builder: Builder-1
+    effort_hours: { TSK-020: 12 }
+    wave: 1
+    depends_on: [CLU-001]
+
+  - id: CLU-003
+    epic: EP-1
+    story: ST-2
+    tasks: [TSK-041]
+    builder: Builder-2
+    effort_hours: { TSK-041: 8 }
+    wave: 1
+    depends_on: [CLU-001]
+
+  - id: CLU-004
+    epic: EP-2
+    story: ST-3
+    tasks: [TSK-033]
+    builder: Builder-2
+    effort_hours: { TSK-033: 10 }
+    wave: 0
