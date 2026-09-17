@@ -1,0 +1,195 @@
+# Source: 03-platform-enablement.md  |  Prompt 14  |  Skill: policy-enforcer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `policy-enforcer` skill.
+
+### Inputs
+- Skill definition: `.claude/PolicyEnforcer/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/policy-catalogue.yaml`
+  - All source code in `src/`
+  - Configuration files
+  - Runtime request/response logs in `artifacts/runtime-logs/`
+- Additional inputs (if available):
+  - `artifacts/deploy-manifest.yaml`
+  - `artifacts/trustfabric-classification.yaml`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Run both scan modes:
+- Mode 1: Static Scan
+- Mode 2: Runtime Scan
+
+Execute the following steps in order:
+- Step P1: Load and Validate Policy Catalogue
+- Step P2: Static Source Code Scan
+- Step P3: Runtime Behaviour Scan
+- Step P4: Classify and Deduplicate Violations
+- Step P5: Generate Policy Scan Report
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Policy catalogue validity.
+- Runtime log availability.
+- TrustFabric classification availability.
+- Static scan scope.
+- Runtime scan scope.
+
+### Step P1 — Load and Validate Policy Catalogue
+Read `artifacts/policy-catalogue.yaml`.
+
+Validate that:
+- The catalogue exists.
+- All policies contain required fields.
+- Severity values are valid:
+  - `critical`
+  - `high`
+  - `medium`
+  - `informational`
+- Scan types are valid:
+  - `static`
+  - `runtime`
+  - `both`
+- Only policies with `enforced: true` are applied.
+
+If the catalogue is missing or malformed:
+- Halt execution.
+- Prompt exactly as defined in the skill.
+- Do not continue until a valid catalogue is available.
+
+### Step P2 — Static Source Code Scan
+Scan all source code and configuration files.
+
+Apply all policies marked as:
+- `static`
+- `both`
+
+Perform scans for:
+- PII in log statements.
+- Hardcoded secrets and credentials.
+- Injection vulnerabilities.
+- Insecure dependencies.
+- Missing input validation patterns.
+- Insecure cryptography usage.
+
+For every finding, capture:
+- Policy ID.
+- Severity.
+- File path.
+- Line number where applicable.
+- Matched content (redacted when required).
+- Applicable regulation or category.
+- Recommended remediation.
+
+### Step P3 — Runtime Behaviour Scan
+If runtime logs are available in `artifacts/runtime-logs/`, execute runtime scanning.
+
+Apply all policies marked as:
+- `runtime`
+- `both`
+
+Inspect runtime behaviour for:
+- PII appearing in API responses outside approved specifications.
+- Sensitive information appearing in URLs or query parameters.
+- Authentication gaps or bypass patterns.
+- Missing authentication headers on secured endpoints.
+- Rate-limiting gaps.
+- Error message leakage.
+- Stack traces or internal implementation details exposed externally.
+- Sensitive data transmitted contrary to policy requirements.
+
+If runtime logs are unavailable:
+- Explicitly document that runtime validation could not be performed.
+- Continue execution using the available evidence.
+
+### Step P4 — Classify and Deduplicate Violations
+Classify every finding using the severity defined by the policy catalogue.
+
+Apply the following severity categories:
+- `CRITICAL`
+- `HIGH`
+- `MEDIUM`
+- `INFORMATIONAL`
+
+Deduplicate repeated violations originating from shared implementations.
+
+For each consolidated finding:
+- List all affected locations.
+- Map remediation guidance from the originating policy.
+- Identify the associated policy category.
+
+Apply Release Gate rules exactly as defined:
+
+- Release PASSES only when:
+  - Critical violations = 0
+  - High violations = 0
+
+- Release is BLOCKED when:
+  - Critical violations > 0, or
+  - High violations > 0
+
+Document medium and informational findings for backlog visibility.
+
+Apply all HITL gates defined in the skill, including:
+- Missing policy catalogue escalation.
+- Immediate POD Lead notification for CRITICAL findings.
+- POD Lead notification for HIGH findings.
+- Identification of new policy types not represented in the catalogue.
+- Documentation of MEDIUM findings without blocking.
+
+### Step P5 — Generate Policy Scan Report
+Compile the complete scan results.
+
+Summarise:
+- Total findings.
+- Findings by severity.
+- Findings by category.
+- Static versus runtime findings.
+- Release gate outcome.
+
+### Outputs
+Generate:
+- `artifacts/policy-scan-report.md`
+- `artifacts/policy-scan-results.json`
+- `artifacts/compliance-attestation.md`
+
+Ensure `artifacts/policy-scan-report.md` contains:
+- Scan metadata.
+- Policy catalogue validation status.
+- Static scan findings.
+- Runtime scan findings.
+- Deduplicated violation inventory.
+- Severity breakdown.
+- Remediation guidance.
+- Release gate recommendation.
+
+Ensure `artifacts/policy-scan-results.json` contains:
+- Structured violation records.
+- Policy identifiers.
+- Categories.
+- Severities.
+- Locations.
+- Remediation guidance.
+- Runtime evidence where applicable.
+
+Ensure `artifacts/compliance-attestation.md` contains:
+- Sprint identifier.
+- Critical violation count.
+- High violation count.
+- Medium violation count.
+- Informational finding count.
+- Release gate verdict.
+- POD Lead action requirements.
+- Compliance attestation statement.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

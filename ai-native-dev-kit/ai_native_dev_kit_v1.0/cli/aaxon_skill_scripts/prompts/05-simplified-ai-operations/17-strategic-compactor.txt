@@ -1,0 +1,201 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 17  |  Skill: strategic-compactor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `strategic-compactor` skill.
+
+### Inputs
+- Skill definition: `StrategicCompactor/SKILL.md` :contentReference[oaicite:0]{index=0}
+- Authoritative inputs:
+  - `input/full-session.md`
+  - `input/keep-anchors.json`
+  - `input/context-profiler-alert.json`
+
+### Execution
+Compact stale session history into a structured digest that preserves all actionable state while aggressively reclaiming context tokens. This is a lossy operation, but no actionable information may be lost.
+
+### Processing Steps
+
+#### Step 1 — Validate Inputs
+Load and review all inputs before classification.
+
+Read:
+
+- `full-session.md`
+- `keep-anchors.json`
+- `context-profiler-alert.json`
+
+Extract:
+
+- Anchor values requiring verbatim preservation
+- Alert level and utilization percentage
+- Complete session history
+
+Do not classify turns until the entire session has been reviewed.
+
+#### Step 2 — Determine Compaction Aggression
+Use the ContextProfiler alert to calibrate reduction targets.
+
+| Alert Level | Reduction Target |
+|---|---:|
+| `warn` | 50–60% |
+| `critical` | 65–75% |
+
+Record:
+
+```text
+alert_level
+utilization_percentage
+target_reduction
+```
+
+#### Step 3 — Classify Every Turn
+Assign each turn exactly one classification:
+
+- `ANCHOR`
+  - Contains values from `keep-anchors.json`
+  - Final decisions still in force
+  - Live error codes or API responses
+  - Constraints or SLA boundaries
+  - Latest unsuperseded status
+
+- `LIVE`
+  - Informs the current approach
+  - Marks pivots between approaches
+  - Contains unresolved customer information
+  - Contributes to the active resolution path
+
+- `STALE`
+  - Abandoned explorations
+  - Superseded attempts
+  - Completed intermediate steps
+  - Filler with minor informational value
+
+- `DISCARD`
+  - Pure acknowledgements
+  - Duplicate content
+  - Retry noise
+  - Status chatter without current relevance
+
+#### Step 4 — Preserve Anchors Verbatim
+Every value from `keep-anchors.json` must appear unchanged.
+
+Preserve exactly:
+
+- Customer IDs
+- Ticket IDs
+- Transaction IDs
+- Error codes
+- Monetary amounts
+- Current status
+- Open decisions
+- Constraints
+- Customer-stated unresolved facts
+
+No paraphrasing, rounding, or abbreviation is allowed.
+
+#### Step 5 — Build the Structured Digest
+Generate `compacted-context.md` using exactly these sections:
+
+```markdown
+# Compacted Session Context
+
+## Task State
+
+## Decisions Made
+
+## Open Threads
+
+## Key IDs & References
+
+## Constraints
+
+## Discarded Material
+```
+
+Requirements:
+
+- Task State reflects the latest confirmed status.
+- Include only active decisions.
+- Include all unresolved blockers.
+- Preserve all IDs and amounts verbatim.
+- Summarize discarded exploration using counts rather than detail.
+
+#### Step 6 — Collapse Noise
+Apply compaction rules:
+
+- Collapse exploration loops into counts.
+- Remove intermediate tool-call chatter.
+- Preserve final outcomes.
+- Preserve customer-stated unresolved facts.
+- Summarize escalation loops if applicable.
+- Never discard the latest status.
+
+#### Step 7 — Generate Anchor Manifest
+Produce:
+
+```text
+retained-anchor-manifest.json
+```
+
+For each retained item include:
+
+- Item description
+- Retention reason
+- Original token estimate
+- Retained format:
+  - verbatim
+  - summarized
+  - counted-only
+- Source turns
+- Destination section
+
+Ensure every retained element in the digest has a corresponding manifest entry.
+
+#### Step 8 — Generate Token Metrics
+Produce:
+
+```text
+token-delta.json
+```
+
+Include:
+
+- Pre-compaction tokens
+- Post-compaction tokens
+- Tokens saved
+- Reduction percentage
+- Compaction quality
+- Anchors preserved
+- Turns summarized
+- Turns discarded
+- Alert level
+- Utilization at trigger
+- Estimated new utilization
+- Compaction timestamp
+
+Assess quality honestly:
+
+| Quality | Criteria |
+|---|---|
+| `high` | All anchors preserved and ≥40% reduction |
+| `medium` | All anchors preserved and ≥30% reduction |
+| `low` | Anchor loss or insufficient reduction |
+
+### Outputs
+
+Generate:
+
+- `compacted-context.md`
+- `retained-anchor-manifest.json`
+- `token-delta.json`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

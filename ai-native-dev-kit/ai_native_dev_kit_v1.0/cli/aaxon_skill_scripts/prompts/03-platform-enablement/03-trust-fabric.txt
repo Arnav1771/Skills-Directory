@@ -1,0 +1,60 @@
+# Source: 03-platform-enablement.md  |  Prompt 3  |  Skill: trust-fabric
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `trust-fabric` skill.
+
+### Inputs
+- Skill definition: `.claude/TrustFabric/SKILL.md`
+- Authoritative inputs:
+  - `specs/database.md`
+  - `specs/api.md`
+  - `artifacts/openspec.yaml`
+  - `artifacts/policy-catalogue.yaml`
+  - All files in `data-contracts/`
+- Additional inputs (if available):
+  - `artifacts/task-breakdown.yaml`
+  - Generated code modules submitted by DevCopilot
+- Reference files:
+  - `references/data-contract-schema.md`
+  - `references/pii-taxonomy.md`
+  - `references/pii-handling-rules.md`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Load Data Contract Registry
+- Step 2: Profile Data Sources Used in Sprint
+- Step 3: Validate Generated Code
+- Step 4: Generate Compliance Report
+- Step 5: Flag Unclassified Fields
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+### Key Validations
+- Load and validate all data contracts from `data-contracts/`.
+- Identify all data entities accessed within sprint scope.
+- Treat entities without registered contracts as build blockers.
+- Validate generated modules against the registered contracts and PII handling requirements.
+- Apply all blocking rules, escalation rules, and compliance checks defined in the skill.
+- Escalate all unclassified entities and fields to the POD Lead.
+- Do not infer final classifications where contract definitions are missing.
+
+### Outputs
+Generate or update:
+- `data-contract-compliance-report.md`
+- `data-contract-violations.yaml`
+- `unclassified-fields-report.md`
+
+If invoked during Release, generate the TrustFabric governance attestation as defined in the skill.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,197 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 13  |  Skill: regex-llm-router
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `regex-llm-router` skill.
+
+### Inputs
+- Skill definition: `RegexLLMRouter/SKILL.md`
+- Authoritative inputs:
+  - `input/parsing-tasks.json`
+  - `input/regex-patterns.json`
+  - `input/routing-config.json`
+
+### Execution
+- Evaluate each parsing task to determine whether it should use deterministic parsing, a hybrid approach, or a full LLM solution.
+- Follow the scoring rubric exactly.
+- Do not assume missing task characteristics. If required information is unavailable, pause and request clarification before continuing.
+
+### Processing Steps
+
+#### Step 1 — Load Parsing Tasks
+For each task in `parsing-tasks.json`, extract:
+- `task_id`
+- Task description
+- Input examples or sample payloads
+- Expected output fields
+- Existing parsing approach (if any)
+- Daily processing volume
+
+Load:
+- Existing regex library from `regex-patterns.json`
+- Scoring thresholds and configuration from `routing-config.json`
+
+#### Step 2 — Score the Five Dimensions
+Assign integer scores from 1–5 for:
+
+| Dimension | Description |
+|---|---|
+| Schema Consistency | Stability of input structure |
+| Delimiter Reliability | Predictability of separators or anchors |
+| Ambiguity Level | Need for semantic understanding |
+| Error Tolerance | Impact of incorrect extraction |
+| Volume | Expected daily execution frequency |
+
+Document the rationale for every score.
+
+Calculate:
+
+```text
+total_score =
+schema_consistency
++ delimiter_reliability
++ ambiguity_level
++ error_tolerance
++ volume
+```
+
+#### Step 3 — Determine Routing Strategy
+Apply routing thresholds:
+
+```text
+20–25 → regex
+13–19 → hybrid
+0–12  → llm
+```
+
+Record:
+- Total score
+- Selected route
+- Routing justification
+- Estimated economic impact
+
+#### Step 4 — Regex Generation
+For tasks routed to `regex`:
+
+Generate starter patterns that:
+
+- Compile successfully using Python `re`
+- Use named capture groups where multiple fields exist
+- Use non-capturing groups where extraction is unnecessary
+- Include normalization guidance when required
+
+For each generated pattern include:
+
+- Pattern
+- Flags
+- At least 3 positive test cases
+- At least 2 negative test cases
+- Known limitations
+
+Update `regex-patterns.json` accordingly.
+
+#### Step 5 — Hybrid Strategy Definition
+For tasks routed to `hybrid`:
+
+Define:
+
+1. Regex-first execution.
+2. Lightweight validation checks:
+   - Length checks
+   - Character class checks
+   - Checksum or format validation where applicable.
+3. LLM fallback conditions.
+4. Fallthrough logging requirements.
+5. Promotion and demotion rules:
+
+```text
+Fallthrough < 10% → consider promotion to regex
+Fallthrough > 60% → consider demotion to llm
+```
+
+#### Step 6 — LLM Routing
+For tasks routed to `llm`:
+
+Document why deterministic parsing is unsuitable, including:
+- Sources of ambiguity
+- Context requirements
+- Risks of brittle parsing
+
+Recommend periodic reassessment triggers.
+
+### Outputs
+
+Generate:
+
+- `routing-decisions.json`
+- `regex-patterns.json`
+- `hybrid-strategy.json`
+
+### Output Requirements
+
+#### routing-decisions.json
+Include for each task:
+
+```json
+{
+  "task_id": "",
+  "dimension_scores": {
+    "schema_consistency": 0,
+    "delimiter_reliability": 0,
+    "ambiguity_level": 0,
+    "error_tolerance": 0,
+    "volume": 0
+  },
+  "total_score": 0,
+  "route": "regex|hybrid|llm",
+  "justification": "",
+  "economic_impact": ""
+}
+```
+
+Include summary metrics:
+- Total tasks evaluated
+- Regex decisions
+- Hybrid decisions
+- LLM decisions
+- Estimated LLM spend avoided
+
+#### regex-patterns.json
+For every regex-routed task include:
+
+```json
+{
+  "task_id": "",
+  "pattern": "",
+  "flags": [],
+  "positive_tests": [],
+  "negative_tests": [],
+  "known_limitations": [],
+  "normalization_function": null
+}
+```
+
+#### hybrid-strategy.json
+For every hybrid task include:
+
+```json
+{
+  "task_id": "",
+  "regex_strategy": "",
+  "validation_rules": [],
+  "llm_fallback_conditions": [],
+  "fallthrough_logging": "",
+  "promotion_rule": "",
+  "demotion_rule": ""
+}
+```
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

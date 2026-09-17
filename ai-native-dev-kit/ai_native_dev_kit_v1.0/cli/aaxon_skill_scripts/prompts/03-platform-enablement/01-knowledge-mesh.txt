@@ -1,0 +1,245 @@
+# Source: 03-platform-enablement.md  |  Prompt 1  |  Skill: knowledge-mesh
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `knowledge-mesh` skill.
+
+### Inputs
+- Skill definition: `.claude/KnowledgeMesh/SKILL.md`
+- Authoritative inputs:
+  - `specs/knowledge.md`
+  - `specs/design.md`
+  - `specs/api.md`
+  - `specs/database.md`
+  - `specs/features.md`
+  - `specs/impl.md`
+  - `artifacts/openspec.yaml`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/decision-ledger.md`
+- Additional inputs (if available):
+  - `artifacts/ai-manifest.json`
+- Reference files:
+  - `references/chunking-strategy.md`
+  - `references/relevance-scoring.md`
+  - `sample_input/sample-knowledge-query.yaml`
+  - `sample_output/sample-retrieval-response.yaml`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Index Construction
+
+Do not execute:
+- Step 2: Query Handling
+- Step 3: Invalidation Management
+- Step 4: Coverage Assessment
+
+Only execute these phases if they are explicitly triggered later in the sprint.
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Sprint identifier
+- Source artifact versions used
+- Whether a prior `artifacts/ai-manifest.json` was available
+- Any assumptions required to complete indexing
+
+### Step 1 — Index Construction
+
+Validate the existence of all REQUIRED artifacts.
+
+Verify the existence of:
+- `specs/knowledge.md`
+- `specs/design.md`
+- `specs/api.md`
+- `specs/database.md`
+- `specs/features.md`
+- `specs/impl.md`
+- `artifacts/openspec.yaml`
+- `artifacts/task-breakdown.yaml`
+- `artifacts/decision-ledger.md`
+
+If any REQUIRED artifacts are missing:
+- List every missing artifact.
+- Halt execution.
+- Do not proceed with index generation.
+
+If `artifacts/ai-manifest.json` is unavailable:
+- Continue execution.
+- Explicitly document that no prior generated artifact inventory was available.
+- Exclude manifest-derived entries from the index summary.
+
+Parse all available input files.
+
+### Chunking
+
+Chunk all indexed artifacts according to the strategy defined in the skill and supporting references.
+
+Target chunk size:
+- Approximately 300–500 tokens per chunk.
+
+Apply the following chunking rules:
+
+- `artifacts/openspec.yaml`
+  - One chunk per requirement block.
+
+- `specs/api.md`
+  - One chunk per endpoint definition.
+
+- `specs/database.md`
+  - One chunk per table or entity definition.
+
+- `specs/design.md`
+  - One chunk per architectural layer or major section.
+
+- `specs/knowledge.md`
+  - One chunk per system domain or major knowledge section.
+
+- `artifacts/decision-ledger.md`
+  - One chunk per ADR or decision entry.
+
+- `specs/features.md`
+  - One chunk per feature group, epic, or capability grouping.
+
+- `specs/impl.md`
+  - One chunk per implementation area or major implementation concern.
+
+- `artifacts/task-breakdown.yaml`
+  - One chunk per cluster or logical task grouping.
+
+- `artifacts/ai-manifest.json` (if available)
+  - One chunk per generated artifact entry.
+
+### Metadata Tagging
+
+For every generated chunk, assign metadata containing:
+- `chunk_id`
+- `source_file`
+- `section_heading`
+- `requirement_ids`
+- `sprint_id`
+- `version_hash`
+- `status`
+- `chunk_type`
+
+Populate metadata using the following rules:
+
+- `requirement_ids`
+  - Extract associated REQ identifiers where available.
+  - Use an empty array if none exist.
+
+- `status`
+  - Default to `CURRENT`.
+
+- `chunk_type`
+  - Classify as appropriate:
+    - `requirement`
+    - `endpoint`
+    - `entity`
+    - `architecture`
+    - `knowledge`
+    - `decision`
+    - `feature`
+    - `implementation`
+    - `task_cluster`
+    - `generated_artifact`
+
+Generate a flat index using the structure:
+
+chunk_id → {
+  content,
+  metadata
+}
+
+### Index Validation
+
+Calculate and document:
+- Total chunk count
+- Chunk count by source file
+- Chunk count by chunk type
+- Requirement coverage statistics
+- Number of requirements with indexed context
+- Number of chunks without requirement associations
+- Number of chunks originating from prior generated artifacts
+- Version hashes used during index generation
+
+Identify and flag:
+- Duplicate chunk identifiers
+- Missing requirement mappings
+- Empty sections that could not be indexed
+- Documents that produced zero chunks
+
+### Output Generation
+
+Generate `knowledge-mesh-index.md`.
+
+Ensure it contains:
+- Sprint identifier
+- Generation timestamp
+- Index generation assumptions
+- Input artifact inventory
+- Chunk inventory summary
+- Source distribution summary
+- Chunk type distribution
+- Requirement coverage map
+- Version hash summary
+- Chunk metadata catalogue
+- Missing or low-context observations
+- Index generation notes
+
+Generate a Requirement Coverage section containing:
+- Requirement ID
+- Number of associated chunks
+- Source files contributing context
+- Coverage status
+
+Generate a Chunk Metadata Catalogue containing:
+- Chunk ID
+- Source file
+- Section heading
+- Chunk type
+- Requirement associations
+- Status
+
+### Constraints
+
+Follow all processing rules, chunking rules, limitations, and execution behaviour defined in the `KnowledgeMesh` skill.
+
+Do not:
+- Execute retrieval requests.
+- Perform relevance scoring.
+- Generate retrieval responses.
+- Process invalidation events.
+- Produce `knowledge-coverage-report.md`.
+- Produce `knowledge-mesh-invalidation.log`.
+
+These capabilities remain dormant until explicitly triggered later in the sprint.
+
+### Outputs
+Generate or update:
+- `knowledge-mesh-index.md`
+
+Ensure `knowledge-mesh-index.md` contains:
+- Sprint identifier
+- Generation timestamp
+- Input artifact inventory
+- Index assumptions
+- Chunk inventory summary
+- Source distribution
+- Chunk type distribution
+- Requirement coverage map
+- Version hash summary
+- Chunk metadata catalogue
+- Missing or low-context observations
+- Index generation notes
+
+Before generating the artifact, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

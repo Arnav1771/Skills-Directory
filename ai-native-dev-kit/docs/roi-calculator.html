@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Automation30 Agentic AI — ROI Calculator</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Calibri, 'Segoe UI', Arial, sans-serif; background: #E8EDF5; min-height: 100vh; color: #1D1D1D; }
+input, select, button { font-family: inherit; }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { opacity: 1; }
+button:focus { outline: 2px solid #29AAE1; outline-offset: 2px; }
+input:focus, select:focus { outline: 2px solid #1C76BC; outline-offset: 1px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const C = {
+  navy:"#0F1C3F", blue:"#1C76BC", sky:"#29AAE1", teal:"#24BFCC",
+  green:"#5CB85C", orange:"#FFA631", red:"#E24B4A", amber:"#EF9F27",
+  border:"#D1DFF0", card:"#F4F7FB", white:"#FFFFFF",
+  slate:"#64748B", charcoal:"#1D1D1D",
+};
+const COMPLEXITY = {
+  simple:{label:"Simple",short:"S",savings:{best:0.95,expected:0.90,worst:0.80},tokens:{min:10000,mid:22500,max:35000},color:C.green,bg:"#EAF7ED",tc:"#1A5A2E",desc:"90% savings · 10–35K tokens/run"},
+  moderate:{label:"Moderate",short:"M",savings:{best:0.75,expected:0.65,worst:0.50},tokens:{min:25000,mid:40000,max:55000},color:C.amber,bg:"#FFF8EC",tc:"#7A4A00",desc:"65% savings · 25–55K tokens/run"},
+  complex:{label:"Complex",short:"C",savings:{best:0.45,expected:0.35,worst:0.20},tokens:{min:40000,mid:60000,max:80000},color:C.orange,bg:"#FFF3E8",tc:"#7A3500",desc:"35% savings · 40–80K tokens/run"},
+};
+const TOKEN_COST = 0.003;
+const LOGO = "data:image/png;base64,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";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function uid(){ return Math.random().toString(36).slice(2); }
+function makeTask(name,cplx,hours){ return {id:uid(),name:name||"",complexity:cplx||"moderate",hours:hours||0.05}; }
+function makeProc(o){ o=o||{}; return {id:uid(),name:"",runsPerWeek:5000,fteCostPerHour:65,residualCapacity:30,taskList:[makeTask("","moderate",0.05)],...o}; }
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+// ─── Formatters ───────────────────────────────────────────────────────────────
+function fmtK(n){ if(n===undefined||n===null||isNaN(n))return"—"; if(Math.abs(n)>=1e6)return"$"+(n/1e6).toFixed(1)+"M"; if(Math.abs(n)>=1e3)return"$"+(n/1e3).toFixed(1)+"K"; return"$"+Math.round(n).toLocaleString(); }
+function fmtPct(n){ return isNaN(n)?"—":Math.round(n)+"%"; }
+function fmtNum(n){ return isNaN(n)?"—":Math.round(n).toLocaleString(); }
+
+// ─── Core computation ─────────────────────────────────────────────────────────
+function computeMetrics(proc){
+  var tasks=proc.taskList||[]; if(!tasks.length)return null;
+  var totalHours=tasks.reduce(function(s,t){return s+(Number(t.hours)||0);},0); if(!totalHours)return null;
+  var runs=(Number(proc.runsPerWeek)||1)*52;
+  var fteCost=Number(proc.fteCostPerHour)||50;
+  var laborCost=totalHours*runs*fteCost;
+  var residualPct=Math.min(Math.max(Number(proc.residualCapacity)||0,0),100);
+  var residualFactor=1-residualPct/100;
+  var scenarios={};
+  ["best","expected","worst"].forEach(function(sc){
+    var tk=sc==="best"?"min":sc==="expected"?"mid":"max";
+    var wSavings=0,tCost=0;
+    tasks.forEach(function(t){
+      var cfg=COMPLEXITY[t.complexity||"moderate"];
+      var frac=(Number(t.hours)||0)/totalHours;
+      wSavings+=frac*cfg.savings[sc];
+      tCost+=(cfg.tokens[tk]/1000)*TOKEN_COST*runs;
+    });
+    scenarios[sc]={savings:laborCost*wSavings*residualFactor,tokenCost:tCost};
+  });
+  return{totalHours:totalHours,annualRuns:runs,laborCost:laborCost,residualPct:residualPct,scenarios:scenarios};
+}
+
+function paybackStr(months){ if(!isFinite(months))return"Never"; if(months<1)return"< 1 month"; if(months<24)return Math.round(months)+" months"; return(months/12).toFixed(1)+" years"; }
+
+function dominantCplx(taskList){
+  var ct={simple:0,moderate:0,complex:0};
+  (taskList||[]).forEach(function(t){ct[t.complexity||"moderate"]++;});
+  return Object.entries(ct).sort(function(a,b){return b[1]-a[1];})[0][0];
+}
+
+function taskSummaryBadges(taskList){
+  var ct={simple:0,moderate:0,complex:0};
+  (taskList||[]).forEach(function(t){ct[t.complexity||"moderate"]++;});
+  return Object.entries(ct).filter(function(e){return e[1]>0;}).map(function(e){
+    var k=e[0],c=e[1];
+    return'<span style="background:'+COMPLEXITY[k].bg+';color:'+COMPLEXITY[k].color+';border:1px solid '+COMPLEXITY[k].color+'40;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700">'+c+' '+COMPLEXITY[k].label+'</span>';
+  }).join('');
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+var state = {
+  procs:[
+    makeProc({name:"Invoice Processing",runsPerWeek:3000,fteCostPerHour:15,residualCapacity:30,taskList:[
+      makeTask("Extract invoice data from PDF","simple",0.05),
+      makeTask("Validate line items against PO","moderate",0.05),
+      makeTask("Match GL coding & approvals","moderate",0.05),
+      makeTask("Post to ERP & notify approver","simple",0.05),
+    ]}),
+    makeProc({name:"Vendor Onboarding",runsPerWeek:1000,fteCostPerHour:30,residualCapacity:50,taskList:[
+      makeTask("Receive & log vendor onboarding request","simple",0.05),
+      makeTask("Collect & parse vendor documents","complex",0.05),
+      makeTask("Verify business registration & tax IDs","moderate",0.05),
+      makeTask("Compliance & risk screening (sanctions/AML)","complex",0.05),
+      makeTask("Validate banking & remittance details","moderate",0.05),
+      makeTask("Run credit & financial health check","moderate",0.05),
+      makeTask("Assess infosec & data security questionnaire","complex",0.05),
+      makeTask("Review & approve contractual terms","complex",0.05),
+      makeTask("Categorise vendor & assign procurement category","simple",0.05),
+      makeTask("ERP master data setup","moderate",0.05),
+      makeTask("Configure payment terms & approval workflow","moderate",0.05),
+      makeTask("Provision vendor portal access & credentials","moderate",0.05),
+      makeTask("Send welcome pack & credentials","moderate",0.05),
+      makeTask("Schedule onboarding kickoff & confirm activation","simple",0.05),
+    ]}),
+    makeProc({name:"Customer License Renewal Reminder",runsPerWeek:10000,fteCostPerHour:15,residualCapacity:5,taskList:[
+      makeTask("Identify licenses expiring in next 30/60/90 days","simple",0.05),
+      makeTask("Enrich account data with CRM & usage metrics","moderate",0.05),
+      makeTask("Generate personalised renewal email & quote","moderate",0.05),
+    ]}),
+  ],
+  devCost:300000,
+  opsCost:120000,
+  tab:"input",
+  openProcs:{},
+  sent:false,
+};
+
+// ─── Mutations ────────────────────────────────────────────────────────────────
+function setState(patch){ Object.assign(state,patch); render(); }
+function setTab(t){ state.tab=t; render(); }
+function setDevCost(v){ state.devCost=Number(v); render(); }
+function setOpsCost(v){ state.opsCost=Number(v); render(); }
+function toggleProc(id){ state.openProcs[id]=!state.openProcs[id]; render(); }
+function addProc(){ state.procs.push(makeProc()); render(); }
+function delProc(i){ state.procs.splice(i,1); render(); }
+function setProcField(i,f,v){ state.procs[i][f]=v; render(); }
+function setProcSlide(i,v){ state.procs[i].runsPerWeek=v; var el=document.querySelector('[data-rd="'+i+'"]'); if(el)el.textContent=Number(v).toLocaleString(); }
+function addTask(pi){ state.procs[pi].taskList.push(makeTask("","moderate",0.05)); render(); }
+function delTask(pi,ti){ state.procs[pi].taskList.splice(ti,1); render(); }
+function setTaskField(pi,ti,f,v){ state.procs[pi].taskList[ti][f]=v; render(); }
+function setTaskCplx(pi,ti,cplx){ state.procs[pi].taskList[ti].complexity=cplx; render(); }
+
+function handleConnect(){
+  var procs=state.procs, devCost=state.devCost, opsCost=state.opsCost;
+  var totalInv=devCost+opsCost, lines=[];
+  lines.push("Hello Aligned Automation Sales Team,","");
+  lines.push("I have been using the Automation30 ROI Calculator and would like to connect to discuss my automation roadmap.","");
+  lines.push("─────────────────────────────────────","INVESTMENT PARAMETERS","─────────────────────────────────────");
+  lines.push("Development Cost:   $"+devCost.toLocaleString(),"Annual Ops Cost:    $"+opsCost.toLocaleString(),"Total Investment:   $"+totalInv.toLocaleString(),"");
+  lines.push("─────────────────────────────────────","PROCESSES CONFIGURED ("+procs.length+")","─────────────────────────────────────");
+  procs.forEach(function(p,i){
+    var m=computeMetrics(p);
+    lines.push("","Process "+(i+1)+": "+(p.name||"(unnamed)"),"  Runs per Week:     "+Number(p.runsPerWeek).toLocaleString(),"  FTE Cost/Hour:     $"+p.fteCostPerHour,"  Residual Capacity: "+p.residualCapacity+"%");
+    if(m){lines.push("  Annual Labor Cost: $"+Math.round(m.laborCost).toLocaleString(),"  Expected Savings:  $"+Math.round(m.scenarios.expected.savings).toLocaleString());}
+    lines.push("  Tasks ("+(p.taskList||[]).length+"):");
+    (p.taskList||[]).forEach(function(t,ti){
+      var cl={simple:"Simple",moderate:"Moderate",complex:"Complex"}[t.complexity||"moderate"];
+      lines.push("    "+(ti+1)+". ["+cl+"] "+(t.name||"(unnamed task)"));
+    });
+  });
+  lines.push("","─────────────────────────────────────","Please reach out to discuss how Automation30 can help automate my processes.","","Kind regards");
+  var subject=encodeURIComponent("Automation30 ROI Calculator — Connect with Sales");
+  var body=encodeURIComponent(lines.join("\n"));
+  window.location.href="mailto:sales@alignedautomation.com?subject="+subject+"&body="+body;
+  state.sent=true; render();
+  setTimeout(function(){state.sent=false;render();},4000);
+}
+
+// ─── HTML builders ────────────────────────────────────────────────────────────
+function cplxPillsHTML(value,pi,ti){
+  return '<div style="display:flex;gap:3px">'+Object.entries(COMPLEXITY).map(function(e){
+    var k=e[0],v=e[1];
+    var active=value===k;
+    return'<button onclick="setTaskCplx('+pi+','+ti+',\''+k+'\')" style="background:'+(active?v.color:C.card)+';color:'+(active?C.white:C.slate)+';border:1.5px solid '+(active?v.color:C.border)+';border-radius:5px;padding:3px 7px;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit">'+v.short+'</button>';
+  }).join('')+'</div>';
+}
+
+function taskRowHTML(task,ti,total,pi){
+  var cfg=COMPLEXITY[task.complexity||"moderate"];
+  return'<div style="display:grid;grid-template-columns:20px 1fr auto 18px;gap:7px;align-items:center;padding:7px 9px;background:'+cfg.bg+'80;border:1px solid '+cfg.color+'30;border-radius:6px;margin-bottom:4px">'+
+    '<div style="width:18px;height:18px;border-radius:50%;background:'+cfg.color+'25;color:'+cfg.color+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">'+(ti+1)+'</div>'+
+    '<input value="'+esc(task.name)+'" data-fk="tn-'+pi+'-'+ti+'" oninput="setTaskField('+pi+','+ti+',\'name\',this.value)" placeholder="Task '+(ti+1)+'…" style="width:100%;padding:5px 8px;border:1px solid '+C.border+';border-radius:6px;font-size:12px;color:'+C.charcoal+';background:'+C.white+';outline:none;box-sizing:border-box;font-family:inherit"/>'+
+    cplxPillsHTML(task.complexity||"moderate",pi,ti)+
+    '<button onclick="delTask('+pi+','+ti+')" '+(total<=1?'disabled':'')+' style="background:none;border:none;cursor:'+(total<=1?'not-allowed':'pointer')+';color:'+(total<=1?C.border:C.red)+';font-size:14px;padding:0;line-height:1;font-family:inherit">×</button>'+
+  '</div>';
+}
+
+function procCardHTML(proc,i){
+  var open=!!state.openProcs[proc.id];
+  var metrics=computeMetrics(proc);
+  var bc=COMPLEXITY[dominantCplx(proc.taskList)].color;
+  var badges=taskSummaryBadges(proc.taskList||[]);
+  var body='';
+  if(open){
+    body='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:14px">'+
+      '<div style="grid-column:1 / -1">'+
+        '<label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">Runs / Week — <span data-rd="'+i+'" style="color:'+C.blue+';font-weight:700">'+Number(proc.runsPerWeek).toLocaleString()+'</span></label>'+
+        '<input type="range" min="1000" max="100000" step="1000" value="'+proc.runsPerWeek+'" oninput="setProcSlide('+i+',this.value)" onchange="setProcField('+i+',\'runsPerWeek\',this.value)" style="width:100%;accent-color:'+C.blue+';cursor:pointer;height:4px;margin-top:4px"/>'+
+        '<div style="display:flex;justify-content:space-between;font-size:9px;color:'+C.slate+';margin-top:2px"><span>1,000</span><span>50,000</span><span>100,000</span></div>'+
+      '</div>'+
+      '<div>'+
+        '<label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">FTE Cost / Hour ($)</label>'+
+        '<input type="number" min="1" value="'+esc(proc.fteCostPerHour)+'" data-fk="fte-'+i+'" oninput="setProcField('+i+',\'fteCostPerHour\',this.value)" style="width:100%;padding:7px 10px;border:1px solid '+C.border+';border-radius:6px;font-size:13px;color:'+C.charcoal+';background:'+C.white+';outline:none;box-sizing:border-box;font-family:inherit"/>'+
+      '</div>'+
+      '<div>'+
+        '<label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">Residual Capacity (%)</label>'+
+        '<input type="number" min="0" max="100" value="'+esc(proc.residualCapacity)+'" data-fk="res-'+i+'" oninput="setProcField('+i+',\'residualCapacity\',this.value)" style="width:100%;padding:7px 10px;border:1px solid '+C.border+';border-radius:6px;font-size:13px;color:'+C.charcoal+';background:'+C.white+';outline:none;box-sizing:border-box;font-family:inherit"/>'+
+        '<div style="font-size:9px;color:'+C.slate+';margin-top:4px;line-height:1.4">Human effort not freed by automation. Annual savings are reduced by this %.</div>'+
+      '</div>'+
+      (metrics?'<div><label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">Annual Labor</label><div style="padding:7px 10px;background:#EEF4FA;border-radius:6px;font-size:13px;font-weight:700;color:'+C.blue+';border:1px solid '+C.blue+'30">'+fmtK(metrics.laborCost)+'</div><div style="font-size:9px;color:'+C.slate+';margin-top:4px;line-height:1.4">This cost is assuming each task defined below takes &lt;3 mins to execute.</div></div>':'')+
+    '</div>'+
+    '<div style="background:'+C.card+';border-radius:8px;padding:11px 13px;border:1px solid '+C.border+'">'+
+      '<div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">'+
+        '<span style="font-size:10px;font-weight:700;color:'+C.navy+';text-transform:uppercase;letter-spacing:0.5px">Tasks ('+(proc.taskList||[]).length+')</span>'+
+        '<div style="flex:1"></div>'+badges+
+        '<button onclick="addTask('+i+')" style="background:'+C.navy+';color:'+C.white+';border:none;border-radius:5px;padding:3px 10px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit">+ Task</button>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:20px 1fr auto 18px;gap:7px;margin-bottom:3px"><div></div><div style="font-size:9px;color:'+C.slate+';font-weight:700;text-transform:uppercase">Task Name</div><div style="font-size:9px;color:'+C.slate+';font-weight:700;text-transform:uppercase">Complexity</div><div></div></div>'+
+      (proc.taskList||[]).map(function(t,ti){return taskRowHTML(t,ti,(proc.taskList||[]).length,i);}).join('')+
+    '</div>';
+  }
+  return'<div style="background:'+C.white+';border:1px solid '+C.border+';border-left:4px solid '+bc+';border-radius:10px;padding:13px 15px;margin-bottom:12px">'+
+    '<div style="display:flex;align-items:center;gap:9px;margin-bottom:'+(open?13:0)+'px">'+
+      '<div style="background:'+C.navy+';color:'+C.white+';border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>'+
+      '<input value="'+esc(proc.name)+'" data-fk="pn-'+i+'" oninput="setProcField('+i+',\'name\',this.value)" placeholder="Process name…" style="font-weight:700;font-size:14px;border:none;border-bottom:1px solid '+C.border+';border-radius:0;padding:3px 0;flex:1;outline:none;color:'+C.charcoal+';background:transparent;font-family:inherit"/>'+
+      (!open?'<div style="display:flex;gap:5px;flex-shrink:0;align-items:center">'+badges+(metrics?'<span style="font-size:11px;color:'+C.slate+'">'+metrics.totalHours.toFixed(1)+'h · '+fmtK(metrics.laborCost)+'/yr</span>':'')+'</div>':'')+
+      '<button onclick="toggleProc(\''+proc.id+'\')" style="background:'+C.card+';border:1px solid '+C.border+';border-radius:5px;padding:3px 9px;font-size:10px;color:'+C.slate+';cursor:pointer;font-family:inherit">'+(open?'▲':'▼')+'</button>'+
+      '<button onclick="delProc('+i+')" style="background:none;border:none;cursor:pointer;color:'+C.red+';font-size:16px;padding:0 2px;line-height:1;font-family:inherit">×</button>'+
+    '</div>'+body+
+  '</div>';
+}
+
+function scenCardHTML(label,savings,roi,payback,tokenCost){
+  var pal={Best:{bg:"#EAF7ED",border:C.green,text:"#1A5A2E"},Expected:{bg:"#EEF4FA",border:C.blue,text:"#0A3F6E"},Worst:{bg:"#FEF3F2",border:C.red,text:"#7A1A1A"}};
+  var p=pal[label];
+  return'<div style="background:'+p.bg+';border:1.5px solid '+p.border+';border-radius:8px;padding:12px 14px;flex:1">'+
+    '<div style="font-size:10px;font-weight:700;color:'+p.text+';text-transform:uppercase;letter-spacing:0.7px;margin-bottom:8px">'+label+' Case</div>'+
+    '<div style="margin-bottom:5px"><div style="font-size:10px;color:'+p.text+'99">Annual Savings</div><div style="font-size:18px;font-weight:700;color:'+p.text+'">'+fmtK(savings)+'</div></div>'+
+    '<div style="margin-bottom:5px"><div style="font-size:10px;color:'+p.text+'99">ROI</div><div style="font-size:16px;font-weight:700;color:'+p.text+'">'+fmtPct(roi)+'</div></div>'+
+    '<div style="margin-bottom:5px"><div style="font-size:10px;color:'+p.text+'99">Payback</div><div style="font-size:13px;font-weight:600;color:'+p.text+'">'+payback+'</div></div>'+
+    '<div><div style="font-size:10px;color:'+p.text+'99">Token Cost / yr</div><div style="font-size:12px;font-weight:500;color:'+p.text+'">'+fmtK(tokenCost)+'</div></div>'+
+  '</div>';
+}
+
+function resultsHTML(){
+  var procs=state.procs, devCost=state.devCost, opsCost=state.opsCost;
+  var n=procs.length, totalInv=devCost+opsCost;
+  var pResults=procs.map(function(p,pi){
+    var m=computeMetrics(p); if(!m)return null;
+    var scenarios={};
+    ["best","expected","worst"].forEach(function(sc){
+      var sv=m.scenarios[sc].savings, tc=m.scenarios[sc].tokenCost;
+      var net=sv-tc-(opsCost/n);
+      var roi=totalInv>0?((net-(devCost/n))/(totalInv/n)*100):0;
+      var pm=net>0?(totalInv/n)/(net/12):Infinity;
+      scenarios[sc]={savings:sv,tokenCost:tc,roi:roi,payback:paybackStr(pm)};
+    });
+    return{name:p.name||"Process "+(pi+1),totalHours:m.totalHours,annualRuns:m.annualRuns,laborCost:m.laborCost,residualPct:m.residualPct,scenarios:scenarios,taskList:p.taskList};
+  }).filter(Boolean);
+  function sum(k,f){return pResults.reduce(function(s,p){return s+p.scenarios[k][f];},0);}
+  var totSav={best:sum("best","savings"),expected:sum("expected","savings"),worst:sum("worst","savings")};
+  var totTok={best:sum("best","tokenCost"),expected:sum("expected","tokenCost"),worst:sum("worst","tokenCost")};
+  var net={best:totSav.best-totTok.best-opsCost,expected:totSav.expected-totTok.expected-opsCost,worst:totSav.worst-totTok.worst-opsCost};
+  function pROI(k){return totalInv>0?Math.round(((net[k]-devCost)/totalInv)*100):0;}
+  function pPay(k){var m=net[k]>0?totalInv/(net[k]/12):Infinity;return paybackStr(m);}
+  var totalTasks=pResults.reduce(function(s,p){return s+(p.taskList?p.taskList.length:0);},0);
+  return'<div>'+
+    '<div style="background:'+C.navy+';border-radius:10px;padding:16px 20px;margin-bottom:16px">'+
+      '<div style="font-size:10px;color:#94A3B8;margin-bottom:11px;text-transform:uppercase;letter-spacing:0.7px">Portfolio — '+procs.length+' Processes · '+totalTasks+' Tasks</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:13px">'+
+        [["Best Case",fmtK(totSav.best),"ROI "+fmtPct(pROI("best"))+" · "+pPay("best"),C.green],["Expected",fmtK(totSav.expected),"ROI "+fmtPct(pROI("expected"))+" · "+pPay("expected"),C.sky],["Worst Case",fmtK(totSav.worst),"ROI "+fmtPct(pROI("worst"))+" · "+pPay("worst"),C.orange]].map(function(m){
+          return'<div style="text-align:center"><div style="font-size:10px;color:#94A3B8;margin-bottom:2px">'+m[0]+'</div><div style="font-size:21px;font-weight:700;color:'+m[3]+'">'+m[1]+'</div><div style="font-size:10px;color:#64748B;margin-top:2px">'+m[2]+'</div></div>';
+        }).join('')+
+      '</div>'+
+      '<div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:11px;display:flex;gap:18px;flex-wrap:wrap">'+
+        [["Total Investment",fmtK(totalInv)],["Dev Cost",fmtK(devCost)],["Annual Ops",fmtK(opsCost)],["Token Cost (exp.)",fmtK(totTok.expected)],["Net Annual (exp.)",fmtK(net.expected)]].map(function(x){
+          return'<div><div style="font-size:9px;color:#64748B">'+x[0]+'</div><div style="font-size:13px;font-weight:600;color:'+C.white+'">'+x[1]+'</div></div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+    pResults.map(function(pr,i){
+      return'<div style="background:'+C.white+';border:1px solid '+C.border+';border-radius:10px;padding:16px 18px;margin-bottom:12px">'+
+        '<div style="display:flex;align-items:center;gap:7px;margin-bottom:11px;flex-wrap:wrap">'+
+          '<div style="background:'+C.blue+';color:'+C.white+';border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">'+(i+1)+'</div>'+
+          '<div style="font-weight:700;font-size:14px;color:'+C.navy+'">'+esc(pr.name)+'</div>'+
+          [[""+fmtNum(pr.annualRuns)+" runs/yr","#EEF4FA",C.blue],[""+pr.totalHours.toFixed(1)+" hrs/exec",C.card,C.slate],[""+fmtK(pr.laborCost)+"/yr labor","#EEF4FA",C.navy],[""+pr.residualPct+"% residual","#FFF3E8",C.orange]].map(function(x){
+            return'<span style="background:'+x[1]+';color:'+x[2]+';border:1px solid '+x[2]+'30;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700">'+x[0]+'</span>';
+          }).join('')+
+        '</div>'+
+        '<div style="background:'+C.card+';border-radius:7px;padding:7px 11px;margin-bottom:11px;border:1px solid '+C.border+'">'+
+          '<div style="font-size:9px;font-weight:700;color:'+C.slate+';text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Task Breakdown</div>'+
+          '<div style="display:flex;flex-wrap:wrap;gap:5px">'+
+            (pr.taskList||[]).map(function(t,ti){
+              var cfg=COMPLEXITY[t.complexity||"moderate"];
+              return'<div style="background:'+cfg.bg+';border:1px solid '+cfg.color+'40;border-radius:5px;padding:2px 7px;font-size:11px"><span style="font-weight:700;color:'+cfg.color+'">'+cfg.short+'</span><span style="color:'+C.charcoal+';margin-left:4px">'+esc(t.name||"Task "+(ti+1))+'</span><span style="color:'+C.slate+';margin-left:4px">'+Number(t.hours).toFixed(1)+'h</span></div>';
+            }).join('')+
+          '</div>'+
+        '</div>'+
+        '<div style="display:flex;gap:8px">'+
+          scenCardHTML("Best",pr.scenarios.best.savings,pr.scenarios.best.roi,pr.scenarios.best.payback,pr.scenarios.best.tokenCost)+
+          scenCardHTML("Expected",pr.scenarios.expected.savings,pr.scenarios.expected.roi,pr.scenarios.expected.payback,pr.scenarios.expected.tokenCost)+
+          scenCardHTML("Worst",pr.scenarios.worst.savings,pr.scenarios.worst.roi,pr.scenarios.worst.payback,pr.scenarios.worst.tokenCost)+
+        '</div>'+
+      '</div>';
+    }).join('')+
+  '</div>';
+}
+
+function connectHTML(){
+  var procs=state.procs, devCost=state.devCost, opsCost=state.opsCost, sent=state.sent;
+  var totalInv=devCost+opsCost;
+  var allM=procs.map(function(p){return computeMetrics(p);}).filter(Boolean);
+  var totalExpSav=allM.reduce(function(s,m){return s+m.scenarios.expected.savings;},0);
+  var netExp=totalExpSav-allM.reduce(function(s,m){return s+m.scenarios.expected.tokenCost;},0)-opsCost;
+  var portROI=totalInv>0?Math.round(((netExp-devCost)/totalInv)*100):0;
+  return'<div style="background:'+C.white+';border:1px solid '+C.border+';border-radius:10px;padding:16px 18px;margin-bottom:14px">'+
+    '<div style="display:flex;align-items:center;gap:13px;margin-bottom:22px">'+
+      '<div style="background:'+C.navy+';border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:'+C.sky+';font-size:20px">✦</span></div>'+
+      '<div><div style="font-weight:700;font-size:16px;color:'+C.navy+'">Ready to move forward?</div><div style="font-size:12px;color:'+C.slate+';margin-top:2px">Talk to an Automation30 automation specialist about your roadmap</div></div>'+
+    '</div>'+
+    '<div style="background:'+C.navy+';border-radius:10px;padding:16px 20px;margin-bottom:22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">'+
+      [["Processes",procs.length+" configured",C.white],["Total Investment","$"+totalInv.toLocaleString(),C.white],["Expected Savings","$"+Math.round(totalExpSav).toLocaleString(),C.green],["Portfolio ROI",portROI+"%",C.sky]].map(function(x){
+        return'<div style="text-align:center"><div style="font-size:9px;color:#64748B;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px">'+x[0]+'</div><div style="font-size:16px;font-weight:700;color:'+x[2]+'">'+x[1]+'</div></div>';
+      }).join('')+
+    '</div>'+
+    '<div style="background:#EEF4FA;border:1px solid '+C.blue+'30;border-radius:8px;padding:14px 18px;margin-bottom:22px">'+
+      '<div style="font-weight:700;font-size:12px;color:'+C.navy+';margin-bottom:8px">What happens when you click Connect</div>'+
+      '<div style="display:flex;flex-direction:column;gap:7px">'+
+        [["📧","Your email client opens with a pre-filled message to sales@alignedautomation.com"],["📋","All your configuration — processes, runs/week, FTE costs, task complexity — is included automatically"],["🤝","An Automation30 specialist will respond within one business day to discuss your automation roadmap"]].map(function(x){
+          return'<div style="display:flex;gap:10px;align-items:flex-start"><span style="font-size:15px;flex-shrink:0">'+x[0]+'</span><span style="font-size:12px;color:'+C.charcoal+';line-height:1.5">'+x[1]+'</span></div>';
+        }).join('')+
+      '</div>'+
+    '</div>'+
+    (procs.length>0?'<div style="margin-bottom:22px"><div style="font-size:10px;font-weight:700;color:'+C.navy+';text-transform:uppercase;letter-spacing:0.6px;margin-bottom:9px">Your Configured Processes</div><div style="display:flex;flex-direction:column;gap:7px">'+
+      procs.map(function(p,i){
+        var m=computeMetrics(p), bc=COMPLEXITY[dominantCplx(p.taskList||[])].color;
+        return'<div style="background:'+C.card+';border:1px solid '+C.border+';border-left:4px solid '+bc+';border-radius:7px;padding:9px 13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">'+
+          '<div style="background:'+C.navy+';color:'+C.white+';border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0">'+(i+1)+'</div>'+
+          '<div style="font-weight:700;font-size:13px;color:'+C.navy+';flex:1">'+esc(p.name||"Process "+(i+1))+'</div>'+
+          '<span style="font-size:10px;color:'+C.blue+';background:#EEF4FA;border:1px solid '+C.blue+'30;border-radius:4px;padding:1px 7px;font-weight:700">'+Number(p.runsPerWeek).toLocaleString()+' runs/wk</span>'+
+          (m?'<span style="font-size:10px;color:'+C.green+';background:#EAF7ED;border:1px solid '+C.green+'30;border-radius:4px;padding:1px 7px;font-weight:700">~$'+Math.round(m.scenarios.expected.savings).toLocaleString()+' savings/yr</span>':'')+
+          '<span style="font-size:10px;color:'+C.slate+'">'+(p.taskList||[]).length+' tasks</span>'+
+        '</div>';
+      }).join('')+
+    '</div></div>':'')+
+    '<div style="text-align:center;padding-top:6px">'+
+      '<button onclick="handleConnect()" style="background:'+(sent?C.green:'linear-gradient(135deg,'+C.navy+' 0%,'+C.blue+' 100%)')+';color:'+C.white+';border:none;border-radius:10px;padding:14px 40px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.4px;box-shadow:'+(sent?'none':'0 4px 16px '+C.blue+'40')+';display:inline-flex;align-items:center;gap:9px;font-family:inherit">'+
+        (sent?'<span style="font-size:16px">✓</span> Email client opened — check your drafts':'<span style="font-size:16px">✉</span> Connect with Aligned Automation')+
+      '</button>'+
+      '<div style="font-size:11px;color:'+C.slate+';margin-top:9px">Opens your email client · Pre-filled with your full configuration · Sends to <strong>sales@alignedautomation.com</strong></div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+function render(){
+  var procs=state.procs, devCost=state.devCost, opsCost=state.opsCost, tab=state.tab;
+  var canView=procs.length>0&&procs.every(function(p){return(p.taskList||[]).reduce(function(s,t){return s+(Number(t.hours)||0);},0)>0;});
+
+  // preserve focus
+  var fk=null, ss=null, se=null;
+  var ae=document.activeElement;
+  if(ae&&ae.dataset&&ae.dataset.fk){fk=ae.dataset.fk;try{ss=ae.selectionStart;se=ae.selectionEnd;}catch(e){}}
+
+  function tabBtn(label,t,dis){
+    var active=tab===t;
+    return'<button '+(dis?'disabled':'')+' onclick="setTab(\''+t+'\')" style="flex:1;padding:11px 20px;border:none;border-bottom:'+(active?'3px solid '+C.blue:'3px solid transparent')+';background:none;cursor:'+(dis?'default':'pointer')+';font-size:13px;font-weight:'+(active?700:400)+';color:'+(active?C.blue:C.slate)+';text-align:center;outline:none;font-family:inherit">'+label+'</button>';
+  }
+
+  var bodyContent='';
+  if(tab==='input'){
+    bodyContent='<div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">'+
+        '<div style="background:'+C.white+';border:1px solid '+C.border+';border-radius:10px;padding:16px 18px">'+
+          '<div style="font-weight:700;font-size:13px;color:'+C.navy+';margin-bottom:11px">Investment Costs</div>'+
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
+            '<div><label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">Development Cost ($)</label>'+
+            '<input type="number" min="0" value="'+devCost+'" data-fk="devcost" oninput="setDevCost(this.value)" style="width:100%;padding:7px 10px;border:1px solid '+C.border+';border-radius:6px;font-size:13px;color:'+C.charcoal+';background:'+C.white+';outline:none;box-sizing:border-box;font-family:inherit"/>'+
+            '<div style="font-size:10px;color:'+C.slate+';margin-top:3px">One-time build investment</div></div>'+
+            '<div><label style="font-size:10px;font-weight:700;color:'+C.slate+';letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;display:block">Annual Ops Cost ($)</label>'+
+            '<input type="number" min="0" value="'+opsCost+'" data-fk="opscost" oninput="setOpsCost(this.value)" style="width:100%;padding:7px 10px;border:1px solid '+C.border+';border-radius:6px;font-size:13px;color:'+C.charcoal+';background:'+C.white+';outline:none;box-sizing:border-box;font-family:inherit"/>'+
+            '<div style="font-size:10px;color:'+C.slate+';margin-top:3px">Recurring annual cost</div></div>'+
+          '</div>'+
+          '<div style="margin-top:9px;background:#EEF4FA;border-radius:5px;padding:6px 10px;font-size:12px;color:'+C.blue+'">Total investment: <strong>'+fmtK(devCost+opsCost)+'</strong></div>'+
+        '</div>'+
+        '<div style="background:#EEF4FA;border:1px solid '+C.blue+'20;border-radius:10px;padding:16px 18px">'+
+          '<div style="font-weight:700;font-size:13px;color:'+C.navy+';margin-bottom:9px">Task Complexity Guide</div>'+
+          Object.entries(COMPLEXITY).map(function(e){var k=e[0],v=e[1];return'<div style="display:flex;gap:7px;margin-bottom:6px;align-items:center"><div style="width:17px;height:17px;border-radius:4px;background:'+v.color+';display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:'+C.white+';font-size:9px;font-weight:700">'+v.short+'</span></div><div><span style="font-size:12px;font-weight:700;color:'+C.navy+'">'+v.label+' — </span><span style="font-size:11px;color:'+C.slate+'">'+v.desc+'</span></div></div>';}).join('')+
+          '<div style="border-top:1px solid '+C.border+';margin-top:6px;padding-top:6px;font-size:10px;color:'+C.slate+'">Savings &amp; tokens computed per task · Weighted by hours allocated</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'+
+        '<div style="font-weight:700;font-size:14px;color:'+C.navy+'">Processes ('+procs.length+')</div>'+
+        '<button onclick="addProc()" style="background:'+C.navy+';color:'+C.white+';border:none;border-radius:7px;padding:7px 15px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit">+ Add Process</button>'+
+      '</div>'+
+      procs.map(function(p,i){return procCardHTML(p,i);}).join('')+
+      (canView?'<div style="text-align:center;margin-top:12px"><button onclick="setTab(\'results\')" style="background:'+C.blue+';color:'+C.white+';border:none;border-radius:8px;padding:10px 26px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">View Scenario Analysis →</button></div>':'')+
+    '</div>';
+  } else if(tab==='results'&&canView){
+    bodyContent=resultsHTML();
+  } else if(tab==='ai'&&canView){
+    bodyContent=connectHTML();
+  }
+
+  document.getElementById('root').innerHTML=
+    '<div style="background:linear-gradient(120deg,'+C.navy+',#2A3C90)">'+
+      '<div style="width:80%;margin:0 auto;padding:18px 0;display:flex;align-items:center;justify-content:space-between;gap:20px">'+
+        '<div style="display:flex;align-items:center;gap:14px">'+
+          '<img src="'+LOGO+'" alt="Aligned Automation" style="height:34px;width:auto;object-fit:contain;display:block"/>'+
+          '<div style="width:1px;height:30px;background:rgba(255,255,255,.22)"></div>'+
+          '<span style="font-weight:600;font-size:13px;color:#CDD9EC;letter-spacing:0.02em">Automation30 · ROI Calculator</span>'+
+        '</div>'+
+      '</div>'+
+      '<div style="width:80%;margin:0 auto;padding:6px 0 30px">'+
+        '<div style="font-size:36px;font-weight:800;color:#fff;line-height:1.05;white-space:nowrap">Automation30 Agentic AI — <span style="color:'+C.green+'">ROI Calculator</span></div>'+
+        '<div style="color:#b7c6dd;margin-top:10px;font-size:14px;white-space:nowrap">Per-task complexity modelling · Scenario analysis · AI-native investment planning</div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="background:'+C.white+';border-bottom:1px solid '+C.border+';box-shadow:0 1px 2px rgba(15,28,63,.05)">'+
+      '<div style="width:80%;margin:0 auto;display:flex">'+
+        tabBtn('⬡ Configure','input',false)+
+        tabBtn('✦ Scenario Analysis','results',!canView)+
+        tabBtn('✉ Connect With Us','ai',!canView)+
+      '</div>'+
+    '</div>'+
+    '<div style="width:80%;margin:0 auto;padding:0 0 50px">'+
+      '<div style="padding:26px 0;min-height:400px">'+bodyContent+'</div>'+
+      '<div style="border-top:1px solid '+C.border+';padding:18px 26px 30px;color:#94A3B8;font-size:12px">Aligned Automation · Automation30 Framework · AI-Native SDLC</div>'+
+    '</div>';
+
+  // restore focus
+  if(fk){
+    var el=document.querySelector('[data-fk="'+fk+'"]');
+    if(el){el.focus();try{if(ss!==null)el.setSelectionRange(ss,se);}catch(e){}}
+  }
+}
+
+render();
+</script>
+</body>
+</html>

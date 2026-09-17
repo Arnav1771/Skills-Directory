@@ -1,0 +1,66 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 1  |  Skill: control-plane
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `control-plane` skill.
+
+### Inputs
+- Skill definition: `.claude/ControlPlane/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+  - `artifacts/roi-brief.md`
+  - `specs/design.md`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Conduct the required elicitation sequence to collect missing runtime configuration.
+- Present the collected values in a confirmation summary.
+- Wait for explicit confirmation before generating artifacts.
+- Do not assume values that require user approval.
+
+### Required Elicitation
+Collect only the following:
+
+1. Currency for cost tracking.
+2. Monthly cost ceilings per deployed agent/service.
+3. Warning alert threshold percentage.
+4. Billing or cost data source.
+5. Security anomaly detection sensitivity.
+6. Alert notification channel.
+
+### Confirmation Gate
+Present a concise configuration summary including:
+- Currency
+- Governed agents/services
+- Cost ceilings
+- Warning threshold
+- Billing source
+- Security sensitivity
+- Alert channel
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <question>` → update the specified value and re-display the summary.
+
+### Outputs
+After confirmation, generate:
+
+- `operate/control-plane/cost-config.yaml`
+- `operate/control-plane/control-plane-monitor.py`
+- `operate/control-plane/cost-gate.py`
+- `operate/control-plane/cost-limit-networkpolicy.yaml` (if applicable)
+- `operate/control-plane/security-monitor.py`
+- `operate/control-plane/cost-dashboard.json`
+- `operate/control-plane/cost-event-log.md`
+- `operate/control-plane/security-event-log.md`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

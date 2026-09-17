@@ -1,0 +1,144 @@
+# Source: 01-establish-strategy.md  |  Prompt 8  |  Skill: skill-generator
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `skill-generator` skill.
+
+### Inputs
+- Skill definition: `.claude/skill-generator/SKILL.md`
+- Primary input: `recommendation_report.md`
+- Catalog input: `skill_catalog.md`
+- Optional cross-reference: `recommendation_summary.md`
+- Prior skip list (if present): `skillflow_skip.md`
+
+### Execution
+Read `recommendation_report.md` and `skill_catalog.md` first.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Input Validation
+- Phase 1: Recommendation Extraction
+- Phase 2: Recommendation Review (User Gate)
+- Phase 3: Assumptions Review (per accepted item)
+- Phase 4: Content Generation
+- Phase 5: Skill Catalog Update
+- Phase 6: Validation and Final Review
+- Phase 7: Output
+
+Extract all Skill Enhancements from the Skill Enhancements section of `recommendation_report.md`.
+
+Extract all Candidate New Skills from the Risks & Gaps section of `recommendation_report.md`.
+
+Present the full list of new skills and enhancements to the user for accept/reject review before any generation begins.
+
+For every rejected item, write the skill name to `skillflow_skip.md`. Ask for user permission before writing to `skillflow_skip.md`.
+
+For every accepted item, present assumptions to the user and wait for confirmation before generating content.
+
+Do not write any file until the user confirms the final review summary in Phase 6.
+
+Follow all validation rules, hallucination prevention rules, and success criteria defined in the `skill-generator` skill.
+
+### Outputs
+Generate or update the following as applicable:
+
+- `.claude/<skill-name>/SKILL.md` — for each accepted Candidate New Skill
+- `.claude/<skill-name>/README.md` — for each accepted Candidate New Skill
+- `.claude/<skill-name>/SKILL.md` — patched for each accepted Skill Enhancement
+- `.claude/<skill-name>/README.md` — updated for each accepted Skill Enhancement
+- `skill_catalog.md` — new entries added and existing entries updated
+- `skillflow_skip.md` — updated with rejected skill names
+- `skill_generation_report.md` — audit log of the run
+
+Before generating any files, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+## Recommendation Gate — Runs immediately after Prompt 8 completes
+
+This gate runs once, before Prompt 9. Do not skip it. Do not proceed to Prompt 9 until `skillflow_skip.md` has been written.
+
+### Step 1 — Ask the user
+
+Present the following question exactly as written and wait for a response before doing anything else:
+
+---
+
+**SkillFlow produced a recommendation plan. How would you like to proceed?**
+
+**(A) Follow the SkillFlow plan** — only run Required and Recommended skills; Not Recommended skills are skipped.
+
+**(B) Run everything** — ignore the plan and run all skills in the catalog.
+
+**(C) Decide manually** — I will tell you which skills to skip.
+
+---
+
+### Step 2 — Handle each answer
+
+**If the user answers A:**
+
+Ask one follow-up question:
+
+> **Should Optional skills be included in the run?**
+> - **Yes, include optionals** — run Required + Recommended + Optional; skip only Not Recommended
+> - **No, exclude optionals** — run Required + Recommended only; skip Not Recommended + Optional
+
+Then write `skillflow_skip.md` as follows:
+- Read `recommendation_report.md` and extract all skills classified as Not Recommended (and Optional, if excluded).
+- Write `skillflow_skip.md` with one skill name per line.
+- If no skills are being skipped, write `skillflow_skip.md` as an empty file with the header: `# skillflow_skip.md — no skills skipped`.
+
+---
+
+**If the user answers B:**
+
+Write `skillflow_skip.md` as an empty file with the header:
+
+```
+# skillflow_skip.md — all skills active (SkillFlow plan not followed)
+```
+
+No skills will be skipped. All Prompts 9 onward will run.
+
+---
+
+**If the user answers C:**
+
+Read `recommendation_report.md` and display the full skill list grouped by classification (Required / Recommended / Optional / Not Recommended) with one line per skill.
+
+Ask the user: *"Which skills would you like to skip? List the skill names."*
+
+Wait for the user's response. Write `skillflow_skip.md` with exactly the skills the user named, one per line.
+
+If the user names no skills, write `skillflow_skip.md` as an empty file with the header: `# skillflow_skip.md — no skills skipped`.
+
+---
+
+### Step 3 — Confirm and proceed
+
+After writing `skillflow_skip.md`, report to the user:
+
+```
+skillflow_skip.md written.
+Skills to be skipped: [list skill names, or "none"]
+Proceeding to Prompt 9.
+```
+
+`skillflow_skip.md` must exist on disk before Prompt 9 begins. This is a hard requirement.
+
+---
+
+## Standing Instruction — Active from Prompt 9 onward
+
+Before executing any prompt from this point forward, read `skillflow_skip.md`.
+If the skill name for that prompt appears in `skillflow_skip.md`, skip it entirely and log: `Skipped: <skill-name>`.
+If `skillflow_skip.md` is empty or contains only a header comment, proceed normally — no skills are skipped.
+This instruction applies to every remaining prompt in this file without exception.
+
+---

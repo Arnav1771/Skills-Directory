@@ -1,0 +1,218 @@
+# Source: 03-platform-enablement.md  |  Prompt 13  |  Skill: sim-lab
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `sim-lab` skill.
+
+### Inputs
+- Skill definition: `.claude/SimLab/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+- Additional inputs (if available):
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/context.yaml`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step S1: Parse NFR Targets and Endpoint Inventory
+- Step S2: Generate Load Test Scripts
+- Step S3: Generate Failure Injection Scenarios
+- Step S4: Generate Edge Case Simulations
+- Step S5: Execute Simulations and Capture Results
+- Step S6: NFR Pass/Fail Verdict
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- NFR targets.
+- Endpoint inventory.
+- Dependency inventory.
+- Circuit-breaker expectations.
+- Staging environment equivalence status.
+
+### Step S1 — Parse NFR Targets and Endpoint Inventory
+Extract NFR targets from `artifacts/openspec.yaml`, including:
+- Latency targets:
+  - p50
+  - p95
+  - p99
+- Concurrency targets:
+  - Target users
+  - Peak users
+- Error rate ceilings.
+- Availability targets.
+- Circuit-breaker parameters:
+  - Timeout.
+  - Failure threshold.
+  - Recovery window.
+- Test framework overrides.
+
+Extract all integration endpoints from `artifacts/deploy-manifest.yaml`.
+
+Build the test matrix:
+- Each endpoint × each applicable NFR scenario.
+
+If any required NFR fields cannot be inferred:
+- Halt execution.
+- Elicit the missing values exactly as defined in the skill.
+- Do not continue until resolved.
+
+### Step S2 — Generate Load Test Scripts
+Generate k6 load test scripts for every endpoint identified.
+
+Parameterise scripts using values extracted from `artifacts/openspec.yaml`.
+
+For each endpoint:
+- Include ramp-up.
+- Include steady-state execution.
+- Include peak-load execution.
+- Include ramp-down.
+- Apply threshold assertions using extracted NFR values.
+- Include representative payload placeholders derived from the specification.
+
+Generate one script per endpoint.
+
+Output scripts to:
+- `tests/load/`
+
+### Step S3 — Generate Failure Injection Scenarios
+Identify dependencies from `artifacts/deploy-manifest.yaml`.
+
+Generate chaos scenarios for each dependency covering:
+- Dependency unavailable.
+- Dependency degraded.
+- Dependency rate-limited.
+- Partial failure.
+- Cascade failure.
+
+Validate:
+- Circuit-breaker activation timing.
+- Fallback response behaviour.
+- Recovery behaviour.
+- Error propagation handling.
+
+If circuit-breaker behaviour or fallback expectations are not specified:
+- Halt execution.
+- Elicit the missing expectations exactly as defined in the skill.
+
+Generate scripts and scenarios under:
+- `tests/chaos/`
+
+### Step S4 — Generate Edge Case Simulations
+Using `artifacts/task-breakdown.yaml` when available, identify performance-sensitive scenarios.
+
+Generate simulations covering:
+- Minimum viable inputs.
+- Maximum supported inputs.
+- Concurrent duplicate requests.
+- Rapid successive requests from the same user.
+- Any additional performance-sensitive edge cases documented in the artifacts.
+
+### Step S5 — Execute Simulations and Capture Results
+Execute all generated scripts against the staging environment.
+
+Capture, per endpoint:
+- p50 latency.
+- p95 latency.
+- p99 latency.
+- Requests per second.
+- Error rate under normal load.
+- Error rate at peak load.
+- Latency degradation ratio.
+
+Capture, per chaos scenario:
+- Circuit-breaker activation time.
+- Fallback response correctness.
+- Recovery time.
+- Error propagation counts.
+
+Record all metrics and execution timestamps.
+
+Output:
+- `artifacts/simlab-results.json`
+
+### Step S6 — NFR Pass/Fail Verdict
+Compare captured metrics against the extracted NFR targets.
+
+Apply verdict rules exactly as defined in the skill:
+
+- p95 latency:
+  - PASS when within target.
+  - WARN when exceeding target by ≤ 20%.
+  - FAIL when exceeding target by > 20%.
+
+- Error rate:
+  - PASS when within ceiling.
+  - FAIL when exceeding ceiling.
+
+- Circuit-breaker:
+  - PASS when activation occurs within timeout.
+  - FAIL when activation does not occur.
+
+- Fallback behaviour:
+  - PASS when matching specification.
+  - FAIL when not matching specification.
+
+Apply Release Gate rules:
+- Any FAIL verdict blocks Release.
+- Any WARN verdict requires POD Lead acknowledgement or remediation.
+
+Apply all HITL gates defined in the skill, including:
+- Missing NFR targets.
+- Missing circuit-breaker expectations.
+- Unconfirmed staging equivalence.
+- WARN verdict acknowledgement.
+- FAIL verdict escalation.
+
+Document staging environment equivalence confirmation, including:
+- Compute tier equivalence.
+- Database representativeness.
+- Dependency environment equivalence.
+- Network topology equivalence.
+
+### Outputs
+Generate:
+- `tests/load/`
+- `tests/chaos/`
+- `artifacts/simlab-results.json`
+- `artifacts/nfr-verdict.md`
+
+Ensure `tests/load/` contains:
+- One generated k6 script per endpoint.
+- Threshold assertions derived from NFR targets.
+- Parameterised execution profiles.
+
+Ensure `tests/chaos/` contains:
+- Failure injection scenarios.
+- Circuit-breaker validation scripts.
+- Recovery validation scenarios.
+
+Ensure `artifacts/simlab-results.json` contains:
+- Endpoint performance metrics.
+- Chaos execution results.
+- Circuit-breaker observations.
+- Execution timestamps.
+- Raw pass/fail outcomes.
+
+Ensure `artifacts/nfr-verdict.md` contains:
+- Sprint identifier.
+- NFR targets evaluated.
+- Endpoint-level verdicts.
+- Chaos scenario verdicts.
+- WARN findings.
+- FAIL findings.
+- Release gate recommendation.
+- Staging equivalence confirmation.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

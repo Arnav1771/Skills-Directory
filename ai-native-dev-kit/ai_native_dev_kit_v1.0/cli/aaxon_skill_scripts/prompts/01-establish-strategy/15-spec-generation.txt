@@ -1,0 +1,204 @@
+# Source: 01-establish-strategy.md  |  Prompt 15  |  Skill: spec-generation
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-generation` skill.
+
+### Inputs
+
+* Skill definition: `.claude/spec-generation/SKILL.md`
+* Authoritative inputs:
+
+  * `specs/knowledge.md`
+  * `specs/features.md`
+  * `specs/design.md`
+  * `specs/ui-ux.md`
+  * `specs/api.md`
+  * `specs/database.md`
+  * `specs/impl.md`
+
+### Execution
+
+Read `specs/knowledge.md`, `specs/features.md`, `specs/design.md`, `specs/ui-ux.md`, `specs/api.md`, `specs/database.md`, and `specs/impl.md` as authoritative inputs.
+
+Execute the skill exactly as defined, including:
+
+* Phase 0: Input Validation
+* Phase 1: Epic Derivation
+* Phase 2: Story Derivation
+* Phase 3: Task Derivation
+* Phase 4: Cross-Cutting Task Generation
+* Phase 5: Spec Review
+* Phase 6: File Output
+* Phase 7: Post-Generation Summary
+
+### Input Validation
+
+Extract and validate:
+
+* Business context, business rules, workflows, constraints, customer expectations, and blockers from `specs/knowledge.md`
+* All FR entries, priorities, acceptance notes, and open questions from `specs/features.md`
+* TO-BE architecture, components, NFRs, and scalability requirements from `specs/design.md`
+* Personas, screens, navigation, accessibility requirements, and design system information from `specs/ui-ux.md`
+* TO-BE API conventions and patterns from `specs/api.md`
+* TO-BE data architecture and migration information from `specs/database.md`
+* Technology stack, environments, observability, and pending decisions from `specs/impl.md`
+
+Perform prerequisite checks and report warnings for:
+
+* Missing TO-BE design content
+* Empty or insufficient feature coverage
+* Missing `STATUS: REVIEWED ✓` in `specs/knowledge.md`
+* Any `[DESIGN DECISION PENDING]` items
+
+Generate the Source Summary exactly as defined in the skill, including:
+
+* Source readiness status
+* Warnings and blockers
+* Proposed Epic Structure preview
+
+Obtain user confirmation before proceeding with specification generation.
+
+### Epic Derivation
+
+Derive epics using:
+
+* Feature categories from `specs/features.md`
+* Technical foundation requirements from `specs/design.md`
+* Data migration requirements from `specs/database.md`
+* UI foundation requirements from `specs/ui-ux.md`
+* Integration requirements from the source specifications
+
+Ensure:
+
+* Every epic represents a coherent deliverable slice.
+* Epics contain approximately 3–8 stories.
+* Epics exceeding 10 stories are split.
+* Single-story epics are merged or demoted appropriately.
+
+Apply:
+
+* Epic numbering conventions
+* Epic naming conventions
+* Epic categorization tags
+
+### Story Derivation
+
+Generate stories from:
+
+* Feature requirements
+* Business rules
+* Business workflows
+* Technical requirements
+* UI screens and workflows
+* Migration activities
+
+Ensure:
+
+* Every story has traceable sources.
+* Every story contains testable acceptance criteria.
+* Dependencies are explicitly documented.
+* Story complexity classifications are assigned.
+* Stories remain within sprint-scale boundaries.
+
+### Task Derivation
+
+Generate tasks for every story.
+
+Ensure:
+
+* Every task belongs to a story.
+* Every story belongs to an epic.
+* Every task is scoped to 3 business days or fewer.
+* Tasks exceeding 3 days are split.
+* Tasks include:
+
+  * Type classification
+  * Effort estimate
+  * Status
+  * Blocking information
+  * Description
+  * Definition of Done
+  * Technical References
+
+Apply all task derivation heuristics defined in the skill.
+
+### Cross-Cutting Task Generation
+
+Generate applicable cross-cutting tasks, including:
+
+* Sprint 0 foundation tasks
+* Security tasks
+* Observability tasks
+* Documentation tasks
+
+Ensure all generated tasks remain within the 3-business-day limit.
+
+### Spec Review
+
+Present the complete specification structure for review, including:
+
+* Total epics
+* Total stories
+* Total tasks
+* Estimated effort
+* Epic summaries
+* Blocked tasks
+* Stories missing acceptance criteria
+* Tasks exceeding sizing limits
+* Uncovered feature requirements
+
+Collect user feedback on:
+
+* Epic boundaries
+* Missing stories
+* Deferred features
+* Final approval to write files
+
+### Outputs
+
+Generate the following artifacts:
+
+* `specs/spec.md`
+* `specs/tasks.md`
+
+Ensure `specs/spec.md` contains:
+
+* Program Specification header
+* Spec Summary
+* Business Context
+* Key Business Rules
+* Epics and Stories
+* Deferred Items
+* Change Log
+
+Ensure `specs/tasks.md` contains:
+
+* Task Inventory header
+* Task Summary
+* Task Index
+* Blocked Tasks
+* Change Log
+
+Ensure:
+
+* The 3-business-day task ceiling is enforced without exception.
+* No floating tasks exist.
+* Full traceability is maintained.
+* Acceptance criteria remain testable.
+* Requirements are never invented.
+* NICE TO HAVE items are deferred unless explicitly included.
+* Both files are generated completely without placeholders, truncation, or "etc." references.
+
+Before generating the spec files, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+
+---
+
+**Establish Strategy Complete**

@@ -1,0 +1,138 @@
+# Source: 02-data-readiness.md  |  Prompt 5  |  Skill: transform-iq
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `transform-iq` skill.
+
+### Inputs
+- Skill definition: `.claude/TransformIQ/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `specs/features.md`
+  - `specs/program.md`
+  - `references/opportunity-catalogue.yaml`
+- Prior operational feedback (if available):
+  - `artifacts/feedback-loop-triggers.yaml`
+
+### Execution
+Read `artifacts/openspec.yaml`, `specs/features.md`, `specs/program.md`, and `references/opportunity-catalogue.yaml` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Current Backlog Scan
+- Phase 2: Signal Ingestion
+- Phase 3: Rescoring
+- Phase 4: Candidate Surfacing
+- Phase 5: Value Density Summary
+
+Use the following predefined assumptions without additional elicitation:
+- Sprint strategic theme: `reduce invoice processing time`
+- Strategic weights: balanced across all dimensions
+- Candidate threshold: `7`
+- First sprint: `yes`
+
+### Current Backlog Scan
+Load `references/opportunity-catalogue.yaml` and `specs/features.md`.
+
+Identify:
+- Opportunity backlog items already in sprint scope.
+- Opportunity backlog items not currently in scope.
+- Existing mappings between requirements and opportunity catalogue entries.
+
+Capture:
+- Backlog references
+- Prior scores
+- Scope status
+
+### Signal Ingestion
+If `artifacts/feedback-loop-triggers.yaml` is available:
+- Extract operational signals from prior sprints.
+- Identify recurring user pain points.
+- Identify repeated defect categories.
+- Identify process bottlenecks.
+- Map signals to backlog items addressing the same root causes.
+
+If `artifacts/feedback-loop-triggers.yaml` is not available:
+- Proceed using first-sprint assumptions.
+- Document that scoring is approximation-based.
+
+### Rescoring
+For each backlog item, compute a composite score using the scoring method defined in the skill.
+
+Apply:
+- Balanced strategic weights across all dimensions.
+- First-sprint assumptions without calibration against prior actuals.
+
+Document that scores are directional approximations intended to support prioritization.
+
+### Candidate Surfacing
+Identify backlog items that:
+- Are not currently in sprint scope.
+- Meet or exceed the candidate threshold score of `7`.
+
+For each candidate:
+- Calculate effort-to-value ratio.
+- Rank candidates by value density in descending order.
+
+Identify the highest-value opportunities suitable for one-week delivery.
+
+### Value Density Summary
+Generate a business-facing summary highlighting:
+- Top candidate opportunities.
+- Value density rankings.
+- One-line rationale for each recommendation.
+- Supporting evidence where available.
+
+Follow all constraints, processing rules, and execution behavior defined in the `TransformIQ` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/opportunity-backlog-rescored.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Sprint strategic theme
+- Scoring weights applied
+- Current sprint items already in scope
+- Candidate additions above threshold
+- Value density calculations
+- Value density rankings
+- Top 5 quick wins
+- Descored items and rationale
+
+Generate Current Sprint Items entries containing:
+- Requirement identifier
+- Backlog reference
+- Prior score
+- New score
+- Score delta
+- Calibration notes
+
+Generate Candidate Addition entries containing:
+- Opportunity identifier
+- Title
+- Composite score
+- Estimated effort
+- Value density ratio
+- Supporting evidence
+
+Generate a Value Density Summary containing:
+- Top 5 ranked opportunities
+- One-line rationale for each recommendation
+
+Generate an Items Descored This Sprint section containing:
+- Opportunity identifier
+- Prior score
+- New score
+- Reason for score reduction
+
+Before generating `artifacts/opportunity-backlog-rescored.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

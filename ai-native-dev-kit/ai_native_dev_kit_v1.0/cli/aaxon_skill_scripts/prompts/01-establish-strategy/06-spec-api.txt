@@ -1,0 +1,66 @@
+# Source: 01-establish-strategy.md  |  Prompt 6  |  Skill: spec-api
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-api` skill.
+
+### Inputs
+- Skill definition: `.claude/spec-api/SKILL.md`
+- Primary context: `specs/program.md`
+- Supporting context: `specs/knowledge.md`
+- Supporting context: `specs/database.md`
+- Supporting context: `specs/design.md`
+- Existing API specification (if present): `specs/api.md`
+- Reference template: `references/api-template.md`
+- Example output: `sample_output/api.md`
+
+### Execution
+Read `specs/program.md`, `specs/knowledge.md`, `specs/database.md`, and `specs/design.md` first and use them as the primary sources of context.
+
+Check whether `specs/api.md` already exists:
+- If it exists, execute the skill in **Review Mode**.
+- If it does not exist, execute the skill in **Initialize Mode**.
+
+When initializing, derive the API specification from the existing specifications, including:
+- API foundation and versioning strategy
+- Authentication and authorization approach
+- CORS and global API conventions
+- Endpoint definitions derived from domain entities and workflows
+- Request and response schemas
+- Pydantic schema definitions
+- Error contracts and HTTP status code conventions
+- Pagination and filtering conventions
+- Rate limiting and non-functional API requirements
+- FastAPI implementation patterns
+
+Use `specs/knowledge.md` to derive endpoints from domain entities, workflows, and business rules. Use `specs/database.md` to derive request and response shapes and query requirements. Use `specs/design.md` to derive framework choices, authentication mechanisms, API style, and implementation conventions.
+
+Ensure that business rules documented in the existing specifications are reflected in endpoint validations, guards, and behavior where appropriate.
+
+Infer API decisions only when they are reasonably supported by the existing specifications. Do not introduce endpoints, request fields, response fields, authentication mechanisms, error contracts, or implementation patterns that conflict with or cannot be traced back to the documented specifications.
+
+Follow the execution steps and behavior defined in the `spec-api` skill.
+
+### Outputs
+Generate or update the following file using the canonical structure defined in `references/api-template.md`:
+
+- `specs/api.md`
+
+Ensure the output contains the following sections:
+- API Foundation
+- Authentication
+- Error Contract
+- Endpoints
+- Pydantic Schemas
+- Rate Limiting
+- Changelog (Review Mode only)
+
+Before generating `specs/api.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

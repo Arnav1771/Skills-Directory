@@ -1,0 +1,189 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 8  |  Skill: tool-surface-auditor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `tool-surface-auditor` skill.
+
+### Inputs
+- Skill definition: `.claude/ToolSurfaceAuditor/SKILL.md`
+- Authoritative inputs:
+  - `input/enabled-tools.json`
+  - `input/usage-telemetry.json`
+  - `input/audit-config.json`
+
+### Execution
+- Load the complete MCP server and tool inventory.
+- Use telemetry from the 30-day window to calculate usage characteristics for every tool.
+- Apply classification and recommendation rules exactly as defined.
+- Treat all disable actions as recommendations requiring human review.
+
+### Processing Requirements
+
+#### Tool Inventory
+- Record for each tool:
+  - `server`
+  - `name`
+  - `description_tokens`
+  - `param_schema_tokens`
+  - `total_tokens`
+- Compute:
+  - Per-server token totals
+  - Grand total token footprint
+- Flag if ceilings from `audit-config.json` are exceeded:
+  - MCP servers > configured ceiling
+  - Total tools > configured ceiling
+
+#### Telemetry Processing
+For each tool extract:
+- `calls_30d`
+- `calls_7d`
+- `last_called`
+- `error_rate`
+- `avg_latency_ms`
+
+Calculate `recency_score`:
+- Within 7 days → `1.0`
+- Within 30 days → `0.5`
+- Older than 30 days → `0.1`
+- Never called → `0.0`
+
+#### Usage Scoring
+
+Calculate:
+
+```text
+usage_score =
+    (calls_per_session × 0.5)
+  + (recency_score × 0.3)
+  + ((1 - error_rate) × 0.2)
+```
+
+Where:
+
+```text
+calls_per_session =
+calls_30d ÷ maximum calls_30d observed
+```
+
+Requirements:
+- Normalise to the range [0,1].
+- Round usage scores to 4 decimal places.
+
+#### Classification Rules
+
+Apply exactly:
+
+| Classification | Condition | Recommendation |
+|---|---|---|
+| active | score > 0.4 | KEEP |
+| occasional | 0.1–0.4 inclusive | KEEP_MONITOR |
+| dormant | 0.0–0.1 exclusive and calls > 0 | FLAG_FOR_REVIEW |
+| never-used | calls_30d = 0 and last_called = null | RECOMMEND_DISABLE |
+
+#### Safety Rule
+
+Never auto-disable a tool when both conditions are true:
+
+- `calls_30d == 0`
+- `error_rate == 0.0`
+
+Instead classify as:
+
+```text
+REVIEW_REQUIRED
+reason: "zero-call-zero-error: possible emergency tool"
+```
+
+#### Server-Level Analysis
+
+Generate recommendations:
+
+- If all tools in a server are never-used → recommend disabling the server.
+- If ≥80% of tools are never-used or dormant → recommend partial disable.
+- Flag overlapping servers for consolidation review using heuristic tool-name similarity.
+
+### Outputs
+
+Generate:
+
+- `tool-audit-report.json`
+- `disabled-mcps-config.md`
+- `token-impact-report.json`
+
+### Output Requirements
+
+#### tool-audit-report.json
+Include:
+- Tools sorted by descending `usage_score`
+- Aggregate summary counts
+- Per-server summaries
+- Scores
+- Classifications
+- Recommendations
+- Review reasons where applicable
+
+#### disabled-mcps-config.md
+Provide both formats:
+
+Environment variables:
+
+```text
+ECC_DISABLED_MCPS=...
+ECC_DISABLED_TOOLS=...
+```
+
+JSON config:
+
+```json
+{
+  "disabled_servers": [],
+  "disabled_tools": []
+}
+```
+
+Requirements:
+- Human-review recommendations must remain commented.
+- Prefix review-only entries with:
+
+```text
+# REVIEW:
+```
+
+#### token-impact-report.json
+
+Calculate:
+
+```text
+total_tool_tokens_before
+tokens_from_disabled
+total_tool_tokens_after
+savings
+window_recovered_percentage
+cost_per_session_saved
+monthly_savings_at_1k_sessions_per_day
+```
+
+Where:
+
+```text
+window_recovered_percentage =
+(savings / 200000) × 100
+```
+
+and cost calculations use:
+
+```text
+standing_context_per_token_cost
+```
+
+from `audit-config.json`.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

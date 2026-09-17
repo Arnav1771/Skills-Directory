@@ -1,0 +1,74 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 2  |  Skill: runtime-iq
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `runtime-iq` skill.
+
+### Inputs
+- Skill definition: `.claude/RuntimeIQ/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+  - `specs/design.md`
+  - `operate/control-plane/cost-config.yaml`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Conduct the required elicitation sequence to collect missing runtime configuration.
+- Parse NFR targets from `artifacts/openspec.yaml` after confirmation.
+- Generate only the artifacts applicable to the selected observability stack and deployment target.
+- Do not assume values that require user approval.
+
+### Required Elicitation
+Collect only the following:
+
+1. Observability stack in use.
+2. Metrics endpoint or connection string.
+3. Alert notification channel.
+4. Monitoring polling interval.
+5. Auto-scaling bounds.
+6. SLA dimensions to monitor.
+
+If `artifacts/deploy-manifest.yaml` is unavailable, collect deployment target details before continuing.
+
+### Confirmation Gate
+Present a concise configuration summary including:
+- Deployment target
+- Observability stack
+- Metrics endpoint
+- Alert channel
+- Polling interval
+- Auto-scaling bounds
+- SLA dimensions
+- Confirmation that NFR targets will be derived from `artifacts/openspec.yaml`
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <question>` → update the specified value and re-display the summary.
+
+### Outputs
+After confirmation, generate the applicable artifacts under `operate/runtime-iq/`:
+
+- `sla-dashboard.json`
+- Stack-specific monitoring configuration:
+  - `prometheus-rules.yaml`, or
+  - `datadog-monitors.json`, or
+  - `cloudwatch-alarms.json`, or
+  - `otel-collector-config.yaml`, or
+  - `polling-script.py`
+- `hpa.yaml` or `autoscaling-policy.json`
+- `alert-config.yaml`
+- `runtime-iq-monitor.py`
+- `thresholds.yaml`
+- `sla-breach-log.md`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

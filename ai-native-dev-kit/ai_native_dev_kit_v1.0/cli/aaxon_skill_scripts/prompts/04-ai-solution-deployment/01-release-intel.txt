@@ -1,0 +1,181 @@
+# Source: 04-ai-solution-deployment.md  |  Prompt 1  |  Skill: release-intel
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `release-intel` skill.
+
+### Inputs
+- Skill definition: `.claude/ReleaseIntel/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/release/deploy-manifest.yaml` (if present)
+  - `artifacts/sprint-board.md`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/traceability-report.md`
+  - `artifacts/scenario-matrix.md`
+  - `artifacts/assumption-log.md`
+  - `artifacts/decision-ledger.md`
+  - `specs/spec.md`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Input Audit
+- Step 2: Deployment Scope Extraction
+- Step 3: Readiness Signal Synthesis
+- Step 4: Blast Radius Quantification
+- Step 5: Open Issues List
+- Step 6: Release Verdict
+- Step 7: Write Output
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Deployment scope and how it was derived.
+- Artifact completeness and freshness.
+- Release readiness signals.
+- Blast radius assessment for all in-scope components.
+- Open issues and their priority.
+- Gate 3 release readiness status.
+
+### Step 1 — Input Audit
+Verify the availability of:
+- `artifacts/release/deploy-manifest.yaml`
+- `artifacts/sprint-board.md`
+- `artifacts/task-breakdown.yaml`
+- `artifacts/traceability-report.md`
+- `artifacts/scenario-matrix.md`
+- `artifacts/assumption-log.md`
+- `artifacts/decision-ledger.md`
+- `specs/spec.md`
+
+Internally record:
+- Files found versus missing.
+- Any stale artifacts (sprint mismatch or outdated timestamps).
+- Whether deployment scope can be established.
+
+If both `artifacts/sprint-board.md` and `artifacts/task-breakdown.yaml` are unavailable:
+- Halt execution.
+- Prompt exactly as defined in the skill.
+- Do not continue until deployment scope is provided.
+
+### Step 2 — Deployment Scope Extraction
+Determine the release scope using the following precedence:
+1. `artifacts/release/deploy-manifest.yaml`
+2. Inferred scope from `artifacts/sprint-board.md`
+3. Cross-reference with `artifacts/task-breakdown.yaml`
+
+For all identified release items:
+- Extract components, services, APIs, UI features, and tasks.
+- Record task status:
+  - `DONE`
+  - `IN REVIEW`
+  - `IN PROGRESS`
+  - `BLOCKED`
+- Flag any task not marked `DONE` or `IN REVIEW` as an open item requiring POD Lead disposition.
+
+If `deploy-manifest.yaml` exists:
+- Compare it against the inferred scope.
+- Document any discrepancies.
+
+If deployment scope is inferred rather than explicitly defined:
+- State this assumption clearly in the report.
+
+### Step 3 — Readiness Signal Synthesis
+Synthesize readiness evidence from available artifacts.
+
+From `artifacts/traceability-report.md`, determine:
+- Requirements coverage percentage.
+- Requirements with zero test coverage.
+- Requirements descoped during the sprint.
+
+From `artifacts/scenario-matrix.md`, determine:
+- HIGH or CRITICAL scenarios without mitigation.
+- Scenarios whose trigger conditions may occur during deployment.
+
+From `artifacts/assumption-log.md`, determine:
+- Unresolved HITL blockers.
+- Open assumptions affecting release scope.
+
+From `artifacts/decision-ledger.md`, determine:
+- ADRs marked `PENDING` or `CONTESTED`.
+- Decisions whose consequences are not reflected in the implementation.
+
+Apply the thresholds defined in `references/readiness-thresholds.md`.
+
+### Step 4 — Blast Radius Quantification
+For every component within the deployment scope, assess:
+
+- User Segments
+- Dependent Features
+- Integration Points
+- Data Risk
+- Rollback Complexity
+
+Rate each dimension as:
+- `LOW`
+- `MEDIUM`
+- `HIGH`
+- `CRITICAL`
+
+Determine the composite blast radius using the skill rules:
+- Any `CRITICAL` dimension → overall `CRITICAL`
+- Two or more `HIGH` dimensions → overall `HIGH`
+- Otherwise apply the readiness threshold guidance.
+
+Every rating must cite its supporting artifact evidence.
+
+### Step 5 — Open Issues List
+Compile a consolidated issue list and classify each item as:
+
+- `P0 — DEPLOY BLOCKER`
+- `P1 — HIGH RISK`
+- `P2 — MEDIUM RISK`
+- `P3 — LOW RISK`
+
+For each issue include:
+- Identifier.
+- Description.
+- Source artifact.
+- Impacted components or requirements.
+- Recommended action.
+- Owner.
+
+### Step 6 — Release Verdict
+Apply the Gate 3 decision rules.
+
+Return exactly one verdict:
+
+- ✅ **READY TO DEPLOY**
+  - Zero P0 blockers.
+  - P1 items accepted by the POD Lead.
+  - Blast radius assessment completed.
+
+- ❌ **NOT READY — BLOCKED**
+  - One or more P0 blockers exist.
+  - Explicitly list each blocker.
+
+Provide a concise executive summary supporting the verdict.
+
+### Step 7 — Write Output
+Generate:
+- `artifacts/release/release-intel-report.md`
+
+The report must include:
+- Executive summary.
+- Binary release verdict at the top.
+- Deployment scope.
+- Readiness signals.
+- Blast radius table.
+- Risk-ranked open issues.
+- Gate 3 attestation evidence.
+- POD Lead action recommendations.
+
+Before generating the report, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

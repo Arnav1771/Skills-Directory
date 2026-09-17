@@ -1,0 +1,246 @@
+# Source: 02-data-readiness.md  |  Prompt 13  |  Skill: conductor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `conductor` skill.
+
+### Inputs
+- Skill definition: `.claude/Conductor/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/ai-manifest.json`
+  - `artifacts/policy-catalogue.yaml`
+  - `artifacts/traceability-report.md`
+  - `artifacts/sprint-scope-ranked.md`
+  - `artifacts/assumption-log.md`
+  - `artifacts/decision-ledger.md`
+  - `specs/tasks.md`
+  - `specs/program.md`
+- Additional inputs (if available):
+  - `artifacts/context.yaml`
+  - `artifacts/impact-analysis.md`
+  - `artifacts/rework-scope-patch.yaml`
+- Reference files:
+  - `references/capability-matrix.md`
+  - `references/gate-protocol.md`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Execute the following phases in order:
+- Phase 1: Pre-flight Validation
+- Phase 2: Task-to-Builder Mapping
+- Phase 3: Sprint Board Generation
+- Phase 4: Dispatch Log
+- Phase 5: Completion Forecast
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Active builder availability
+- Capacity overrides
+- Gate 1 status
+- Manual priority overrides
+
+### Phase 1 — Pre-flight Validation
+Validate that all REQUIRED artifacts are present.
+
+Verify the existence of:
+- `artifacts/openspec.yaml`
+- `artifacts/task-breakdown.yaml`
+- `artifacts/ai-manifest.json`
+- `artifacts/policy-catalogue.yaml`
+- `artifacts/traceability-report.md`
+- `artifacts/sprint-scope-ranked.md`
+- `artifacts/assumption-log.md`
+- `artifacts/decision-ledger.md`
+- `specs/tasks.md`
+- `specs/program.md`
+
+If any REQUIRED artifacts are missing:
+- List every missing artifact.
+- Halt execution.
+- Do not proceed to dispatch.
+
+Confirm that Gate 1 has been cleared.
+
+If Gate 1 is not cleared:
+- Generate a pending gate notice.
+- Halt execution.
+
+Inspect `artifacts/assumption-log.md` for OPEN `HITL_BLOCKERS`.
+
+If blockers exist:
+- List all blockers.
+- Halt execution.
+- Do not dispatch any tasks.
+
+Cross-reference `artifacts/sprint-scope-ranked.md` against `artifacts/task-breakdown.yaml`.
+
+Validate that:
+- Only items classified as `PROCEED` are eligible for dispatch.
+- Deferred items are excluded from execution.
+
+### Phase 2 — Task-to-Builder Mapping
+For each eligible task in `artifacts/task-breakdown.yaml`:
+
+Determine:
+- Task identifier
+- Task description
+- Assigned builder
+- Accelerator skill
+- Dependency status
+- Estimated completion timing
+
+Use `references/capability-matrix.md` to:
+- Match task types to builder capabilities.
+- Select the appropriate accelerator skill.
+
+Resolve all dependency relationships.
+
+Classify tasks as:
+- `DISPATCHED`
+- `BLOCKED`
+- `ESCALATED`
+
+For blocked tasks:
+- Identify the blocking dependency.
+- Record the waiting condition.
+
+### Phase 3 — Sprint Board Generation
+Generate the sprint board using dispatched task information.
+
+Calculate and document:
+- Total task count
+- Dispatched task count
+- Dependency-blocked task count
+- HITL-blocked task count
+- Deferred task count
+
+Generate Task Board entries containing:
+- Task ID
+- Description
+- Builder assignment
+- Accelerator skill
+- Status
+- Dependency information
+- ETA
+
+Generate:
+- HITL Gate Queue
+- Escalation Queue
+
+### Phase 4 — Dispatch Log
+Generate append-only dispatch records.
+
+Create dispatch entries for:
+- All dispatched tasks
+- All blocked tasks
+- All escalated tasks
+
+Generate timestamped entries using the formats defined in the skill.
+
+Dispatch entries must include:
+- Timestamp
+- Task identifier
+- Builder assignment
+- Accelerator skill
+- Trigger source
+
+Blocked entries must include:
+- Timestamp
+- Task identifier
+- Blocking reason
+- Waiting dependency or gate
+
+Escalation entries must include:
+- Timestamp
+- Task identifier
+- Escalation reason
+- Required POD Lead action
+
+### Phase 5 — Completion Forecast
+Calculate sprint completion forecasts using:
+- Remaining task inventory
+- Estimated task durations
+- Available builder-hours
+
+Determine:
+- Builder-hours available
+- Builder-hours consumed
+- Estimated days remaining
+- Forecast completion date
+
+Document the assumptions supporting the forecast.
+
+Apply all escalation rules defined in the skill, including:
+- Task failure escalation
+- HITL gate delay reminders
+- Mid-sprint specification change handling
+- Builder capacity exhaustion procedures
+
+Follow all constraints, processing rules, and execution behavior defined in the `Conductor` skill.
+
+### Outputs
+Generate or update the following artifacts:
+- `artifacts/sprint-board.md`
+- `artifacts/dispatch-log.md`
+
+Ensure `artifacts/sprint-board.md` contains:
+- Sprint identifier
+- Generation date
+- Status summary
+- Task Board
+- HITL Gate Queue
+- Escalation Queue
+- Completion Forecast
+
+Generate Status Summary entries containing:
+- Total tasks
+- Dispatched tasks
+- Dependency-blocked tasks
+- HITL-blocked tasks
+- Deferred tasks
+
+Generate Task Board entries containing:
+- Task ID
+- Description
+- Builder assignment
+- Accelerator skill
+- Status
+- Dependency information
+- ETA
+
+Generate HITL Gate Queue entries containing:
+- Waiting tasks
+- Required gate clearances
+- Release conditions
+
+Generate Escalation Queue entries containing:
+- Task identifiers
+- Escalation reasons
+- POD Lead actions required
+
+Generate Completion Forecast entries containing:
+- Available builder-hours
+- Consumed builder-hours
+- Remaining builder-hours
+- Estimated completion timeline
+
+Ensure `artifacts/dispatch-log.md` remains append-only and contains:
+- DISPATCHED events
+- BLOCKED events
+- ESCALATED events
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+**Data Readiness Complete**

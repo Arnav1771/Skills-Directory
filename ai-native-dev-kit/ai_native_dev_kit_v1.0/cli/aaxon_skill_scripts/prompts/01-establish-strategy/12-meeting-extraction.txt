@@ -1,0 +1,159 @@
+# Source: 01-establish-strategy.md  |  Prompt 12  |  Skill: meeting-extraction
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `meeting-extraction` skill.
+
+### Inputs
+- Skill definition: `.claude/meeting-extraction/SKILL.md`
+- All available meeting artifacts, including:
+  - Meeting transcripts
+  - Call notes
+  - Customer session records
+  - AI-generated meeting summaries
+  - Discovery session notes
+- Existing knowledge files (if present):
+  - `specs/knowledge.md`
+  - `specs/features.md`
+  - `specs/design.md`
+
+### Execution
+Use all available meeting transcripts, call notes, or customer session records as inputs.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Transcript Intake
+- Phase 1: Content Classification
+- Phase 2: Meeting Brief
+- Phase 3: knowledge.md Update
+- Phase 4: features.md Update
+- Phase 5: design.md Update
+- Phase 6: Conflict Detection
+
+Determine and document:
+- Transcript type
+- Meeting context
+- Participants
+- Meeting date
+- Availability of existing knowledge files
+
+If the transcript is raw verbatim output, filter out crosstalk, filler, scheduling logistics, repeated clarifications, and off-topic discussion.
+
+Read existing files before extraction to enable conflict detection and deduplication.
+
+Classify every substantive piece of content into the appropriate routing category before writing:
+- Business context
+- Business rules
+- Business workflows
+- As-is system behavior
+- Pain points
+- Customer expectations
+- Constraints
+- To-be feature requirements
+- To-be technology decisions
+- Decisions made
+- Open items and follow-ups
+- Risk signals
+- Scope signals
+- Stakeholder intelligence
+
+Apply the following routing rules:
+- Business context, business rules, business workflows, as-is system behavior, pain points, customer expectations, constraints, open items, and risk signals → `specs/knowledge.md`
+- To-be feature requirements → `specs/features.md`
+- To-be technology and architecture decisions → `specs/design.md`
+- Stakeholder intelligence → Meeting Brief only
+
+Generate a structured Meeting Brief containing:
+- Meeting title or topic
+- Date
+- Participants
+- Meeting type
+- Executive Summary
+- Business Knowledge Captured
+- Pain Points Stated
+- To-Be Features Discussed
+- Technology & Architecture Discussed
+- Decisions Made
+- Open Items & Follow-Ups
+- Scope Signals
+- Risk Signals
+- Stakeholder Intelligence
+- Recommended Actions (Next 48 Hours)
+
+Update `specs/knowledge.md` with:
+- Business Context
+- Business Rules
+- Business Workflows
+- As-Is System facts
+- Customer Expectations
+- Constraints
+- Open Items
+- Change Log entries
+
+Update `specs/features.md` with:
+- Functional Features
+- Reporting & Analytics
+- Integration Requirements
+- User & Access Management
+- Notifications & Alerts
+- Configuration & Administration
+- Uncategorized / Pending Classification
+- Change Log entries
+
+Assign feature identifiers sequentially by reading the existing `specs/features.md` and continuing the next available FR number.
+
+Update `specs/design.md` with:
+- `[TO-BE] Technology & Architecture Decisions`
+- Decision or Preference
+- Rationale
+- Constraints implied
+- Status
+- Change Log entries
+
+Preserve customer voice by quoting directly or paraphrasing minimally for expectations, business rules, and feature requirements.
+
+Mark inference or interpretation with `[INFERRED]`.
+
+Capture business rules precisely. If a rule is unclear, mark it as `[NEEDS CLARIFICATION]`.
+
+Capture features as capabilities rather than implementation details.
+
+If participant roles cannot be determined, label them as `[Unidentified speaker]`.
+
+If transcript quality is poor, flag:
+`⚠️ TRANSCRIPT QUALITY: [describe limitation]`
+
+After all updates, perform conflict detection across all affected artifacts and generate a consolidated Conflict Report.
+
+Follow all constraints, formatting requirements, and execution behavior defined in the `meeting-extraction` skill.
+
+### Outputs
+Generate or update the following artifacts as applicable:
+
+- Meeting Brief
+- `specs/knowledge.md`
+- `specs/features.md`
+- `specs/design.md`
+
+Ensure the Meeting Brief includes:
+- Executive Summary
+- Business Knowledge Captured
+- Pain Points Stated
+- To-Be Features Discussed
+- Technology & Architecture Discussed
+- Decisions Made
+- Open Items & Follow-Ups
+- Scope Signals
+- Risk Signals
+- Stakeholder Intelligence
+- Recommended Actions
+- Consolidated Conflict Report
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

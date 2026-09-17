@@ -1,0 +1,61 @@
+# Source: 03-platform-enablement.md  |  Prompt 4  |  Skill: performance-optimizer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `performance-optimizer` skill.
+
+### Inputs
+- Skill definition: `.claude/PerformanceOptimizer/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/openspec.yaml`
+  - `artifacts/sprint-capacity.yaml`
+- Additional inputs (if available):
+  - Live token consumption data from agents/builders
+  - PromptBench results
+- Reference files:
+  - `references/routing-matrix.md`
+  - `references/budget-calibration.md`
+  - `sample_input/sample-sprint-capacity.yaml`
+  - `sample_output/sample-routing-decisions.yaml`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Task Profiling
+- Step 2: Model Routing Decision
+- Step 3: Budget Monitoring
+- Step 4: Cost Reduction Recommendations
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+### Key Validations
+- Profile every generation task by:
+  - Complexity
+  - Context size
+  - Output type
+- Apply the routing matrix exactly as defined in the skill.
+- Apply any `quality_tier: premium` overrides found in `artifacts/openspec.yaml`.
+- Generate a routing decision for every task in `artifacts/task-breakdown.yaml`.
+- Initialise sprint token budget monitoring using `artifacts/sprint-capacity.yaml`.
+- Calculate current budget status and projected consumption using available usage data.
+- Apply all alert thresholds, escalation behaviour, and budget controls defined in the skill.
+- Generate cost reduction recommendations whenever projected budget risk exceeds defined thresholds.
+
+### Outputs
+Generate or update:
+- Routing decisions for all sprint tasks
+- Initial Sprint Token Budget Dashboard
+
+Generate `token-consumption-report.yaml` if end-of-sprint reporting is applicable.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

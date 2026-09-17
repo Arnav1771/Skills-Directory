@@ -1,0 +1,204 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 11  |  Skill: semantic-cache
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `semantic-cache` skill.
+
+### Inputs
+- Skill definition: `SemanticCache/SKILL.md`
+- Authoritative inputs:
+  - `input/inbound-requests.json`
+  - `input/cache-store.json`
+  - `input/cache-config.json`
+
+### Execution
+- Follow the cache workflow exactly as defined.
+- Do not assume missing values. If required cache configuration is absent, pause and request clarification before continuing.
+- Respect all safety rules, especially never caching PII or personal account data.
+
+### Processing Steps
+
+#### Step 1 — Normalize and Hash
+For each inbound request:
+
+Normalize the input:
+
+```text
+trim whitespace
+convert to lowercase
+collapse repeated whitespace to a single space
+remove special characters except standard punctuation
+```
+
+Generate:
+
+```text
+content_hash = SHA-256(normalized_input)
+```
+
+Use the normalized hash as the primary lookup key.
+
+#### Step 2 — Never-Cache Validation
+Before any cache lookup:
+
+- Load `never_cache_patterns` from `cache-config.json`.
+- Skip cache processing if the request matches any configured pattern.
+- Also bypass caching for:
+  - Email addresses
+  - Queries containing 10+ digit numbers
+  - Personal account references
+  - Order-specific requests
+  - Balance or account status queries
+  - Any detected PII
+
+For bypassed requests:
+- Mark the request as `cache_bypassed`.
+- Pass through normally without seeding the cache.
+
+#### Step 3 — Exact Cache Lookup
+Using `content_hash`:
+
+- Search `cache-store.json`.
+- Verify the entry exists and has not expired.
+- Update:
+  - `hit_count`
+  - `last_accessed`
+
+If valid:
+
+Return:
+
+```json
+{
+  "status": "hit",
+  "cache_type": "exact",
+  "similarity": 1.0
+}
+```
+
+Do not continue to semantic search.
+
+#### Step 4 — Semantic Lookup
+Only if:
+
+- Exact lookup misses or has expired, and
+- Semantic caching is enabled.
+
+Generate embeddings using the configured embedding model.
+
+Search for the nearest stored embedding.
+
+Calculate cosine similarity.
+
+#### Step 5 — Semantic Hit Decision
+If:
+
+```text
+cosine_similarity ≥ similarity_threshold
+```
+
+and the candidate entry is still valid:
+
+Return a semantic hit.
+
+Include the mandatory warning:
+
+```text
+semantic_match_verify_appropriateness
+```
+
+Populate:
+
+```json
+{
+  "cache_type": "semantic",
+  "similarity": "<score>",
+  "warning": "semantic_match_verify_appropriateness"
+}
+```
+
+If the threshold is not met, continue to Step 6.
+
+#### Step 6 — Miss and Cache Seeding
+For cache misses:
+
+- Pass the original request through for downstream processing.
+- Seed a new cache entry containing:
+  - Cache UUID
+  - Content hash
+  - Embedding vector
+  - Original request
+  - Result
+  - Created timestamp
+  - TTL
+  - Hit count
+  - Last accessed timestamp
+
+Determine TTL using the configured policy.
+
+Do not seed requests excluded by never-cache rules.
+
+### Cache Rules
+
+Apply TTL and invalidation policies from configuration.
+
+Support:
+- Exact invalidation by hash
+- Tag invalidation
+- Query invalidation
+- Full cache flush
+
+Respect cache segmentation by model version where configured.
+
+### Outputs
+
+Generate the following:
+
+- Cache decision for every inbound request
+- `hit_metadata`
+- `session_metrics`
+
+### Output Requirements
+
+#### hit_metadata
+For every request include:
+
+```json
+{
+  "cache_type": "exact | semantic | miss | bypassed",
+  "similarity": 0.0,
+  "tokens_saved": 0,
+  "latency_ms": 0,
+  "served_from_cache": false,
+  "warning": null
+}
+```
+
+Populate:
+- Exact hits with similarity `1.0`
+- Semantic hits with the mandatory warning
+- Misses with `tokens_saved = 0`
+- Bypassed requests with the bypass reason
+
+#### session_metrics
+Aggregate and report:
+
+- Total requests processed
+- Exact hit count
+- Semantic hit count
+- Miss count
+- Bypassed request count
+- Overall hit rate
+- Tokens avoided
+- Estimated latency avoided
+- New cache entries seeded
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

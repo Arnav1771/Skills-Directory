@@ -1,0 +1,178 @@
+# Source: 03-platform-enablement.md  |  Prompt 10  |  Skill: guardian
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `guardian` skill.
+
+### Inputs
+- Skill definition: `.claude/Guardian/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/ai-manifest.json`
+  - `artifacts/traceability-report.md`
+- Additional inputs (if available):
+  - Source code modules in `src/**`
+  - `artifacts/eval-rubric.yaml`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following modes in order:
+- Generation Mode
+- Execution + Triage Mode
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Whether `openspec.yaml` is present and locked.
+- Whether source modules are available for execution mode.
+- Whether any acceptance criteria require clarification before test generation proceeds.
+
+### Gate Check
+Validate that:
+- `artifacts/openspec.yaml` exists.
+- `openspec.yaml` is locked and approved for validation.
+
+If `openspec.yaml` is missing or unlocked:
+- Halt execution.
+- Report that Gate 0 must be completed before Guardian can proceed.
+- Do not generate tests or execute validation activities.
+
+## Generation Mode
+
+### Step G1 — Parse Acceptance Criteria
+- Read `artifacts/openspec.yaml`.
+- Extract all acceptance criteria.
+- Map every criterion to its requirement ID using `artifacts/traceability-report.md`.
+- Identify associated components using `artifacts/ai-manifest.json`.
+
+### Step G2 — Elicit Missing Context
+For each acceptance criterion, determine whether it contains:
+- A measurable pass/fail condition.
+- A clearly defined actor.
+- Expected outcomes.
+- Boundary values or thresholds where applicable.
+
+If ambiguity exists:
+- Pause generation for the affected requirement.
+- Ask the POD Lead for clarification exactly as defined in the skill.
+- Do not generate tests for ambiguous criteria until clarification is provided.
+
+### Step G3 — Generate Gherkin Feature Files
+Generate `.feature` files for all unambiguous requirements.
+
+For every acceptance criterion:
+- Generate at least one happy-path scenario.
+- Generate at least one negative or edge-case scenario.
+- Generate additional boundary scenarios for numeric thresholds.
+
+Ensure every scenario includes:
+- A matching `@REQ-[ID]` tag.
+- A component tag derived from `artifacts/ai-manifest.json`.
+
+Generate scenarios following the Gherkin structure defined in the skill, including:
+- Feature description.
+- Business value statement.
+- Background section.
+- Happy-path scenarios.
+- Negative and edge-case scenarios.
+
+### Step G4 — Initial Coverage Map
+Generate the initial coverage report containing:
+- Total requirements.
+- Requirements covered by generated scenarios.
+- Requirements without scenarios.
+- Coverage percentage.
+- Any identified coverage gaps.
+
+## Execution + Triage Mode
+
+### Step E1 — Identify Available Modules
+- Scan `src/**` for available source modules.
+- Cross-reference `artifacts/ai-manifest.json`.
+- Identify:
+  - Components.
+  - Builders.
+  - Associated requirement IDs.
+
+If source modules are unavailable:
+- Report that execution mode cannot proceed.
+- Preserve generation outputs.
+
+### Step E2 — Execute Tests
+For all executable scenarios:
+- Execute tests against available modules.
+- Capture:
+  - Scenario status.
+  - Actual versus expected results.
+  - Failure details.
+  - Error messages or stack traces.
+  - Execution timestamps.
+
+### Step E3 — Failure Triage
+For every failed scenario, classify the failure into exactly one category:
+
+- `SPEC_ERROR`
+- `CODE_ERROR`
+- `ENV_ERROR`
+
+Do not allow any failure to remain untriaged.
+
+If Guardian cannot determine the classification:
+- Ask the POD Lead using the clarification prompt defined in the skill.
+- Finalise the report only after classification is provided.
+
+### Step E4 — Generate Test Results
+Generate `artifacts/test-results.json`.
+
+Include:
+- Sprint identifier.
+- Execution timestamp.
+- Summary statistics.
+- Scenario-level results.
+- Requirement mappings.
+- Component mappings.
+- Builder ownership.
+- Triage classifications.
+- Failure details where applicable.
+
+### Step E5 — Final Coverage Report
+Update the coverage report to include:
+- Requirement-level pass rates.
+- Open failures by triage category.
+- Coverage percentage.
+- Release gate verdict.
+
+Determine the Release gate outcome using the skill rules:
+
+- PASS:
+  - Coverage ≥ 80%.
+  - Zero untriaged failures.
+
+- BLOCK:
+  - Coverage < 80%.
+  - Any untriaged failures remain.
+
+### Outputs
+Generate:
+- `tests/*.feature`
+- `artifacts/test-results.json`
+- `artifacts/coverage-report.md`
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+### Check Block — artifacts/golden-references/
+
+> `artifacts/golden-references/` is required to be provided and should contain ideal, human-approved output examples for each feature undergoing AI evaluation — these are the reference answers that `eval-harness` uses to score AI-generated outputs across dimensions such as accuracy, tone, completeness, conciseness, and safety. One golden reference file is required per evaluated feature. Please provide the necessary files at `artifacts/golden-references/` before proceeding.
+
+Do not proceed to Prompt 11 until `artifacts/golden-references/` exists and contains at least one golden reference file per feature requiring evaluation.
+
+---

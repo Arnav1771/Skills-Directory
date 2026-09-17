@@ -1,0 +1,178 @@
+# Source: 02-data-readiness.md  |  Prompt 10  |  Skill: portfolio-prioritizer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `portfolio-prioritizer` skill.
+
+### Inputs
+- Skill definition: `.claude/PortfolioPrioritizer/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/roi-brief.md`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/traceability-report.md`
+  - `artifacts/opportunity-backlog-rescored.md`
+  - `specs/features.md`
+  - `specs/program.md`
+
+### Execution
+Read `artifacts/roi-brief.md`, `artifacts/task-breakdown.yaml`, `artifacts/traceability-report.md`, `artifacts/opportunity-backlog-rescored.md`, `specs/features.md`, and `specs/program.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Candidate Inventory
+- Phase 2: Composite Scoring
+- Phase 3: Must-Ship Override
+- Phase 4: Dependency Cluster Locking
+- Phase 5: Capacity Cut Line
+- Phase 6: Defer Rationale Generation
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Sprint capacity
+- Strategic weights
+- Capacity buffer
+- Must-ship items
+- Manual overrides
+
+### Phase 1 — Candidate Inventory
+- Load all in-scope requirements from `artifacts/task-breakdown.yaml`.
+- Load all TransformIQ candidate additions from `artifacts/opportunity-backlog-rescored.md`.
+- Combine them into a unified candidate list containing:
+  - REQ-ID or OPP-ID
+  - Description
+  - Estimated effort
+  - ROI values
+  - Dependency information
+
+### Phase 2 — Composite Scoring
+For each candidate, compute the composite score using the formula defined in the skill.
+
+Use:
+- Value scores from `artifacts/roi-brief.md`
+- Urgency signals from available artifacts
+- Strategic alignment from `specs/program.md`
+- Dependency enablement information from `artifacts/traceability-report.md`
+- Risk considerations from the available planning artifacts
+
+Normalise all scoring dimensions and document the rationale supporting each candidate's score.
+
+Generate for each candidate:
+- Composite score
+- Value contribution
+- Urgency contribution
+- Strategic alignment contribution
+- Dependency contribution
+- Risk contribution
+
+### Phase 3 — Must-Ship Override
+Identify any must-ship requirements.
+
+Apply must-ship overrides exactly as defined by the skill:
+- Insert must-ship items at the top of the ranked backlog regardless of score.
+- Mark them with `OVERRIDE: MUST-SHIP`.
+
+Apply any approved manual priority overrides and document their rationale.
+
+### Phase 4 — Dependency Cluster Locking
+Using dependency information from `artifacts/traceability-report.md`:
+
+- Identify dependency clusters.
+- Determine which requirements or opportunities must move together.
+- Score dependency clusters as a unit using the rules defined in the skill.
+- Apply dependency locking logic before final ranking.
+
+Document:
+- Cluster identifiers
+- Included items
+- Dependency impacts
+- Cluster-level decisions
+
+### Phase 5 — Capacity Cut Line
+Calculate sprint capacity using the rules defined in the skill.
+
+Determine:
+- Total available builder-hours
+- Reserved buffer
+- Usable sprint capacity
+- Allocated capacity
+
+Sort the ranked backlog by score and apply the capacity cut line.
+
+Classify each item as:
+- `PROCEED`
+- `DEFERRED`
+- `BORDERLINE`
+
+Flag any items within 10% of the cut line as requiring POD Lead judgment.
+
+### Phase 6 — Defer Rationale Generation
+For each deferred item, generate a defer rationale using the categories defined in the skill.
+
+Classify defer reasons as:
+- Low value
+- Capacity constraints
+- Dependency constraints
+
+Generate concise rationale statements suitable for reuse in future sprint planning.
+
+Follow all constraints, processing rules, and execution behavior defined in the `PortfolioPrioritizer` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/sprint-scope-ranked.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Capacity summary
+- Ranked PROCEED scope
+- Capacity cut line
+- Deferred items
+- Borderline items
+- Deferred dependency clusters
+
+Generate Capacity Summary entries containing:
+- Available builder-hours
+- Reserved buffer hours
+- Usable capacity
+- Allocated hours
+- Utilisation percentage
+
+Generate Sprint Scope — PROCEED entries containing:
+- Rank
+- REQ-ID
+- Description
+- Composite score
+- Estimated hours
+- Cumulative hours
+- Applicable flags
+
+Generate Deferred entries containing:
+- REQ-ID
+- Description
+- Composite score
+- Defer rationale
+- Recommended next-sprint priority
+
+Generate Borderline entries containing:
+- REQ-ID
+- Description
+- Composite score
+- Estimated hours
+- Reason requiring POD Lead review
+
+Generate Dependency Cluster entries containing:
+- Cluster identifier
+- Deferred items
+- Reason for deferral
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

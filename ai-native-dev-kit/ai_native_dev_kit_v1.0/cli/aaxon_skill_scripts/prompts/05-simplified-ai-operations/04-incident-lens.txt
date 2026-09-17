@@ -1,0 +1,91 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 4  |  Skill: incident-lens
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `incident-lens` skill.
+
+### Inputs
+- Skill definition: `.claude/IncidentLens/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+  - `operate/runtime-iq/sla-breach-log.md`
+  - `operate/runtime-iq/thresholds.yaml`
+  - `operate/control-plane/security-event-log.md`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Ask the mode selection question first and do not assume the operating mode.
+- Follow only the elicitation path applicable to the selected mode.
+- Cross-reference RuntimeIQ and ControlPlane artifacts where available.
+- Classify incidents and root causes strictly from available evidence.
+- Do not invent incident history, recurrence patterns, or remediation details.
+
+### Required Elicitation
+
+**Q0 — Mode Selection**
+Choose one:
+- **Mode A:** Log and analyse a new incident
+- **Mode B:** Analyse patterns in existing incident history
+
+#### If Mode A:
+Collect only:
+1. Incident timestamp
+2. Affected services/features
+3. Observable symptom
+4. Error type/category
+5. Resolution steps taken
+6. Known root cause (or `unknown`)
+7. Resolution status
+
+#### If Mode B:
+Collect only:
+1. Lookback window (sprints)
+2. Pattern/systemic classification thresholds
+3. Backlog item output format
+
+### Confirmation Gate
+
+#### Mode A
+Present a concise summary including:
+- Timestamp
+- Affected services
+- Symptom
+- Error type
+- Resolution steps
+- Root cause
+- Status
+
+Wait for:
+- `CONFIRM` → proceed.
+- `EDIT <question>` → revise and re-display.
+
+#### Mode B
+Present a concise summary including:
+- Lookback window
+- Pattern threshold
+- Systemic threshold
+- Backlog format
+
+Wait for:
+- `CONFIRM` → proceed.
+- `EDIT <question>` → revise and re-display.
+
+### Outputs
+After confirmation, generate only the applicable artifacts under `operate/incident-lens/`:
+
+- `incident-log.md`
+- `incident-pattern-report.md`
+- `backlog-items.md`
+- `backlog-items.yaml`
+- `runbook-enrichments.yaml`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

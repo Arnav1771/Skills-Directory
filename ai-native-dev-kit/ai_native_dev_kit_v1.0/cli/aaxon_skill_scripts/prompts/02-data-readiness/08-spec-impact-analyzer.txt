@@ -1,0 +1,185 @@
+# Source: 02-data-readiness.md  |  Prompt 8  |  Skill: spec-impact-analyzer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-impact-analyzer` skill.
+
+### Inputs
+- Skill definition: `.claude/SpecImpactAnalyzer/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/openspec-proposed.yaml` or the provided inline specification diff
+  - `artifacts/ai-manifest.json`
+  - `artifacts/traceability-report.md`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/decision-ledger.md`
+  - `specs/spec.md`
+- Additional inputs (if available):
+  - `tests/*.feature`
+
+### Execution
+Read `artifacts/openspec.yaml`, `artifacts/openspec-proposed.yaml` (or the provided inline diff), `artifacts/ai-manifest.json`, `artifacts/traceability-report.md`, `artifacts/task-breakdown.yaml`, `artifacts/decision-ledger.md`, and `specs/spec.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Diff Parsing
+- Phase 2: Ripple Tracing
+- Phase 3: Effort Estimation
+- Phase 4: Risk Classification
+- Phase 5: Rework Scope Patch
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Change description
+- Sprint days remaining
+- Change source
+- Sprint risk posture
+
+### Diff Parsing
+If `artifacts/openspec-proposed.yaml` is available:
+- Compute the structural diff against `artifacts/openspec.yaml`.
+
+If an inline diff is provided:
+- Parse the diff directly.
+
+Identify:
+- Changed requirements
+- Added requirements
+- Removed requirements
+
+Classify each change as:
+- `ADDITIVE`
+- `MODIFICATIVE`
+- `DESTRUCTIVE`
+- `NFR CHANGE`
+
+Capture the affected requirement identifiers and change categories.
+
+### Ripple Tracing
+For each affected requirement:
+- Trace all downstream artifacts using `artifacts/traceability-report.md`.
+- Determine whether each affected artifact requires:
+  - Regeneration
+  - Retesting
+  - Redeployment
+
+Expand the analysis to include transitive dependencies.
+
+Identify:
+- Dependent clusters affected by the change.
+- Critical path impacts.
+- Closed HITL gates referenced in `artifacts/decision-ledger.md` that would be invalidated.
+
+Flag any invalidated gate attestations.
+
+### Effort Estimation
+Estimate rework effort using the heuristics defined in the skill:
+
+- Code file regeneration:
+  - `0.5 hours per file`
+- Test scenario regeneration:
+  - `0.25 hours per scenario`
+- Integration retesting:
+  - `1 hour per integration point`
+- Gate re-attestation:
+  - `0.5 hours per gate`
+
+Calculate:
+- Minimum effort estimate
+- Expected effort estimate
+- Maximum effort estimate using a ±30% variance range
+
+Estimate:
+- Available builder capacity remaining
+- Capacity headroom
+
+### Risk Classification
+Classify the overall impact as one of:
+- `IN-SPRINT SAFE`
+- `DEFER TO NEXT SPRINT`
+- `SCOPE RISK`
+- `ESCALATE`
+
+Base the classification on:
+- Estimated effort
+- Sprint risk tolerance
+- Critical path impact
+- Closed gate invalidation
+- Complexity of required regeneration
+
+Provide a rationale supporting the classification.
+
+### Rework Scope Patch
+If the change is classified as `IN-SPRINT SAFE` and approval conditions are met:
+- Generate a rework scope patch.
+- Identify clusters requiring re-queueing.
+- Mark affected artifacts as stale.
+
+Update affected artifact statuses accordingly.
+
+Follow all constraints, processing rules, and execution behavior defined in the `SpecImpactAnalyzer` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/impact-analysis.md`
+
+Generate `artifacts/rework-scope-patch.yaml` only when the conditions defined by the skill are satisfied.
+
+Ensure `artifacts/impact-analysis.md` contains:
+- Change title
+- Sprint identifier
+- Days remaining
+- Generation timestamp
+- Change summary
+- Affected artifacts
+- HITL gate impact assessment
+- Effort estimates
+- Capacity analysis
+- Risk classification
+- Recommendation
+
+Generate Change Summary entries containing:
+- Change type
+- Changed requirement identifiers
+- Change requester
+
+Generate Affected Artifact entries containing:
+- Artifact reference
+- Cluster identifier
+- Impact type
+- Estimated effort
+
+Generate HITL Gate Impact entries containing:
+- Gate identifier
+- Current status
+- Invalidation assessment
+
+Generate Effort Estimate entries containing:
+- Minimum effort
+- Expected effort
+- Maximum effort
+- Available builder-hours
+- Capacity headroom
+
+Generate Recommendation outputs containing:
+- Proceed recommendation
+- Defer recommendation
+- Escalation recommendation
+- Supporting rationale
+
+If generated, ensure `artifacts/rework-scope-patch.yaml` contains:
+- Sprint identifier
+- Change identifier
+- Approval metadata
+- Re-queue instructions
+- Stale artifact listings
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

@@ -1,0 +1,213 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 12  |  Skill: model-router
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `model-router` skill.
+
+### Inputs
+- Skill definition: `ModelRouter/SKILL.md`
+- Authoritative inputs:
+  - `input/task-graph.json`
+  - `input/budget-signal.json`
+  - `input/routing-config.json`
+
+### Execution
+- Route each task to the least expensive model capable of meeting its quality requirements.
+- Apply budget overrides and escalation rules exactly as defined.
+- Do not assume missing complexity values. If required routing information is unavailable, pause and request clarification before continuing.
+
+### Processing Steps
+
+#### Step 1 — Load Tasks
+For each task in `task-graph.json`, extract:
+- `task_id`
+- Task description
+- Complexity hints (if provided)
+- Existing model assignment (if any)
+- Task type
+- Quality gate information
+
+Load:
+- Budget utilization and remediation guidance from `budget-signal.json`
+- Routing thresholds and scoring rules from `routing-config.json`
+
+#### Step 2 — Score the Six Dimensions
+Assign scores from 1–10 for:
+
+| Dimension | Weight |
+|---|---:|
+| reasoning_depth | 0.30 |
+| ambiguity_level | 0.15 |
+| domain_expertise | 0.20 |
+| multi_step_planning | 0.15 |
+| safety_criticality | 0.10 |
+| output_precision | 0.10 |
+
+Use provided hints when available. Otherwise derive scores from the task description and record reduced confidence.
+
+Calculate:
+
+```text
+weighted_composite =
+(reasoning_depth × 0.30)
++ (ambiguity_level × 0.15)
++ (domain_expertise × 0.20)
++ (multi_step_planning × 0.15)
++ (safety_criticality × 0.10)
++ (output_precision × 0.10)
+```
+
+#### Step 3 — Baseline Tier Assignment
+Apply routing thresholds:
+
+```text
+1.0–3.4   → claude-haiku-4-5
+3.5–6.4   → claude-sonnet-4-5
+6.5–10.0  → claude-opus-4-5
+```
+
+Record:
+- Assigned model
+- Tier label
+- Composite score
+- Routing rationale
+
+#### Step 4 — Confidence Validation
+Generate a classification confidence score.
+
+If:
+
+```text
+classification_confidence < 0.70
+```
+
+then:
+
+- Escalate to at least Sonnet.
+- Append:
+
+```text
+[escalated: low-confidence classification]
+```
+
+to the rationale.
+
+#### Step 5 — Budget Overrides
+Use `budget-signal.json` utilization values.
+
+Apply:
+
+```text
+budget ≥ 90%
+```
+
+- Force Haiku where possible.
+- Do not downgrade tasks with:
+
+```text
+safety_criticality ≥ 7
+```
+
+below Sonnet.
+
+Apply:
+
+```text
+budget 80–89%
+```
+
+- Downgrade one tier when permitted.
+
+Downgrade ladder:
+
+```text
+Opus → Sonnet → Haiku
+```
+
+Update the rationale whenever a budget override is applied.
+
+#### Step 6 — Safety Anchor
+Enforce:
+
+```text
+safety_criticality ≥ 7
+```
+
+must never result in a model assignment lower than:
+
+```text
+claude-sonnet-4-5
+```
+
+regardless of budget pressure.
+
+#### Step 7 — Escalation Evaluation
+Where quality gates fail or escalation triggers exist:
+
+- Escalate one tier:
+  - Haiku → Sonnet
+  - Sonnet → Opus
+- Limit to a maximum of two escalations per task.
+- Record:
+  - Original model
+  - Escalated model
+  - Trigger reason
+  - Additional projected cost
+  - Escalation path
+
+### Outputs
+
+Generate:
+
+- `routing-decisions.json`
+- `escalation-log.json`
+
+### Output Requirements
+
+#### routing-decisions.json
+For each task include:
+
+```json
+{
+  "task_id": "",
+  "dimension_scores": {},
+  "weighted_composite_score": 0.0,
+  "classification_confidence": 0.0,
+  "tier": "",
+  "assigned_model": "",
+  "routing_rationale": "",
+  "budget_override_applied": false,
+  "safety_anchor_applied": false
+}
+```
+
+Also include summary metrics:
+- Tasks routed to Haiku
+- Tasks routed to Sonnet
+- Tasks routed to Opus
+- Budget overrides applied
+- Safety-anchor protections triggered
+
+#### escalation-log.json
+Include entries only for escalated tasks:
+
+```json
+{
+  "task_id": "",
+  "original_model": "",
+  "escalated_model": "",
+  "trigger": "",
+  "additional_cost_usd": 0,
+  "escalation_path": []
+}
+```
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

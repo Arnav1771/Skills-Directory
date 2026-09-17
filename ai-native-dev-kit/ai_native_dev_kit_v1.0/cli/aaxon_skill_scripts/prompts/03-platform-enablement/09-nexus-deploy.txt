@@ -1,0 +1,111 @@
+# Source: 03-platform-enablement.md  |  Prompt 9  |  Skill: nexus-deploy
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `nexus-deploy` skill.
+
+### Inputs
+- Skill definition: `.claude/NexusDeploy/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/openspec.yaml`
+  - `artifacts/ai-manifest.json`
+  - `artifacts/review-verdict.yaml`
+  - `data-contract-violations.yaml`
+  - `prompt-bench-nfr-evidence.yaml`
+- Additional inputs:
+  - Source code modules containing provenance headers
+  - Infrastructure configuration files
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Build Artifact Registry
+- Step 2: Completeness Validation
+- Step 3: Deploy Manifest Preparation
+- Step 4: Update `ai-manifest.json`
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Whether this invocation is a completeness check or deploy manifest generation.
+- Any requirements explicitly deferred from completeness validation.
+- The rollout strategy to apply.
+- Any infrastructure sequencing requirements.
+
+### Step 1 — Build Artifact Registry
+Build the artifact registry from provenance headers.
+
+- Parse all source files containing provenance headers.
+- Extract:
+  - Requirement ID
+  - Task ID
+  - Generated date
+  - Artifact file path
+  - Checksum (if available)
+- Build the registry:
+  - `requirement_id → [artifact_file_path, task_id, generated_date, checksum]`
+- Cross-reference the registry against `artifacts/ai-manifest.json`.
+- Merge prior sprint artifacts with current sprint additions.
+
+### Step 2 — Completeness Validation
+For every requirement ID in `artifacts/task-breakdown.yaml`, verify:
+
+- At least one artifact exists with the matching requirement ID.
+- `artifacts/review-verdict.yaml` indicates approval for that requirement.
+- `data-contract-violations.yaml` contains no unresolved violations for that requirement.
+- `prompt-bench-nfr-evidence.yaml` indicates PASS for AI-enabled requirements.
+
+Classify each requirement using the statuses defined in the skill:
+- `COMPLETE`
+- `ARTIFACT_MISSING`
+- `REVIEW_PENDING`
+- `REVIEW_BLOCKED`
+- `POLICY_VIOLATION`
+- `NFR_FAIL`
+
+Generate and document the completeness status for every requirement.
+
+### Step 3 — Deploy Manifest Preparation
+If all requirements are classified as `COMPLETE`:
+
+- Generate `deploy-manifest.yaml`.
+- Compute checksums for verified artifacts.
+- Include rollout strategy details.
+- Include deployment sequencing requirements.
+- Build the deployment definition from the verified artifact set.
+
+If any requirements are not `COMPLETE`:
+
+- Generate the sprint completeness report.
+- Explicitly list every blocker.
+- Include recommended remediation actions.
+- Do not generate `deploy-manifest.yaml`.
+
+### Step 4 — Update Manifest
+Update `artifacts/ai-manifest.json`.
+
+- Register all verified sprint artifacts.
+- Preserve provenance information.
+- Mark superseded artifacts where applicable.
+- Update the component index for downstream consumers.
+
+### Outputs
+Generate:
+- `sprint-completeness-report.md`
+
+Generate when all requirements are COMPLETE:
+- `deploy-manifest.yaml`
+
+Update:
+- `artifacts/ai-manifest.json`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

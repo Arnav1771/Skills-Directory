@@ -1,0 +1,81 @@
+# Source: 01-establish-strategy.md  |  Prompt 9  |  Skill: requirements-elicitation-charter
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `requirements-elicitation-charter` skill.
+
+### Inputs
+- Skill definition: `.claude/requirements-elicitation-charter/SKILL.md`
+- Authoritative charter input: `specs/program.md`
+- Existing question pack outputs (if present): `questions-[YYYY-MM-DD].md`
+
+### Execution
+Read `specs/program.md` as the authoritative charter input.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Input Intake
+- Phase 1: Charter Analysis
+- Phase 2: Question Pack Generation
+- Phase 3: Output Formatting
+
+Extract and analyze the following from the charter:
+- Program name or code
+- Primary business objective
+- Stated scope
+- Known stakeholders
+- Timeline and milestones
+- Technology context
+- Constraints
+- Existing systems mentioned
+
+Perform Charter Analysis and identify:
+- Confirmed facts
+- Implicit assumptions
+- Identified gaps
+- Conflict flags
+
+Generate a domain-organized question pack aligned with the identified gaps and assumptions across the following domains:
+- Business Context & Objectives
+- Existing System & As-Is State
+- Functional Requirements
+- Technical & Integration Constraints
+- Data & Migration
+- UI/UX & User Expectations
+- Organizational & Delivery Constraints
+- Open Charter Issues
+
+Ensure that:
+- Every question is open-ended.
+- Every question maps to a specific gap or assumption identified during Charter Analysis.
+- Every question includes its corresponding gap reference.
+- Every question includes an intent note explaining why it matters.
+- Questions are specific to the charter and are not generic boilerplate.
+- No domain exceeds 8–10 questions.
+- Sensitive questions are marked with `[SENSITIVE]` where appropriate.
+- If the charter is very thin (< 1 page equivalent), explicitly state this and ask the user whether to proceed with inference-heavy questions or wait for a fuller brief.
+
+Follow all constraints, formatting requirements, and execution behavior defined in the `requirements-elicitation-charter` skill.
+
+### Outputs
+Generate the following artifact:
+
+- `questions-[YYYY-MM-DD].md`
+
+Ensure the output contains:
+- Customer Discovery Questions header
+- Charter Analysis Summary
+- Complete Question Pack for all applicable domains
+- Flagged Charter Ambiguities
+- Recommended Meeting Sequence
+
+Save the artifact as `questions-[YYYY-MM-DD].md` in the current working directory and report the saved path.
+
+Before generating `questions-[YYYY-MM-DD].md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

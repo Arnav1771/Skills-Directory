@@ -1,0 +1,247 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 16  |  Skill: rolling-summarizer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `rolling-summarizer` skill.
+
+### Inputs
+- Skill definition: `RollingSummarizer/SKILL.md`
+- Authoritative inputs:
+  - `input/recent-turns.md`
+  - `input/prior-summary.md`
+  - `input/summarizer-config.json`
+
+### Execution
+Maintain a bounded rolling session memory by folding recent turns into the existing structured summary. Preserve critical commitments and identifiers exactly as recorded.
+
+### Processing Steps
+
+#### Step 1 — Validate Trigger Conditions
+Determine whether summarization should run.
+
+Trigger if either condition is true:
+
+```text
+turns_since_last_summary >= 10
+```
+
+OR
+
+```text
+new_turns_token_count > 3000
+```
+
+If both conditions fire:
+
+```text
+trigger = "both"
+```
+
+Otherwise log:
+
+```text
+turns_trigger
+```
+
+or
+
+```text
+token_trigger
+```
+
+If neither trigger condition is met, stop and report that summarization was not required.
+
+#### Step 2 — Select Model
+Default model:
+
+```text
+claude-haiku-4-5
+```
+
+Escalate to:
+
+```text
+claude-sonnet-4-6
+```
+
+if any new turn contains:
+
+- Legal language
+- Formal commitments
+- Regulatory references
+- Dispute escalation content
+
+Examples include:
+
+- "per our SLA"
+- "I can confirm..."
+- "GDPR"
+- "HIPAA"
+- "chargeback"
+- "attorney"
+- "legal action"
+
+If escalation occurs:
+
+Record:
+
+```text
+escalation_triggered: true
+escalation_reason: <detected signal>
+model_used: claude-sonnet-4-6
+```
+
+Use Sonnet for the entire run.
+
+#### Step 3 — Load Existing Summary
+Read:
+
+- Recent turns from `recent-turns.md`
+- Previous rolling summary from `prior-summary.md`
+- Summarizer configuration
+
+If no prior summary exists:
+
+Initialize an empty summary using the required six sections and note the session start context.
+
+#### Step 4 — Extract New Facts
+Identify information not already represented in the prior summary.
+
+Capture:
+
+- Identity/profile updates
+- Issue developments
+- Actions taken
+- Status changes
+- New commitments
+- Pending items
+- Root-cause findings
+- Resolution updates
+
+Do not duplicate facts already represented semantically.
+
+#### Step 5 — Fold Into Existing Summary
+For each summary section:
+
+- Modify outdated information in place.
+- Append additive information concisely.
+- Preserve unchanged content exactly.
+
+Apply section labels:
+
+```text
+[UPDATED]
+```
+
+```text
+[NEW]
+```
+
+```text
+[UNCHANGED]
+```
+
+Strictly avoid duplication.
+
+#### Step 6 — Preserve Verbatim Fields
+Never paraphrase or compress fields listed in:
+
+```text
+preserve_verbatim
+```
+
+At minimum preserve exactly:
+
+- customer_id
+- ticket_id
+- commitment_text
+- amounts
+
+Copy character-for-character.
+
+#### Step 7 — Enforce Token Budget
+Maximum summary size:
+
+```text
+max_summary_tokens
+```
+
+(default: 800)
+
+If exceeded:
+
+1. Compress `Session Context`
+2. Compress `Issue Summary`
+3. Compress `Actions Taken`
+4. Never compress:
+   - Customer Profile
+   - Commitments Made
+
+Record if budget compression occurred.
+
+#### Step 8 — Generate Updated Summary
+Produce exactly these six sections in this order:
+
+```markdown
+## Session Context
+
+## Customer Profile
+
+## Issue Summary
+
+## Actions Taken
+
+## Pending Items
+
+## Commitments Made
+```
+
+Requirements:
+
+- Mark sections using `[UPDATED]`, `[NEW]`, or `[UNCHANGED]`
+- Preserve commitments verbatim
+- Remove resolved pending items
+- Reflect the latest understanding of the issue
+
+#### Step 9 — Generate Session State Metadata
+Produce:
+
+```json
+{
+  "last_summarized_at": {
+    "turn_number": "",
+    "timestamp": ""
+  },
+  "trigger_fired": "",
+  "model_used": "",
+  "summary_token_count": 0,
+  "escalation_triggered": false,
+  "escalation_reason": null
+}
+```
+
+#### Step 10 — Context Replacement Instructions
+After summary generation:
+
+- Remove all raw turns included in this run from active context.
+- Replace them with the updated rolling summary.
+- Retain turns occurring after the summarization cutoff.
+- Update session state metadata.
+
+### Outputs
+
+Generate:
+
+- `updated-rolling-summary.md`
+- `summary-run-log.json`
+- `session-state.json`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

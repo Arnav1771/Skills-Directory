@@ -1,0 +1,66 @@
+# Source: 01-establish-strategy.md  |  Prompt 13  |  Skill: knowledge-review
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `knowledge-review` skill.
+
+### Inputs
+- Skill definition: `.claude/knowledge-review/SKILL.md`
+- Primary context:
+  - `specs/knowledge.md`
+  - `specs/features.md`
+
+### Execution
+Read `specs/knowledge.md` and `specs/features.md` first.
+
+Execute the skill exactly as defined. All phases before the NEXT gate run internally — no section content, checklists, or findings are displayed inline.
+
+Capture and apply:
+- Customer expectation certainty: `[FIRM]`, `[EXPLORATORY]`, `[NEEDS VALIDATION]`
+- Feature priority confirmations: `MUST HAVE`, `SHOULD HAVE`, `NICE TO HAVE`
+
+### Gap Analysis
+Execute the complete Knowledge Completeness Checklist defined in the skill across:
+- Business Layer
+- Feature Layer
+- System Layer
+- Technical Layer
+- Compliance & Constraints
+- Design Readiness
+
+For every unchecked item:
+- Capture missing information if available.
+- Create an open item if genuinely unknown.
+- Mark as N/A with rationale if not applicable.
+
+### Outputs
+Generate validated versions of:
+
+- `specs/knowledge.md`
+- `specs/features.md`
+
+Incorporate:
+- All confirmed entries
+- All corrections
+- All additions
+- Closed open items with resolutions
+- Expectation certainty annotations
+- Feature priority updates and reclassifications
+- Gap analysis findings
+- New open items created during review
+
+Add the following validation stamp to both files:
+
+```markdown
+**STATUS: REVIEWED ✓** — Reviewed by: [Pod Lead / Program Lead] on [date]
+```
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,147 @@
+# Source: 02-data-readiness.md  |  Prompt 1  |  Skill: context-fabric
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `context-fabric` skill.
+
+### Inputs
+- Skill definition: `.claude/ContextFabric/SKILL.md`
+- Authoritative requirement source:
+  - `artifacts/openspec.yaml`
+- Supporting context:
+  - `specs/knowledge.md`
+  - `specs/design.md`
+  - `specs/ui-ux.md`
+  - `specs/database.md`
+  - `specs/api.md`
+- Existing context snapshot (if present):
+  - `artifacts/context.yaml`
+- Prior sprint manifest (if present):
+  - `artifacts/ai-manifest.json`
+- Enterprise API documentation, schema files, or integration specifications (if provided)
+- Change signals, incident logs, or drift reports (if provided)
+
+### Execution
+Read `artifacts/openspec.yaml`, `specs/knowledge.md`, `specs/design.md`, `specs/ui-ux.md`, `specs/database.md`, and `specs/api.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Capability Inventory
+- Phase 2: Change Detection
+- Phase 3: Requirement-to-Capability Mapping
+- Phase 4: Gap Report
+- Phase 5: Context Snapshot
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Scope boundary
+- Last refresh date
+- Known changes since the last refresh
+- Tribal knowledge entries
+- Capability gap handling preference
+
+### Capability Inventory
+Build a structured capability inventory by identifying:
+- API endpoints, including paths, methods, parameters, and authentication requirements
+- Database entities, including tables or collections, key fields, and relationships
+- UI components and reusable interface elements described in the specifications
+- Business logic modules, rules, and algorithms
+- Integration points and external system connections
+
+If `artifacts/ai-manifest.json` is available, include previously generated artifacts as confirmed capabilities.
+
+Append any manually provided tribal knowledge entries as `MANUAL` annotations.
+
+### Change Detection
+If `artifacts/context.yaml` exists:
+- Compare the current capability inventory against the previous snapshot.
+- Classify capability changes as:
+  - `ADDED`
+  - `REMOVED`
+  - `MODIFIED`
+- Annotate capabilities affected by incident logs, drift reports, or other change signals if provided.
+
+### Requirement-to-Capability Mapping
+For each requirement in `artifacts/openspec.yaml`:
+- Identify all dependent capabilities.
+- Classify each dependency as:
+  - `EXISTS`
+  - `EXISTS_MODIFIED`
+  - `GAP`
+  - `ASSUMED`
+
+Ensure:
+- Existing capabilities are marked for reuse rather than regeneration.
+- Modified capabilities are flagged for potential update work.
+- Capability gaps are explicitly identified.
+- Assumed capabilities are surfaced for POD Lead review.
+
+### Gap Analysis
+For every identified `GAP`:
+- Describe the missing capability.
+- Estimate complexity using:
+  - `LOW` (≤2 hours)
+  - `MEDIUM` (2–8 hours)
+  - `HIGH` (>8 hours)
+- Recommend adding a corresponding cluster to `task-breakdown.yaml` through SpecFlow.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/context.yaml`
+
+Ensure the artifact contains:
+- Version information
+- Generation timestamp
+- Scope definition
+- Capability inventories
+- Manual annotations
+- Changes since the previous refresh
+- Requirement-to-capability mappings
+- Source references
+- Confidence levels
+- Verification dates
+
+Generate a Capability Gap Report containing:
+- GAPS requiring new build effort
+- EXISTS_MODIFIED capabilities requiring review
+- Coverage confidence flags
+
+Infer capabilities only when reasonably supported by the available artifacts. Do not invent undocumented capabilities.
+
+Follow all constraints, processing rules, and execution behavior defined in the `ContextFabric` skill.
+
+Before generating `artifacts/context.yaml`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+---
+
+> **Confirmation Block — not a prompt. Execute this silently before Prompt 2 runs.**
+
+### Check Block B: `references/policy-library.md`
+
+Silently check whether the file exists:
+- `references/policy-library.md`
+
+**If it exists:** proceed directly to Prompt 2.
+
+**If it is missing**, ask the user:
+
+> "`references/policy-library.md` is needed before execution of `policy-catalog`. Do you want it to be generated from existing information?"
+
+- **If yes:** run `.claude/artifacts-generation/create-policy-library.md`. That skill reads available specs and generates the file automatically. Once generation is complete, present a summary of the frameworks and policy count included, and ask:
+  > "Please review the generated policy library. Would you like to add or update any information before we continue?"
+  Wait for the user to respond. Apply any changes they request. Then ask:
+  > "Confirm to proceed to Prompt 2."
+  Wait for confirmation before continuing.
+
+- **If no:** ask the user to provide `references/policy-library.md`, then wait. Do not proceed to Prompt 2 until the file is present.
+
+---

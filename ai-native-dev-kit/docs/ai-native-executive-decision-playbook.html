@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Native Executive Decision Playbook — Aligned Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   AA BRAND TOKEN SYSTEM
+   Navy: #0F1C3F  Blue: #1C76BC  Sky: #29AAE1
+   Lime: #8DCE11  Green: #5CB85C  Orange: #FFA631
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --navy:       #0F1C3F;
+  --navy-2:     #1B2E6E;
+  --blue:       #1C76BC;
+  --sky:        #29AAE1;
+  --teal:       #24BFCC;
+  --lime:       #8DCE11;
+  --green:      #5CB85C;
+  --orange:     #FFA631;
+  --white:      #FFFFFF;
+  --ink:        #1D1D1D;
+  --slate:      #64748B;
+  --border:     #D1DFF0;
+  --card-bg:    #F4F7FB;
+  --footer-c:   #94A3B8;
+  --paper:      #F8FAFC;
+  --shadow:     0 1px 3px rgba(15,28,63,.08), 0 8px 24px rgba(15,28,63,.10);
+  --shadow-sm:  0 1px 2px rgba(15,28,63,.06), 0 4px 12px rgba(15,28,63,.08);
+  --radius:     10px;
+  --radius-sm:  6px;
+  --font-body:  'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+  --font-ui:    'DM Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:  'DM Mono', 'Cascadia Code', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+/* ── HEADER ── */
+.aa-header {
+  background: var(--navy);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 16px rgba(15,28,63,.4);
+}
+.aa-header img.logo { height: 32px; width: auto; }
+.aa-header-title {
+  flex: 1;
+  margin-left: 24px;
+}
+.aa-header-title .doc-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  letter-spacing: .01em;
+}
+.aa-header-title .doc-sub {
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--sky);
+  letter-spacing: .03em;
+}
+
+/* ── HERO BAND ── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #142558 60%, #1a3070 100%);
+  padding: 56px 48px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(41,170,225,.04) 40px,
+    rgba(41,170,225,.04) 41px
+  );
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sky);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: var(--font-ui);
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+  max-width: 680px;
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,.72);
+  max-width: 580px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+.hero-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--sky);
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.hero-badge.lime { background: var(--lime); }
+.hero-badge.green { background: var(--green); color: #fff; }
+.hero-badge.orange { background: var(--orange); }
+.hero-mark {
+  position: absolute;
+  right: 48px;
+  bottom: 28px;
+  height: 60px;
+  opacity: .18;
+}
+
+/* ── LAYOUT ── */
+.page-wrap {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+  align-items: start;
+}
+
+/* ── SIDEBAR TOC ── */
+.toc {
+  position: sticky;
+  top: 61px;
+  height: calc(100vh - 61px);
+  overflow-y: auto;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 28px 0 40px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.toc-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--slate);
+  padding: 0 20px 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.toc a {
+  display: block;
+  padding: 6px 20px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--slate);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all .15s;
+  line-height: 1.4;
+}
+.toc a:hover { color: var(--blue); background: rgba(28,118,188,.05); }
+.toc a.active {
+  color: var(--blue);
+  border-left-color: var(--blue);
+  background: rgba(28,118,188,.06);
+  font-weight: 600;
+}
+.toc a .toc-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--footer-c);
+  margin-right: 6px;
+}
+
+/* ── MAIN CONTENT ── */
+.main { padding: 40px 48px 80px 40px; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 56px; scroll-margin-top: 80px; }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sky);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.section h2 {
+  font-family: var(--font-ui);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.section-accent {
+  display: inline-block;
+  width: 4px;
+  height: 22px;
+  border-radius: 2px;
+  background: var(--blue);
+  margin-right: 10px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* ── PROSE ── */
+p { margin-bottom: 14px; color: var(--ink); }
+.lead { font-size: 16px; color: var(--slate); margin-bottom: 20px; line-height: 1.7; }
+
+/* ── CARDS ── */
+.card-grid {
+  display: grid;
+  gap: 16px;
+  margin: 20px 0;
+}
+.card-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.card-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--blue);
+}
+.card.sky::before { background: var(--sky); }
+.card.lime::before { background: var(--lime); }
+.card.green::before { background: var(--green); }
+.card.orange::before { background: var(--orange); }
+.card.teal::before { background: var(--teal); }
+.card.navy::before { background: var(--navy); }
+
+.card-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+  background: rgba(28,118,188,.08);
+}
+.card h3 {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.card p {
+  font-size: 13px;
+  color: var(--slate);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* ── DECISION MATRIX ── */
+.decision-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin: 20px 0;
+  font-size: 13.5px;
+}
+.decision-table thead {
+  background: var(--navy);
+  color: #fff;
+}
+.decision-table thead th {
+  padding: 12px 16px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: .04em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.decision-table tbody tr { border-bottom: 1px solid var(--border); }
+.decision-table tbody tr:last-child { border-bottom: none; }
+.decision-table tbody tr:hover { background: rgba(28,118,188,.04); }
+.decision-table tbody td {
+  padding: 11px 16px;
+  color: var(--ink);
+  vertical-align: top;
+}
+.decision-table tbody td:first-child {
+  font-weight: 600;
+  color: var(--navy);
+}
+.decision-table tbody tr:nth-child(even) td { background: var(--card-bg); }
+
+/* ── GATE CARDS ── */
+.gate-strip {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.gate {
+  flex: 1 1 200px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.gate-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--blue);
+  padding: 2px 8px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.gate.g2 .gate-num { background: var(--sky); }
+.gate.g3 .gate-num { background: var(--green); }
+.gate.g4 .gate-num { background: var(--lime); color: var(--navy); }
+.gate h4 {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.gate ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.gate ul li {
+  font-size: 12.5px;
+  color: var(--slate);
+  padding: 3px 0;
+  padding-left: 14px;
+  position: relative;
+}
+.gate ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-size: 10px;
+  top: 4px;
+}
+
+/* ── MATURITY LEVEL CARDS ── */
+.maturity-grid {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0;
+}
+.maturity-card {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.maturity-level-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 8px;
+  font-family: var(--font-mono);
+}
+.maturity-level-badge .lvl {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+.maturity-level-badge .lbl {
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.8);
+  margin-top: 3px;
+}
+.maturity-body {
+  background: var(--white);
+  padding: 16px 20px;
+}
+.maturity-body h4 {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+.maturity-body p {
+  font-size: 13px;
+  color: var(--slate);
+  margin: 0;
+}
+.pipeline-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: .03em;
+}
+.pip.human { background: rgba(28,118,188,.1); color: var(--blue); }
+.pip.ai { background: rgba(141,206,17,.15); color: #5a8a00; }
+.pip.auto { background: rgba(92,184,92,.15); color: #2d7a2d; }
+.pip.gate { background: rgba(255,166,49,.15); color: #b85c00; border: 1px dashed var(--orange); }
+
+/* ── DECISION FRAMEWORK MATRIX (2x2) ── */
+.quadrant-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: var(--shadow);
+}
+.quadrant {
+  padding: 20px 22px;
+  background: var(--white);
+}
+.quadrant .q-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--footer-c);
+  margin-bottom: 6px;
+}
+.quadrant h4 {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.quadrant p {
+  font-size: 12.5px;
+  color: var(--slate);
+  margin: 0;
+}
+.quadrant.q-ideal { border-top: 3px solid var(--green); }
+.quadrant.q-ideal h4 { color: var(--green); }
+.quadrant.q-potential { border-top: 3px solid var(--sky); }
+.quadrant.q-potential h4 { color: var(--sky); }
+.quadrant.q-caution { border-top: 3px solid var(--orange); }
+.quadrant.q-caution h4 { color: var(--orange); }
+.quadrant.q-avoid { border-top: 3px solid var(--slate); }
+.quadrant.q-avoid h4 { color: var(--slate); }
+.quadrant-axis-x {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--slate);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  padding: 6px 0;
+}
+.quadrant-axis-y {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--slate);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+.quad-outer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+  margin: 24px 0;
+}
+
+/* ── SCORECARD ── */
+.scorecard {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 24px 0;
+  color: #fff;
+}
+.scorecard h3 {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sky);
+  margin-bottom: 20px;
+  letter-spacing: .02em;
+}
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.score-item {
+  background: rgba(255,255,255,.07);
+  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.score-item .metric {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--sky);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.score-item .metric.green { color: var(--lime); }
+.score-item .metric.orange { color: var(--orange); }
+.score-item .label {
+  font-size: 11px;
+  color: rgba(255,255,255,.6);
+  font-family: var(--font-mono);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.score-item .sublabel {
+  font-size: 12px;
+  color: rgba(255,255,255,.75);
+  margin-top: 4px;
+}
+
+/* ── RACI TABLE ── */
+.raci-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.raci-table thead { background: var(--navy); color: #fff; }
+.raci-table thead th {
+  padding: 11px 14px;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+.raci-table thead th:first-child { text-align: left; }
+.raci-table tbody tr { border-bottom: 1px solid var(--border); }
+.raci-table tbody tr:hover { background: rgba(28,118,188,.04); }
+.raci-table tbody td {
+  padding: 10px 14px;
+  text-align: center;
+  color: var(--slate);
+}
+.raci-table tbody td:first-child { text-align: left; font-weight: 600; color: var(--navy); font-size: 13px; }
+.raci-table tbody tr:nth-child(even) td { background: var(--card-bg); }
+.raci-badge {
+  display: inline-block;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 28px;
+  font-family: var(--font-mono);
+}
+.raci-badge.R { background: rgba(28,118,188,.15); color: var(--blue); }
+.raci-badge.A { background: rgba(141,206,17,.2); color: #5a8a00; }
+.raci-badge.C { background: rgba(41,170,225,.15); color: #0e6fa0; }
+.raci-badge.I { background: rgba(100,116,139,.12); color: var(--slate); }
+
+/* ── DO/DON'T STRIP ── */
+.dos-donts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.do-col, .dont-col {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.do-col-header {
+  background: var(--green);
+  padding: 10px 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.dont-col-header {
+  background: #e05252;
+  padding: 10px 16px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.do-col-body, .dont-col-body {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 14px 16px;
+}
+.do-col-body li, .dont-col-body li {
+  font-size: 13px;
+  color: var(--slate);
+  padding: 4px 0;
+  padding-left: 18px;
+  position: relative;
+  list-style: none;
+}
+.do-col-body li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+.dont-col-body li::before {
+  content: '✗';
+  position: absolute;
+  left: 0;
+  color: #e05252;
+  font-weight: 700;
+}
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border-left: 4px solid var(--blue);
+  background: rgba(28,118,188,.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+.callout.sky { border-left-color: var(--sky); background: rgba(41,170,225,.06); }
+.callout.lime { border-left-color: var(--lime); background: rgba(141,206,17,.07); }
+.callout.orange { border-left-color: var(--orange); background: rgba(255,166,49,.07); }
+.callout p { margin: 0; font-size: 13.5px; color: var(--ink); }
+.callout strong { color: var(--blue); }
+.callout.sky strong { color: #0c6fa0; }
+.callout.lime strong { color: #4a7a00; }
+.callout.orange strong { color: #8a4800; }
+.callout-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 5px;
+}
+
+/* ── PILLS / TAGS ── */
+.tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: .03em;
+}
+.tag.blue { background: rgba(28,118,188,.12); color: var(--blue); }
+.tag.sky { background: rgba(41,170,225,.12); color: #0c6fa0; }
+.tag.lime { background: rgba(141,206,17,.15); color: #4a7a00; }
+.tag.green { background: rgba(92,184,92,.15); color: #2d7a2d; }
+.tag.orange { background: rgba(255,166,49,.15); color: #8a4800; }
+.tag.slate { background: rgba(100,116,139,.12); color: var(--slate); }
+
+/* ── FOOTER ── */
+.aa-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,.5);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: .04em;
+}
+.aa-footer a { color: var(--sky); text-decoration: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .page-wrap { grid-template-columns: 1fr; }
+  .toc { display: none; }
+  .main { padding: 24px 20px 60px; }
+  .hero { padding: 36px 24px 36px; }
+  .hero h1 { font-size: 28px; }
+  .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid.cols-2 { grid-template-columns: 1fr; }
+  .dos-donts { grid-template-columns: 1fr; }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+ul.body-list, ol.body-list {
+  padding-left: 24px;
+  margin: 12px 0;
+}
+ul.body-list li, ol.body-list li {
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+h4.sub { font-family: var(--font-ui); font-size: 14px; font-weight: 700; color: var(--navy); margin: 20px 0 10px; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="aa-header">
+  <img src="data:image/png;base64,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" alt="Aligned Automation" class="logo">
+  <div class="aa-header-title">
+    <div class="doc-title">AI-Native Executive Decision Playbook</div>
+    <div class="doc-sub">Aligned Automation · Automation30 Framework</div>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">AA · Executive Playbook · 2026</div>
+  <h1>AI-Native Executive<br>Decision Playbook</h1>
+  <p class="hero-sub">A decision-grade framework for executive leaders navigating AI-native software delivery — from project selection and pod structure to governance gates and ROI measurement.</p>
+  <div class="hero-badges">
+    <span class="hero-badge">Pod Model</span>
+    <span class="hero-badge lime">Spec-Driven Dev</span>
+    <span class="hero-badge">Gate Controls</span>
+    <span class="hero-badge green">ROI Scorecard</span>
+    <span class="hero-badge orange">Risk Signals</span>
+  </div>
+  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAArCAYAAAA65tviAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAQ+SURBVHgBtVm/bxNJFH5v1utEOS7yFSflDiLZzXFUF5o7na6xlbuTrttrEKBIMTVFTIMCje0GBZqEvwDT0CYdAgKJxG8a0gEVKwIoHRYIyM8ZZjZ2YsfrmXn742u8u57d8bdvv2+/eQZIGYfP36mMTN/MQ8pgkCICAoizjnCvQcpIlYjDnVprs3hk+k4RUkRqRPIXb48Bssn2Puc4CykiNSKbO2y+cx8Rxn6SeoGUkAqRw9O3yyiL0jsZVnOVpRykgMSJKIELwaqhXyLkvhvYrkIKSJwI49nJsGrsAytpCD9RIqoaiKJmGicEJl6VRIl02K0JRaUjSBAICWH0wqLHOcxbnyCg+XnTKTTnSk1IAIlVZIcD7T0hhX9ocDsxO06kIsFjIlikGLKDW4W1mf98iInYFdHarQWSymGxiSiB6+3WiERyWKxHS1VD3tHXEBMCwP+y4RyPI/xYFSHYrRaqonGFH5lIIPCOdBsXA0OfpspLXuQcFplIHIGHIf/L09xWVkSO+pGIqOVrTIF3YXDoI4yMvlSb5Yn7XhEigEwksFvEKdvxQsD/UgW+bszR3+7tiVw4IlKlyURIdovYeH/l7wVEfqbfkJHRF/DDj6v72hBQPPXAIwufRGS3mWAvcBdYXX2+nflnWX4sh43JH33ac4yhqFKFTyIi3xnWoVDG+bo/U/Lb+y46Z2Qlu94T+V+fSX18Cjs9t+Vy0iNmTaQVu8fsRqMvq1DrPKJIMYH19r4S+JHCiuYSWDn90LOcj0CEYrcMoR52/M2V8Tn5Efx69Uhl3A3tdWRVre3YisjP5+9WCXa7sjoz3uj3pfxx5zrsVg8p/IlHngcWMGatVp56LjetxCe1UOjURhhOLJ/44LobVtdTOSy7iccbpQVtDjNWpJWn7BxE2q2JhHzuy7YkFDa+DucXb5012rGWCM1u0W/bbT+cXPLy8h6T3Mh/9TsIjlOmRriWCBPuEthC8KumamQGYZISbda/DsPam2PBsti0AOurEdryFf13l8cLuhGqGk5WkNYuTxbLsP7l+/1ZUJRaL9cehFYkV5nPUexWCHHONMZxeQ0IWFs91kVCQdcIDyUylB2eouYp3ZDAQhFJaxf/1R8hU/VvhPcQse0WtmESuAIXtHWGEvjBarTRrxHeQ4SyfD2Yp8Kg7JYq8LBq7E8a3gjvIhJ0Mwh2m1nPzOlGRLVbi7l7GuFdRLhA6x6TylO+oeuhBE6pxvbWQDOwWwscbITvEen350w40NflKYWgGkSBO+5mCfqsW0LQ1QgPiFC7hS6ykmlMZgBoHUSGjRt/Lay4Djda+R44m20LPyDiiCzJbm0ELt8tRSDAhd3o71/6d0WZiNVJHY1wtpthhOUa2ZyndkETuOCi3vhzwW/vZwaViegbFnvnSq0oDoxmt/y6qRoTjz3K2kXdVT97iHW5n18rNXUNi4NQOewbz6mNloYndN4AAAAASUVORK5CYII=" alt="" class="hero-mark">
+</div>
+
+<!-- ── BODY ── -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR TOC -->
+  <nav class="toc" id="toc">
+    <div class="toc-header">Contents</div>
+    <a href="#s01" id="t-01"><span class="toc-num">01</span> Maturity Model</a>
+    <a href="#s02" id="t-02"><span class="toc-num">02</span> Project Selection</a>
+    <a href="#s03" id="t-03"><span class="toc-num">03</span> Pod Team Structure</a>
+    <a href="#s04" id="t-04"><span class="toc-num">04</span> Initiation &amp; Gating</a>
+    <a href="#s05" id="t-05"><span class="toc-num">05</span> Knowledge Capture</a>
+    <a href="#s06" id="t-06"><span class="toc-num">06</span> Token Governance</a>
+    <a href="#s07" id="t-07"><span class="toc-num">07</span> Do's &amp; Don'ts</a>
+    <a href="#s08" id="t-08"><span class="toc-num">08</span> Executive Scorecard</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- S01: Maturity Model -->
+    <section class="section" id="s01">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <span class="section-accent"></span>
+        <h2>AI-Native Maturity Model</h2>
+      </div>
+      <p class="lead">Five progressive levels of AI integration in software delivery — from traditional human-only execution to fully autonomous development pipelines.</p>
+
+      <div class="maturity-grid">
+        <div class="maturity-card">
+          <div class="maturity-level-badge" style="background:#64748B;">
+            <span class="lvl">L1</span><span class="lbl">Traditional</span>
+          </div>
+          <div class="maturity-body">
+            <h4>Human-Only Delivery</h4>
+            <p>All software lifecycle phases executed by human engineers. No AI tooling in the critical path. Sprint velocity and quality constrained entirely by headcount and skill distribution.</p>
+            <div class="pipeline-row">
+              <span class="pip human">Scope</span><span class="pip human">Spec</span><span class="pip human">Plan</span><span class="pip human">Code</span><span class="pip human">Review</span><span class="pip human">Test</span><span class="pip human">Release</span>
+            </div>
+          </div>
+        </div>
+        <div class="maturity-card">
+          <div class="maturity-level-badge" style="background:#1C76BC;">
+            <span class="lvl">L2</span><span class="lbl">Augmented</span>
+          </div>
+          <div class="maturity-body">
+            <h4>AI-Augmented Delivery</h4>
+            <p>Developers use AI coding assistants (GitHub Copilot, Cursor) as productivity accelerators. Human architects own all structural decisions. 20–40% velocity improvement over L1.</p>
+            <div class="pipeline-row">
+              <span class="pip human">Scope</span><span class="pip human">Spec</span><span class="pip human">Plan</span><span class="pip ai">Code</span><span class="pip human">Review</span><span class="pip human">Test</span><span class="pip human">Release</span>
+            </div>
+          </div>
+        </div>
+        <div class="maturity-card">
+          <div class="maturity-level-badge" style="background:#29AAE1;">
+            <span class="lvl">L3</span><span class="lbl">AI-Native L1</span>
+          </div>
+          <div class="maturity-body">
+            <h4>AI-Native with Human Control Gates</h4>
+            <p>AI agents execute implementation phases under Pod Lead orchestration. Human control gates at planning, code review, and test sign-off. Automation30 framework governs context and spec fidelity.</p>
+            <div class="pipeline-row">
+              <span class="pip human">Scope</span><span class="pip ai">Spec</span><span class="pip gate">Gate</span><span class="pip ai">Plan</span><span class="pip ai">Code</span><span class="pip gate">Gate</span><span class="pip ai">Test</span><span class="pip gate">Gate</span><span class="pip human">Release</span>
+            </div>
+          </div>
+        </div>
+        <div class="maturity-card">
+          <div class="maturity-level-badge" style="background:#8DCE11;">
+            <span class="lvl">L4</span><span class="lbl">AI-Native L2</span>
+          </div>
+          <div class="maturity-body">
+            <h4>Fully Automated Pipeline</h4>
+            <p>Spec-to-deployment pipeline is fully automated. Human involvement limited to strategic scoping and exception handling. Automation30 verification harness provides continuous conformance assurance.</p>
+            <div class="pipeline-row">
+              <span class="pip human">Scope</span><span class="pip auto">Spec</span><span class="pip auto">Plan</span><span class="pip auto">Code</span><span class="pip auto">Review</span><span class="pip auto">Test</span><span class="pip gate">Audit</span><span class="pip auto">Release</span>
+            </div>
+          </div>
+        </div>
+        <div class="maturity-card">
+          <div class="maturity-level-badge" style="background:#5CB85C;">
+            <span class="lvl">L5</span><span class="lbl">Autonomous</span>
+          </div>
+          <div class="maturity-body">
+            <h4>Completely Autonomous Development</h4>
+            <p>End-to-end software development without human intervention. AI systems self-direct from business intent to production deployment. Currently theoretical; targeted for Automation30 v3+ research track.</p>
+            <div class="pipeline-row">
+              <span class="pip auto">Scope</span><span class="pip auto">Spec</span><span class="pip auto">Plan</span><span class="pip auto">Code</span><span class="pip auto">Review</span><span class="pip auto">Test</span><span class="pip auto">Release</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tag-row">
+        <span class="tag slate">L3 is current AA delivery standard</span>
+        <span class="tag lime">L4 target for Q4 2026</span>
+        <span class="tag blue">Automation30 verifies fidelity at every gate</span>
+      </div>
+    </section>
+
+    <!-- S02: Project Selection -->
+    <section class="section" id="s02">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <span class="section-accent"></span>
+        <h2>Project Selection Criteria</h2>
+      </div>
+      <p class="lead">Not every project is a fit for AI-native delivery. This framework enables structured go/no-go decisions at project intake.</p>
+
+      <div class="quad-outer">
+        <div class="quadrant-axis-y">← Low Complexity &nbsp;&nbsp; High Complexity →</div>
+        <div>
+          <div class="quadrant-wrap">
+            <div class="quadrant q-ideal">
+              <div class="q-label">High Spec Quality · Low Complexity</div>
+              <h4>✓ Ideal Fit</h4>
+              <p>Clear domain, well-bounded scope, repeatable patterns. Highest ROI on AI-native delivery. Proceed with standard Automation30 pod.</p>
+            </div>
+            <div class="quadrant q-potential">
+              <div class="q-label">High Spec Quality · High Complexity</div>
+              <h4>◐ Conditional Fit</h4>
+              <p>Requires experienced Pod Lead and Automation30 context decomposition. Proceed with enhanced gating and blast-radius controls.</p>
+            </div>
+            <div class="quadrant q-caution">
+              <div class="q-label">Low Spec Quality · Low Complexity</div>
+              <h4>⚠ Requires Prep</h4>
+              <p>Spec elicitation pass required before pod activation. AA Spec-Driven Development (SDD) methodology to establish conformance baseline.</p>
+            </div>
+            <div class="quadrant q-avoid">
+              <div class="q-label">Low Spec Quality · High Complexity</div>
+              <h4>✗ Not Ready</h4>
+              <p>Do not commence AI-native delivery. High blast radius risk. Escalate to traditional delivery or invest in context engineering sprint first.</p>
+            </div>
+          </div>
+          <div class="quadrant-axis-x">← Low Spec Quality &nbsp;&nbsp;&nbsp; High Spec Quality →</div>
+        </div>
+      </div>
+
+      <h4 class="sub">Selection Signal Checklist</h4>
+      <table class="decision-table">
+        <thead>
+          <tr><th>Signal</th><th>Threshold</th><th>Guidance</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Domain documentation quality</td><td>≥ 70% coverage</td><td>Existing specs, ADRs, or design docs present</td></tr>
+          <tr><td>Stakeholder clarity</td><td>Single DRI identified</td><td>One accountable decision-maker confirmed</td></tr>
+          <tr><td>Scope blast radius</td><td>≤ 3 bounded services</td><td>Cross-service dependencies documented</td></tr>
+          <tr><td>Pattern density</td><td>≥ 60% reuse potential</td><td>Similar prior patterns in AA skills registry</td></tr>
+          <tr><td>Regulatory / compliance flags</td><td>Screened</td><td>If present, human review gates are mandatory</td></tr>
+          <tr><td>Time horizon</td><td>2–12 week delivery</td><td>Ultra-short sprints require pre-built context packs</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- S03: Pod Team Structure -->
+    <section class="section" id="s03">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <span class="section-accent" style="background:var(--sky)"></span>
+        <h2>Pod Team Structure</h2>
+      </div>
+      <p class="lead">The AA delivery pod is the atomic unit of AI-native execution — three humans, multiple AI agents, one specification.</p>
+
+      <div class="card-grid cols-3">
+        <div class="card">
+          <div class="card-icon" style="background:rgba(28,118,188,.1)">🎯</div>
+          <h3>Pod Lead</h3>
+          <p>Owns the specification contract, orchestrates agent workstreams, holds the context pack, and is the single accountable party for delivery quality and gate decisions.</p>
+        </div>
+        <div class="card sky">
+          <div class="card-icon" style="background:rgba(41,170,225,.1)">⚡</div>
+          <h3>AI Builder (×2)</h3>
+          <p>Senior engineers operating Windsurf/Cursor IDE with Automation30 optimization layer. Responsible for code generation, skill execution, and agent output verification.</p>
+        </div>
+        <div class="card lime">
+          <div class="card-icon" style="background:rgba(141,206,17,.1)">🤖</div>
+          <h3>Automation30 Agent Layer</h3>
+          <p>Orchestrator + specialist skills (CodeExtraction, SpecValidator, ContextPacker, ReviewHarness). Token budgeting and context management handled autonomously within defined thresholds.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">Structural Principle</div>
+        <p>The Pod Lead is <strong>irreplaceable by AI</strong> in the current delivery model. Their role is not implementation oversight — it is context stewardship, specification integrity, and blast-radius management. Attempts to remove this role collapse delivery quality.</p>
+      </div>
+
+      <h4 class="sub">Velocity Benchmarks vs Traditional Agile</h4>
+      <div class="card-grid cols-4">
+        <div class="card green">
+          <div class="card-icon" style="background:rgba(92,184,92,.1)">📈</div>
+          <h3>3–5×</h3>
+          <p>Sprint velocity uplift for well-scoped, high-spec-quality projects at L3 maturity.</p>
+        </div>
+        <div class="card sky">
+          <div class="card-icon" style="background:rgba(41,170,225,.1)">💰</div>
+          <h3>60–70%</h3>
+          <p>Reduction in fully-loaded engineering cost per feature point delivered.</p>
+        </div>
+        <div class="card lime">
+          <div class="card-icon" style="background:rgba(141,206,17,.1)">🔄</div>
+          <h3>40%</h3>
+          <p>Reduction in review cycle time via Automation30 automated conformance checks.</p>
+        </div>
+        <div class="card orange">
+          <div class="card-icon" style="background:rgba(255,166,49,.1)">⚠️</div>
+          <h3>&lt;15%</h3>
+          <p>Acceptable rework rate. Projects exceeding this threshold trigger a context-quality review.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S04: Initiation & Gating -->
+    <section class="section" id="s04">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <span class="section-accent" style="background:var(--lime)"></span>
+        <h2>Project Initiation &amp; Gate Controls</h2>
+      </div>
+      <p class="lead">Four mandatory gates govern pod activation, sprint execution, and delivery acceptance. Each gate has a defined accountable role and a binary pass/fail outcome.</p>
+
+      <div class="gate-strip">
+        <div class="gate">
+          <span class="gate-num">G1 · Intake</span>
+          <h4>Context Readiness Gate</h4>
+          <ul>
+            <li>Specification coverage ≥ 70%</li>
+            <li>Domain glossary confirmed</li>
+            <li>Context pack assembled</li>
+            <li>Blast radius documented</li>
+            <li>DRI sign-off obtained</li>
+          </ul>
+        </div>
+        <div class="gate g2">
+          <span class="gate-num">G2 · Sprint Start</span>
+          <h4>Pod Activation Gate</h4>
+          <ul>
+            <li>Token budgets allocated per task</li>
+            <li>Skill registry confirmed</li>
+            <li>Agent harness initialized</li>
+            <li>Escalation path defined</li>
+            <li>Review cadence set</li>
+          </ul>
+        </div>
+        <div class="gate g3">
+          <span class="gate-num">G3 · Code Review</span>
+          <h4>Conformance Verification Gate</h4>
+          <ul>
+            <li>Automation30 conformance score ≥ 85%</li>
+            <li>No spec boundary violations</li>
+            <li>Token cost within budget</li>
+            <li>No hardcoded secrets</li>
+            <li>Pod Lead sign-off</li>
+          </ul>
+        </div>
+        <div class="gate g4">
+          <span class="gate-num">G4 · Release</span>
+          <h4>Delivery Acceptance Gate</h4>
+          <ul>
+            <li>All test scenarios passing</li>
+            <li>Documentation updated</li>
+            <li>ADRs logged</li>
+            <li>Reusable patterns extracted</li>
+            <li>Stakeholder acceptance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout orange">
+        <div class="callout-label" style="color:var(--orange)">Escalation Protocol</div>
+        <p>If any gate produces a FAIL verdict, execution halts. The Pod Lead must remediate and re-submit. <strong>Gate bypass is prohibited</strong> — exceptions require CTO-level sign-off and carry an automatic post-mortem obligation.</p>
+      </div>
+    </section>
+
+    <!-- S05: Knowledge Capture -->
+    <section class="section" id="s05">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <span class="section-accent" style="background:var(--teal)"></span>
+        <h2>Knowledge Capture Maturity</h2>
+      </div>
+      <p class="lead">AI-native delivery is only as effective as the knowledge available in context. This ladder governs how AA projects build and maintain their context estates.</p>
+
+      <table class="decision-table">
+        <thead>
+          <tr><th>Level</th><th>Label</th><th>What Exists</th><th>Context Pack Size</th><th>Target</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag slate">KM-0</span></td>
+            <td>No Structure</td>
+            <td>Tribal knowledge only. No written specs, no ADRs.</td>
+            <td>Unavailable</td>
+            <td>Not AI-native ready</td>
+          </tr>
+          <tr>
+            <td><span class="tag blue">KM-1</span></td>
+            <td>Basic Docs</td>
+            <td>README files, informal requirements, ticket history.</td>
+            <td>Low (&lt;50K tokens)</td>
+            <td>Minimum for L2</td>
+          </tr>
+          <tr>
+            <td><span class="tag sky">KM-2</span></td>
+            <td>Structured Specs</td>
+            <td>OpenSpec YAML files, FR/NFR splits, domain glossary.</td>
+            <td>Medium (50–150K tokens)</td>
+            <td>Required for L3</td>
+          </tr>
+          <tr>
+            <td><span class="tag lime">KM-3</span></td>
+            <td>Context-Pack Ready</td>
+            <td>Automation30 context packs per service, skill library populated.</td>
+            <td>Large (150–500K tokens)</td>
+            <td>Required for L4</td>
+          </tr>
+          <tr>
+            <td><span class="tag green">KM-4</span></td>
+            <td>Autonomous Context</td>
+            <td>Self-updating knowledge graphs, dynamic context assembly.</td>
+            <td>Dynamic (graph-driven)</td>
+            <td>L5 research track</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout sky">
+        <div class="callout-label" style="color:#0c6fa0">AA Knowledge Engineering Service</div>
+        <p>AA's Forward Deployment Engineers (FDEs) provide a dedicated <strong>Context Sprint</strong> — a 2-week engagement that elevates client systems from KM-0/KM-1 to KM-2 status, enabling immediate L3 pod activation.</p>
+      </div>
+    </section>
+
+    <!-- S06: Token Governance -->
+    <section class="section" id="s06">
+      <div class="section-header">
+        <span class="section-num">06</span>
+        <span class="section-accent" style="background:var(--orange)"></span>
+        <h2>Token Governance &amp; Cost Controls</h2>
+      </div>
+      <p class="lead">Token consumption is the primary cost variable in AI-native delivery. Explicit governance prevents runaway API spend and ensures predictable per-feature economics.</p>
+
+      <div class="card-grid cols-3">
+        <div class="card orange">
+          <div class="card-icon" style="background:rgba(255,166,49,.1)">🔢</div>
+          <h3>Per-Task Token Ceiling</h3>
+          <p>Default cap: 50K tokens per skill invocation. Pod Lead must explicitly approve tasks exceeding this threshold before execution commences.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Daily Sprint Budget</h3>
+          <p>Project budget segmented into daily token allocations per Builder. Windsurf utilization dashboard tracks burn rate in real time against sprint plan.</p>
+        </div>
+        <div class="card sky">
+          <div class="card-icon" style="background:rgba(41,170,225,.1)">🔑</div>
+          <h3>API Key Provisioning</h3>
+          <p>Separate API keys issued per project and per Builder. Keys rotated at sprint boundaries. No shared or personal keys in production agents.</p>
+        </div>
+      </div>
+
+      <h4 class="sub">Cost Governance Thresholds</h4>
+      <table class="decision-table">
+        <thead><tr><th>Condition</th><th>Threshold</th><th>Action</th><th>Owner</th></tr></thead>
+        <tbody>
+          <tr><td>Single task token usage</td><td>&gt; 50K tokens</td><td>Pause execution, Pod Lead approval required</td><td>Pod Lead</td></tr>
+          <tr><td>Daily spend per Builder</td><td>&gt; $25/day</td><td>Alert sent; justify against sprint plan</td><td>Builder + Pod Lead</td></tr>
+          <tr><td>Sprint total vs. estimate</td><td>&gt; 120% of budget</td><td>Executive escalation, project review</td><td>Pod Lead + Client DRI</td></tr>
+          <tr><td>Context pack size</td><td>&gt; 500K tokens</td><td>Decompose into sub-contexts; re-validate</td><td>Pod Lead</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- S07: Do's & Don'ts -->
+    <section class="section" id="s07">
+      <div class="section-header">
+        <span class="section-num">07</span>
+        <span class="section-accent" style="background:var(--green)"></span>
+        <h2>Operational Do's &amp; Don'ts</h2>
+      </div>
+      <p class="lead">Distilled from Automation30 delivery experience across enterprise engagements. These are the highest-signal rules governing AI-native project execution.</p>
+
+      <div class="dos-donts">
+        <div class="do-col">
+          <div class="do-col-header">✓ Do</div>
+          <div class="do-col-body">
+            <ul>
+              <li>Invest in specification quality before activating AI agents</li>
+              <li>Decompose every context pack at service boundaries</li>
+              <li>Log all architecture decisions as ADRs in real time</li>
+              <li>Gate every sprint with a conformance score measurement</li>
+              <li>Treat rework rate as a leading indicator of context quality</li>
+              <li>Rotate API keys at every sprint boundary</li>
+              <li>Extract reusable patterns to the skills registry after each project</li>
+              <li>Keep Pod Lead and AI Builder roles structurally distinct</li>
+              <li>Run context-only dry-runs before major agent workstreams</li>
+              <li>Maintain blast-radius documentation as a living artifact</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dont-col">
+          <div class="dont-col-header">✗ Don't</div>
+          <div class="dont-col-body">
+            <ul>
+              <li>Activate AI-native delivery without KM-2 context coverage</li>
+              <li>Bypass Gate G3 to accelerate a deadline</li>
+              <li>Allow AI agents to make structural architecture decisions autonomously</li>
+              <li>Reuse context packs across materially different projects</li>
+              <li>Track token cost in aggregate only — always track per-task</li>
+              <li>Treat high rework rate as a developer performance problem</li>
+              <li>Conflate AI Builder velocity with Pod Lead oversight quality</li>
+              <li>Deploy agentic output without human verification at the release gate</li>
+              <li>Scale a pod beyond 3 humans without a context re-architecture review</li>
+              <li>Use personal API keys on production agent workstreams</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- S08: Executive Scorecard -->
+    <section class="section" id="s08">
+      <div class="section-header">
+        <span class="section-num">08</span>
+        <span class="section-accent" style="background:var(--lime)"></span>
+        <h2>Executive Scorecard</h2>
+      </div>
+      <p class="lead">Six-metric measurement framework for evaluating AI-native delivery performance. Reviewed quarterly by executive sponsors and monthly by Pod Leads.</p>
+
+      <div class="scorecard">
+        <h3>Core KPI Dashboard — Target State</h3>
+        <div class="score-grid">
+          <div class="score-item">
+            <div class="metric">4–5×</div>
+            <div class="label">Velocity Uplift</div>
+            <div class="sublabel">vs. traditional agile sprint velocity</div>
+          </div>
+          <div class="score-item">
+            <div class="metric green">65%</div>
+            <div class="label">Cost Reduction</div>
+            <div class="sublabel">per feature point (fully loaded)</div>
+          </div>
+          <div class="score-item">
+            <div class="metric">≥85%</div>
+            <div class="label">Conformance Score</div>
+            <div class="sublabel">Automation30 spec-to-code fidelity gate</div>
+          </div>
+          <div class="score-item">
+            <div class="metric orange">&lt;15%</div>
+            <div class="label">Rework Rate</div>
+            <div class="sublabel">threshold triggers context review</div>
+          </div>
+          <div class="score-item">
+            <div class="metric green">100%</div>
+            <div class="label">Gate Pass Rate</div>
+            <div class="sublabel">all G1–G4 gates cleared on first pass</div>
+          </div>
+          <div class="score-item">
+            <div class="metric">KM-2+</div>
+            <div class="label">Knowledge Maturity</div>
+            <div class="sublabel">minimum floor for active pods</div>
+          </div>
+        </div>
+      </div>
+
+      <h4 class="sub">RACI — Delivery Accountability</h4>
+      <table class="raci-table">
+        <thead>
+          <tr>
+            <th>Activity</th>
+            <th>Pod Lead</th>
+            <th>AI Builder</th>
+            <th>Client DRI</th>
+            <th>AA Executive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Project selection &amp; fit scoring</td>
+            <td><span class="raci-badge C">C</span></td>
+            <td><span class="raci-badge I">I</span></td>
+            <td><span class="raci-badge A">A</span></td>
+            <td><span class="raci-badge R">R</span></td>
+          </tr>
+          <tr>
+            <td>Context pack assembly</td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge C">C</span></td>
+            <td><span class="raci-badge C">C</span></td>
+            <td><span class="raci-badge I">I</span></td>
+          </tr>
+          <tr>
+            <td>Sprint execution &amp; agent orchestration</td>
+            <td><span class="raci-badge A">A</span></td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge I">I</span></td>
+            <td><span class="raci-badge I">I</span></td>
+          </tr>
+          <tr>
+            <td>Gate G3 conformance verification</td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge C">C</span></td>
+            <td><span class="raci-badge I">I</span></td>
+            <td><span class="raci-badge I">I</span></td>
+          </tr>
+          <tr>
+            <td>Token budget oversight</td>
+            <td><span class="raci-badge A">A</span></td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge I">I</span></td>
+            <td><span class="raci-badge C">C</span></td>
+          </tr>
+          <tr>
+            <td>Release gate sign-off</td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge C">C</span></td>
+            <td><span class="raci-badge A">A</span></td>
+            <td><span class="raci-badge I">I</span></td>
+          </tr>
+          <tr>
+            <td>Skills registry contribution</td>
+            <td><span class="raci-badge A">A</span></td>
+            <td><span class="raci-badge R">R</span></td>
+            <td><span class="raci-badge I">I</span></td>
+            <td><span class="raci-badge I">I</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout lime">
+        <div class="callout-label" style="color:#4a7a00">Quarterly Executive Review Checklist</div>
+        <p>Review velocity trend vs. baseline · Audit gate pass rates for anomalies · Validate token cost per feature point · Assess knowledge maturity progression · Review skills registry growth · Evaluate rework rate trajectory · Identify candidates for L4 maturity upgrade.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="aa-footer">
+  <span>© 2026 Aligned Automation · Confidential &amp; Proprietary</span>
+  <span>Automation30 Framework · Executive Decision Playbook</span>
+  <a href="mailto:sales@alignedautomation.com">sales@alignedautomation.com</a>
+</footer>
+
+<script>
+// Sticky TOC active state tracking
+const sections = document.querySelectorAll('.section[id]');
+const tocLinks  = document.querySelectorAll('.toc a');
+
+function updateTOC() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top <= 100) current = s.id;
+  });
+  tocLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}
+
+window.addEventListener('scroll', updateTOC, { passive: true });
+updateTOC();
+</script>
+</body>
+</html>

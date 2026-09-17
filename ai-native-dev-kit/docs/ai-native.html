@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Native vs Traditional Agile — Delivery ROI Calculator | Aligned Automation</title>
+<!-- AA brand: Calibri (system font) — no web-font load required -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --navy:#0F1C3F; --navy-2:#2A3C90; --ink:#1D1D1D; --paper:#F4F7FB; --card:#FFFFFF;
+  --line:#D1DFF0; --muted:#64748B; --soft:#94A3B8;
+  --trad:#64748B;            /* traditional = AA slate */
+  --trad-soft:#A9B6C7;
+  --ai:#5CB85C;              /* ai-native = AA green (AI Coding pillar) */
+  --ai-soft:#BFE3BF;
+  --accent:#1C76BC;          /* AA blue (primary accent) */
+  --good:#5CB85C; --bad:#FFA631; --warn:#FFA631;
+  --shadow:0 1px 2px rgba(15,28,63,.07),0 8px 24px rgba(15,28,63,.08);
+}
+[data-theme="dark"]{
+  --navy:#0A1326; --navy-2:#1B2A66; --ink:#E9EFF7; --paper:#0B1322; --card:#121D31;
+  --line:#26344F; --muted:#9FB0C6; --soft:#73849B;
+  --trad:#8190A4; --trad-soft:#586577;
+  --ai:#6FC46F; --ai-soft:#2F5A2F;
+  --accent:#3F9AE0; --good:#6FC46F; --bad:#FFB152; --warn:#FFB152;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Calibri,"Segoe UI",system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+h1,h2,h3,.display{font-family:Calibri,"Segoe UI",system-ui,sans-serif;letter-spacing:-.01em}
+
+/* ── Header ── */
+header{background:linear-gradient(120deg,var(--navy),var(--navy-2));color:#fff;padding:0}
+.bar{max-width:1280px;margin:0 auto;padding:18px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:14px}
+.aalogo{height:34px;width:auto;display:block}
+.brand .divx{width:1px;height:30px;background:rgba(255,255,255,.22)}
+.brand .wmsub{font-weight:600;font-size:13px;color:#CDD9EC;letter-spacing:.02em}
+.tools{display:flex;gap:8px}
+.tbtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff;padding:8px 13px;border-radius:8px;font:inherit;font-size:13px;cursor:pointer;transition:.15s}
+.tbtn:hover{background:rgba(255,255,255,.18)}
+.hero{max-width:1280px;margin:0 auto;padding:6px 26px 30px}
+.hero h1{font-size:clamp(26px,3.6vw,40px);font-weight:800;max-width:18ch;line-height:1.04}
+.hero h1 .hl{color:var(--ai)}
+.hero p{color:#b7c6dd;max-width:62ch;margin-top:12px;font-size:15px}
+
+/* ── Layout ── */
+.wrap{max-width:1280px;margin:0 auto;padding:26px;display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.panel.inputs{position:sticky;top:18px}
+@media(max-width:980px){.panel.inputs{position:static}}
+.ph{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.ph h2{font-size:16px;font-weight:700}
+.ph .sub{font-size:12px;color:var(--soft);font-family:Calibri,"Segoe UI",system-ui,sans-serif}
+.pbody{padding:18px 20px}
+
+/* ── Inputs ── */
+.group{margin-bottom:22px}
+.group:last-child{margin-bottom:0}
+.glabel{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.glabel::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent)}
+.glabel.t::before{background:var(--trad)} .glabel.a::before{background:var(--ai)}
+.field{margin-bottom:14px}
+.field label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;margin-bottom:6px;color:var(--ink)}
+.field label .v{font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-weight:600;font-size:13px;color:var(--accent)}
+input[type=range]{-webkit-appearance:none;width:100%;height:5px;border-radius:5px;background:var(--line);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--card);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:3px solid var(--card)}
+input[type=range].t::-webkit-slider-thumb{background:var(--trad)} input[type=range].a::-webkit-slider-thumb{background:var(--ai)}
+input[type=range].t::-moz-range-thumb{background:var(--trad)} input[type=range].a::-moz-range-thumb{background:var(--ai)}
+.num{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper)}
+.num span{padding:0 9px;color:var(--soft);font-size:13px;font-family:Calibri,"Segoe UI",system-ui,sans-serif}
+.num input{flex:1;border:none;background:transparent;padding:9px 6px;font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-size:14px;color:var(--ink);width:100%;outline:none}
+.ticks{display:flex;justify-content:space-between;font-size:10px;color:var(--soft);font-family:Calibri,"Segoe UI",system-ui,sans-serif;margin-top:4px}
+.presets{display:flex;gap:6px;margin-bottom:12px}
+.preset{flex:1;padding:7px 4px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font:inherit;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);transition:.15s;text-align:center}
+.preset:hover{border-color:var(--ai)} .preset.on{background:var(--ai);color:#fff;border-color:var(--ai)}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{flex:1;padding:8px;border:none;background:var(--paper);font:inherit;font-size:12px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--accent);color:#fff}
+.hint{font-size:11px;color:var(--soft);margin-top:5px;line-height:1.4}
+.field.hidden{display:none}
+.advanced{border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-top:4px}
+.advanced>summary{cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);padding:11px 13px;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;letter-spacing:.02em}
+.advanced>summary::-webkit-details-marker{display:none}
+.advanced>summary::before{content:"▸";color:var(--accent);font-size:11px}
+.advanced[open]>summary::before{content:"▾"}
+.advanced .advbody{padding:2px 13px 4px;border-top:1px solid var(--line)}
+.advanced .advbody .field{margin-top:14px}
+
+/* ── Results ── */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+@media(max-width:1180px){.cards{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi::after{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent)}
+.kpi.good::after{background:var(--good)} .kpi.amber::after{background:var(--ai)}
+.kpi .lab{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.kpi .big{font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-weight:800;font-size:30px;line-height:1.05;margin:8px 0 3px}
+.kpi .sub{font-size:12px;color:var(--soft);font-family:Calibri,"Segoe UI",system-ui,sans-serif}
+.kpi .delta{font-size:12px;font-weight:600;font-family:Calibri,"Segoe UI",system-ui,sans-serif}
+.delta.up{color:var(--good)} .delta.down{color:var(--bad)}
+
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+@media(max-width:680px){.cmp{grid-template-columns:1fr}}
+.col{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--card);box-shadow:var(--shadow)}
+.col h3{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.col h3 .dot{width:10px;height:10px;border-radius:3px}
+.col.trad{border-top:3px solid var(--trad)} .col.ai{border-top:3px solid var(--ai)}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.row:last-child{border-bottom:none}
+.row .k{color:var(--muted)} .row .val{font-family:Calibri,"Segoe UI",system-ui,sans-serif;font-weight:600}
+.row.total{margin-top:6px;padding-top:11px;border-top:2px solid var(--line);border-bottom:none}
+.row.total .k{font-weight:700;color:var(--ink)} .row.total .val{font-size:16px}
+
+.chartcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:18px}
+.chartcard h3{font-size:14px;margin-bottom:4px} .chartcard .cdesc{font-size:12px;color:var(--soft);margin-bottom:14px}
+.chartbox{position:relative;height:300px}
+.chartgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:980px){.chartgrid{grid-template-columns:1fr}}
+
+.method{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
+.method h3{font-size:15px;margin-bottom:12px}
+.method details{border-top:1px solid var(--line);padding:11px 0}
+.method summary{cursor:pointer;font-weight:600;font-size:13px;list-style:none}
+.method summary::before{content:"▸ ";color:var(--accent)}
+.method details[open] summary::before{content:"▾ "}
+.method p,.method li{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.55}
+.method li{margin-left:18px}
+.method code{font-family:Calibri,"Segoe UI",system-ui,sans-serif;background:var(--paper);padding:1px 5px;border-radius:4px;font-size:12px;color:var(--accent)}
+.callout{background:linear-gradient(120deg,rgba(200,144,42,.08),rgba(200,144,42,.02));border:1px solid var(--warn);border-left:4px solid var(--warn);border-radius:10px;padding:13px 15px;font-size:13px;color:var(--ink);margin-top:14px}
+.callout b{color:var(--warn)}
+
+.contact{background:linear-gradient(120deg,var(--navy),var(--navy-2));color:#fff;margin-top:12px}
+.cinner{max-width:1280px;margin:0 auto;padding:30px 26px;display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.cleft h3{font-size:21px;font-weight:700;margin-bottom:5px}
+.cleft p{color:#b7c6dd;font-size:13.5px;max-width:50ch;line-height:1.5}
+.cform{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cform input{padding:11px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:13px;width:150px}
+.cform input::placeholder{color:#9fb6d6}
+.cform input:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.14)}
+.cta{background:var(--accent);color:#fff;border:none;padding:12px 24px;border-radius:9px;font:inherit;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.cta:hover{filter:brightness(1.09)}
+footer{max-width:1280px;margin:0 auto;padding:18px 26px 50px;color:var(--soft);font-size:12px;line-height:1.6}
+footer .mono{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <img class="aalogo" src="data:image/png;base64,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" alt="Aligned Automation">
+      <div class="divx"></div>
+      <span class="wmsub">Automation30 · Delivery Economics</span>
+    </div>
+    <div class="tools">
+      <button class="tbtn" id="themeBtn">◐ Theme</button>
+      <button class="tbtn" id="resetBtn">↺ Reset</button>
+    </div>
+  </div>
+  <div class="hero">
+    <h1><span class="hl">AI-Native Engineering</span> vs Traditional Agile</h1>
+    <p>Model the cost, schedule, and ROI delta of delivering the <em>same</em> software scope with an AI-native pod versus a conventional Agile team. Every figure below is driven by the inputs on the left — adjust them to your project and the analysis recomputes live.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- ─────────────── INPUTS ─────────────── -->
+  <div class="panel inputs">
+    <div class="ph"><h2>Project Inputs</h2><span class="sub" id="curLabel">USD</span></div>
+    <div class="pbody">
+
+      <div class="group">
+        <div class="glabel">Scope</div>
+        <div class="field">
+          <label>Estimated Scope <span class="v" id="scopeV">1,200 pd</span></label>
+          <input type="range" id="scope" min="100" max="6000" step="50" value="1200">
+          <div class="ticks"><span>100</span><span>3,000</span><span>6,000</span></div>
+          <div class="hint">Estimated engineering effort in <b>ideal person-days</b> (≈ story points ÷ team daily velocity, or sum of task estimates).</div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel t">Traditional Agile Team</div>
+        <div class="field">
+          <label>Team size (FTE) <span class="v" id="teamTV">6</span></label>
+          <input type="range" class="t" id="teamT" min="1" max="30" step="1" value="6">
+          <div class="ticks"><span>1</span><span>30</span></div>
+        </div>
+        <div class="field hidden">
+          <label>Blended day-rate <span class="v" id="rateTV">$320</span></label>
+          <div class="num"><span id="symT">$</span><input type="number" id="rateT" value="320"></div>
+          <div class="hint">Fully-loaded cost per FTE per working day.</div>
+        </div>
+        <div class="field hidden">
+          <label>Rework rate <span class="v" id="reworkTV">15%</span></label>
+          <input type="range" class="t" id="reworkT" min="0" max="50" step="1" value="15">
+          <div class="ticks"><span>0%</span><span>50%</span></div>
+          <div class="hint">Effort lost to defects, churn &amp; rework on top of base scope.</div>
+        </div>
+      </div>
+
+      <div class="group">
+        <div class="glabel a">AI-Native Pod</div>
+        <div class="presets" id="presets">
+          <button class="preset" data-u="1.3" data-r="18">Conservative</button>
+          <button class="preset on" data-u="1.6" data-r="12">Moderate</button>
+          <button class="preset" data-u="2.0" data-r="8">Aggressive</button>
+        </div>
+
+        <!-- Blended day-rate hidden; fixed at $320 -->
+        <div class="field hidden">
+          <label>Blended day-rate <span class="v" id="rateAV">$320</span></label>
+          <div class="num"><span id="symA">$</span><input type="number" id="rateA" value="320"></div>
+        </div>
+
+        <details class="advanced">
+          <summary>Advanced settings</summary>
+          <div class="advbody">
+            <div class="field">
+              <label>Pod size (FTE) <span class="v" id="teamAV">4</span></label>
+              <input type="range" class="a" id="teamA" min="1" max="30" step="1" value="4">
+              <div class="ticks"><span>1</span><span>30</span></div>
+              <div class="hint">Typically smaller — engineers operate as orchestrators of agents.</div>
+            </div>
+            <div class="field">
+              <label>Throughput uplift <span class="v" id="upliftV">1.6×</span></label>
+              <input type="range" class="a" id="uplift" min="100" max="300" step="5" value="160">
+              <div class="ticks"><span>1.0×</span><span>2.0×</span><span>3.0×</span></div>
+              <div class="hint">Output per retained engineer vs baseline, at full proficiency.</div>
+            </div>
+            <div class="field">
+              <label>Adoption ramp <span class="v" id="rampV">12 days</span></label>
+              <input type="range" class="a" id="ramp" min="0" max="120" step="1" value="12">
+              <div class="ticks"><span>0</span><span>120 days</span></div>
+              <div class="hint">Days to climb from 1.0× to full uplift (learning curve). Set 0 for instant.</div>
+            </div>
+            <div class="field hidden">
+              <label>AI rework rate <span class="v" id="reworkAV">15%</span></label>
+              <input type="range" class="a" id="reworkA" min="0" max="50" step="1" value="15">
+              <div class="ticks"><span>0%</span><span>50%</span></div>
+              <div class="hint">Lower rework from spec-driven gen, auto-tests &amp; review gates.</div>
+            </div>
+            <div class="field">
+              <label>Platform &amp; tokens / day <span class="v" id="platV">$220</span></label>
+              <div class="num"><span id="symP">$</span><input type="number" id="plat" value="220"></div>
+              <div class="hint">Daily run-rate for AI tooling, licences &amp; model inference across the pod.</div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── RESULTS ─────────────── -->
+  <div class="results">
+    <div class="cards" id="kpis"></div>
+
+    <div class="cmp">
+      <div class="col trad">
+        <h3><span class="dot" style="background:var(--trad)"></span>Traditional Agile</h3>
+        <div id="tradRows"></div>
+      </div>
+      <div class="col ai">
+        <h3><span class="dot" style="background:var(--ai)"></span>AI-Native Pod</h3>
+        <div id="aiRows"></div>
+      </div>
+    </div>
+
+    <div class="chartcard">
+      <h3>Completion Progress</h3>
+      <div class="cdesc">Cumulative scope completed over calendar time — the gap is your time-to-market gain.</div>
+      <div class="chartbox"><canvas id="burnChart"></canvas></div>
+    </div>
+
+    <div class="chartgrid">
+      <div class="chartcard">
+        <h3>Cost &amp; Schedule Comparison</h3>
+        <div class="cdesc">Total delivered cost (bars, left axis) and calendar duration in months (line, right axis).</div>
+        <div class="chartbox" style="height:260px"><canvas id="cmpChart"></canvas></div>
+      </div>
+      <div class="chartcard">
+        <h3>Sensitivity to Uplift</h3>
+        <div class="cdesc">Cost saving % as the contested uplift assumption sweeps 1.0×→4.0×. Marker = cost-parity breakeven.</div>
+        <div class="chartbox" style="height:260px"><canvas id="sensChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chartcard">
+      <h3>What's Driving the Gain</h3>
+      <div class="cdesc">Sequential attribution from the traditional baseline cost down to the AI-native total.</div>
+      <div class="chartbox" style="height:300px"><canvas id="waterfall"></canvas></div>
+    </div>
+
+    <div class="method">
+      <h3>Methodology &amp; Assumptions</h3>
+      <details>
+        <summary>How the model works</summary>
+        <p>Scope is held <b>constant</b> across both delivery models and expressed in ideal person-days. A team of <code>N</code> FTEs produces <code>N</code> person-days of progress per calendar working day (productive capacity assumed at 100%). Calendar duration is found by a day-by-day simulation that accumulates progress until the rework-inflated scope is met.</p>
+        <ul>
+          <li><b>Traditional:</b> <code>duration = scope·(1+rework_T) / N_T</code>; cost <code>= N_T · duration · rate_T</code>.</li>
+          <li><b>AI-native:</b> throughput is multiplied by an uplift <code>U</code> that ramps linearly from 1.0× to full over the adoption period; cost adds a daily platform/token run-rate.</li>
+          <li><b>ROI</b> is net cash saving divided by AI-specific incremental spend (platform run-rate).</li>
+          <li><b>Breakeven uplift</b> is solved by bisection: the full uplift at which AI-native total cost equals the traditional baseline.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Why the gain isn't only "uplift"</summary>
+        <p>The waterfall separates three levers that are often conflated: <b>team compression</b> (fewer, more senior people), <b>throughput uplift</b> (more output per engineer), and <b>quality</b> (lower rework). When your AI-native pod is already smaller than the baseline team, a large share of savings comes from compression — independent of any per-engineer speed-up. Surfacing this prevents over-crediting the AI tooling.</p>
+      </details>
+      <details>
+        <summary>Calibrating the uplift assumption</summary>
+        <p>Per-engineer productivity gains are real but <b>highly task-dependent and non-uniform</b>. Greenfield, boilerplate-heavy, well-specified work sees the largest gains; complex, legacy, or ambiguous work sees far less — and controlled studies have shown experienced engineers occasionally <i>slower</i> on intricate tasks. Early gains in the 30–50% range commonly compress as the easy wins are exhausted. Treat 1.3× as a defensible floor for mixed enterprise work and reserve 3×+ for narrow, favourable conditions.</p>
+      </details>
+      <div class="callout">
+        <b>Use as a planning lens, not a guarantee.</b> The uplift multiplier is the single most influential and most uncertain input — always read the headline alongside the sensitivity chart and the breakeven uplift, and pressure-test whether your scope mix justifies the chosen multiplier.
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="contact">
+  <div class="cinner">
+    <div class="cleft">
+      <h3>Ready to model this for a live engagement?</h3>
+      <p>Send your current scenario to our team. The button opens an email to <b>sales@alignedautomation.com</b> pre-filled with the inputs and projected gains shown above — review it, then send.</p>
+    </div>
+    <div class="cform">
+      <input id="cName" type="text" placeholder="Your name">
+      <input id="cCompany" type="text" placeholder="Company">
+      <input id="cEmail" type="email" placeholder="Work email">
+      <button class="cta" id="contactBtn">✉ Contact us</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="mono">Aligned Automation — Automation30 Delivery Economics</div>
+  Figures are indicative and depend entirely on the inputs supplied. Not a substitute for a detailed estimate or commercial quote. Currency day-rates are illustrative defaults.
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let sym="$";
+
+// ── ENGINE ──────────────────────────────────────────────────────
+function simulate(scope,team,cap,rework,upliftFull,rampDays,platDay,rate){
+  const effScope=scope*(1+rework);
+  let prog=0,day=0;const burn=[];const MAX=200000;
+  while(prog<effScope&&day<MAX){
+    day++;
+    const u=rampDays>0?Math.min(upliftFull,1+(upliftFull-1)*Math.min(1,day/rampDays)):upliftFull;
+    prog+=team*cap*u;
+    if(day%2===0||prog>=effScope)burn.push({day,pct:Math.min(prog,effScope)/effScope*100});
+  }
+  const labor=team*day*rate, platform=platDay*day, total=labor+platform;
+  return{days:day,months:day/21,labor,platform,total,burn,effScope};
+}
+function breakeven(scope,teamA,cap,reworkA,rampDays,platDay,rateA,target){
+  let lo=1,hi=20;for(let i=0;i<70;i++){const m=(lo+hi)/2;
+    const c=simulate(scope,teamA,cap,reworkA,m,rampDays,platDay,rateA).total;
+    if(c>target)lo=m;else hi=m;}return(lo+hi)/2;
+}
+const fmtMoney=v=>{if(sym==="₹"){if(v>=1e7)return sym+(v/1e7).toFixed(2)+"Cr";if(v>=1e5)return sym+(v/1e5).toFixed(2)+"L";return sym+Math.round(v).toLocaleString('en-IN');}
+  if(Math.abs(v)>=1e6)return sym+(v/1e6).toFixed(2)+"M";if(Math.abs(v)>=1e3)return sym+(v/1e3).toFixed(1)+"K";return sym+Math.round(v).toLocaleString();};
+const fmtFull=v=>sym+Math.round(v).toLocaleString(sym==="₹"?'en-IN':'en-US');
+
+// ── STATE ───────────────────────────────────────────────────────
+const ids=["scope","teamT","rateT","reworkT","teamA","uplift","ramp","reworkA","rateA","plat"];
+function readState(){return{
+  scope:+$("scope").value, cap:1,
+  teamT:+$("teamT").value, rateT:+$("rateT").value, reworkT:+$("reworkT").value/100,
+  teamA:+$("teamA").value, uplift:+$("uplift").value/100, ramp:+$("ramp").value,
+  reworkA:+$("reworkA").value/100, rateA:+$("rateA").value, plat:+$("plat").value
+};}
+
+// ── CHARTS ──────────────────────────────────────────────────────
+let cmpC,burnC,sensC,wfC;
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+function gridColor(){return css('--line');}
+function tickColor(){return css('--muted');}
+
+function buildCharts(){
+  Chart.defaults.font.family='Calibri, "Segoe UI", system-ui, sans-serif';
+  Chart.defaults.font.size=12;
+  const ctxOpts=()=>({responsive:true,maintainAspectRatio:false});
+  cmpC=new Chart($("cmpChart"),{type:"bar",data:{labels:["Traditional Agile","AI-Native Pod"],datasets:[
+    {label:"Total cost",data:[0,0],backgroundColor:[css('--trad'),css('--ai')],borderRadius:7,yAxisID:'y',order:2},
+    {label:"Duration (months)",data:[0,0],type:'line',borderColor:css('--accent'),backgroundColor:css('--accent'),pointRadius:6,pointHoverRadius:8,yAxisID:'y1',order:1,tension:0}
+  ]},options:{...ctxOpts(),plugins:{legend:{labels:{color:tickColor()}},tooltip:{callbacks:{label:c=>c.dataset.yAxisID==='y'?c.dataset.label+": "+fmtFull(c.raw):c.dataset.label+": "+c.raw.toFixed(1)+" mo"}}},
+    scales:{y:{position:'left',grid:{color:gridColor()},ticks:{color:tickColor(),callback:v=>fmtMoney(v)},title:{display:true,text:'Total cost',color:tickColor()}},
+      y1:{position:'right',grid:{drawOnChartArea:false},ticks:{color:tickColor(),callback:v=>v+'mo'},title:{display:true,text:'Months',color:tickColor()}},
+      x:{grid:{display:false},ticks:{color:tickColor()}}}}});
+
+  burnC=new Chart($("burnChart"),{type:"line",data:{datasets:[
+    {label:"Traditional",data:[],borderColor:css('--trad'),backgroundColor:'transparent',borderWidth:2.5,pointRadius:0,tension:.1},
+    {label:"AI-Native",data:[],borderColor:css('--ai'),backgroundColor:'transparent',borderWidth:2.5,pointRadius:0,tension:.1}
+  ]},options:{...ctxOpts(),parsing:false,plugins:{legend:{labels:{color:tickColor()}},tooltip:{callbacks:{title:items=>"Day "+items[0].parsed.x,label:c=>c.dataset.label+": "+c.parsed.y.toFixed(0)+"% done"}}},
+    scales:{x:{type:'linear',grid:{color:gridColor()},ticks:{color:tickColor()},title:{display:true,text:'Calendar working days',color:tickColor()}},
+      y:{min:0,max:100,grid:{color:gridColor()},ticks:{color:tickColor(),callback:v=>v+'%'}}}}});
+
+  sensC=new Chart($("sensChart"),{type:"line",data:{labels:[],datasets:[
+    {label:"Cost saving %",data:[],borderColor:css('--accent'),backgroundColor:'rgba(31,122,224,.10)',fill:true,borderWidth:2.5,pointRadius:0,tension:.25},
+    {label:"Breakeven",data:[],borderColor:css('--bad'),borderWidth:0,pointRadius:7,pointStyle:'rectRot',pointBackgroundColor:css('--bad')}
+  ]},options:{...ctxOpts(),plugins:{legend:{labels:{color:tickColor(),filter:i=>i.text!=='Breakeven'}},tooltip:{callbacks:{title:i=>"Uplift "+i[0].label+"×",label:c=>c.datasetIndex===1?"Cost parity":c.raw.toFixed(0)+"% saving"}}},
+    scales:{x:{grid:{display:false},ticks:{color:tickColor(),callback:function(v){return this.getLabelForValue(v)+'×'}},title:{display:true,text:'Throughput uplift',color:tickColor()}},
+      y:{grid:{color:gridColor()},ticks:{color:tickColor(),callback:v=>v+'%'}}}}});
+
+  wfC=new Chart($("waterfall"),{type:"bar",data:{labels:["Traditional","Team\ncompression","Throughput\nuplift","Quality\n(rework)","Platform","AI-Native"],datasets:[
+    {label:"base",data:[],backgroundColor:'transparent'},
+    {label:"value",data:[],backgroundColor:[],borderRadius:6}
+  ]},options:{...ctxOpts(),plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const d=c.chart.$delta[c.dataIndex];return d==null?fmtFull(c.raw):(d>=0?"−":"+")+fmtFull(Math.abs(d));}}}},
+    scales:{x:{stacked:true,grid:{display:false},ticks:{color:tickColor(),font:{size:10}}},y:{stacked:true,grid:{color:gridColor()},ticks:{color:tickColor(),callback:v=>fmtMoney(v)}}}}});
+}
+
+// ── RENDER ──────────────────────────────────────────────────────
+function render(){
+  const s=readState();
+  const T=simulate(s.scope,s.teamT,s.cap,s.reworkT,1,0,0,s.rateT);
+  const A=simulate(s.scope,s.teamA,s.cap,s.reworkA,s.uplift,s.ramp,s.plat,s.rateA);
+  const costSave=T.total-A.total, costPct=T.total>0?(costSave/T.total*100):0;
+  const timeSave=T.months-A.months, timePct=T.months>0?(timeSave/T.months*100):0;
+  const incr=A.platform;
+  const roi=incr>0?(costSave/incr*100):0;
+  const be=breakeven(s.scope,s.teamA,s.cap,s.reworkA,s.ramp,s.plat,s.rateA,T.total);
+  window.__ctx={s,T,A,costSave,costPct,timeSave,timePct,roi,be};
+
+  // KPIs
+  $("kpis").innerHTML=[
+    {lab:"Cost saving",big:fmtMoney(costSave),sub:fmtFull(A.total)+" vs "+fmtFull(T.total),delta:(costPct>=0?"▼ ":"▲ ")+Math.abs(costPct).toFixed(0)+"%",dir:costPct>=0?"up":"down",cls:costPct>=0?"good":""},
+    {lab:"Time to market",big:(timeSave>=0?"−":"+")+Math.abs(timeSave).toFixed(1)+" mo",sub:A.months.toFixed(1)+" vs "+T.months.toFixed(1)+" months",delta:(timePct>=0?"▼ ":"▲ ")+Math.abs(timePct).toFixed(0)+"% faster",dir:timePct>=0?"up":"down",cls:"amber"},
+    {lab:"ROI on AI spend",big:roi.toFixed(0)+"%",sub:"net saving ÷ "+fmtMoney(incr)+" incremental",delta:roi>=0?"positive":"negative",dir:roi>=0?"up":"down",cls:roi>=0?"good":""},
+    {lab:"Breakeven uplift",big:be.toFixed(2)+"×",sub:"cost-parity vs current "+s.uplift.toFixed(2)+"×",delta:s.uplift>=be?"margin of safety":"below parity",dir:s.uplift>=be?"up":"down",cls:s.uplift>=be?"good":""}
+  ].map(k=>`<div class="kpi ${k.cls}"><div class="lab">${k.lab}</div><div class="big">${k.big}</div><div class="sub">${k.sub}</div><div class="delta ${k.dir}">${k.delta}</div></div>`).join("");
+
+  // breakdown rows
+  $("tradRows").innerHTML=rows([
+    ["Team","mono",s.teamT+" FTE"],["Duration","mono",T.months.toFixed(1)+" months"],
+    ["Effective scope","mono",Math.round(T.effScope).toLocaleString()+" pd"],
+    ["Labour cost","mono",fmtFull(T.labor)],["Platform / tooling","mono",fmtFull(0)],
+    ["Total delivered cost","total",fmtFull(T.total)]
+  ]);
+  $("aiRows").innerHTML=rows([
+    ["Pod","mono",s.teamA+" FTE @ "+s.uplift.toFixed(2)+"×"],["Duration","mono",A.months.toFixed(1)+" months"],
+    ["Effective scope","mono",Math.round(A.effScope).toLocaleString()+" pd"],
+    ["Labour cost","mono",fmtFull(A.labor)],["Platform / tokens","mono",fmtFull(A.platform)],
+    ["Total delivered cost","total",fmtFull(A.total)]
+  ]);
+
+  // cmp chart
+  cmpC.data.datasets[0].data=[T.total,A.total];
+  cmpC.data.datasets[1].data=[T.months,A.months];
+  cmpC.update('none');
+
+  // burn
+  burnC.data.datasets[0].data=T.burn.map(p=>({x:p.day,y:p.pct}));
+  burnC.data.datasets[1].data=A.burn.map(p=>({x:p.day,y:p.pct}));
+  burnC.update('none');
+
+  // sensitivity
+  const us=[],save=[];for(let u=1.0;u<=4.001;u+=0.25){us.push(u.toFixed(2));
+    const c=simulate(s.scope,s.teamA,s.cap,s.reworkA,u,s.ramp,s.plat,s.rateA).total;
+    save.push((1-c/T.total)*100);}
+  sensC.data.labels=us; sensC.data.datasets[0].data=save;
+  const bePt=us.map(l=>Math.abs(+l-be)<0.13?0:null);
+  sensC.data.datasets[1].data=bePt;
+  sensC.update('none');
+
+  // waterfall (sequential attribution)
+  const c0=T.total;
+  const cComp=simulate(s.scope,s.teamA,s.cap,s.reworkT,1,0,0,s.rateT).total;      // smaller team, baseline rework, no uplift, no platform
+  const cUp=simulate(s.scope,s.teamA,s.cap,s.reworkT,s.uplift,s.ramp,0,s.rateA).total; // + uplift & AI rate
+  const cQual=simulate(s.scope,s.teamA,s.cap,s.reworkA,s.uplift,s.ramp,0,s.rateA).total; // + reduced rework
+  const cFinal=A.total;                                                              // + platform
+  const steps=[c0, c0-cComp, cComp-cUp, cUp-cQual, -(cFinal-cQual)]; // value sizes (positive=saving)
+  // build floating bars
+  const base=[0], val=[c0], colors=[css('--trad')], deltas=[null];
+  let running=c0;
+  const segs=[
+    {d:c0-cComp,c:css('--good')},
+    {d:cComp-cUp,c:css('--good')},
+    {d:cUp-cQual,c:css('--good')},
+    {d:-(cFinal-cQual),c:css('--bad')}
+  ];
+  segs.forEach(seg=>{
+    const next=running-seg.d;
+    base.push(Math.min(running,next)); val.push(Math.abs(seg.d)); colors.push(seg.c); deltas.push(seg.d);
+    running=next;
+  });
+  base.push(0); val.push(cFinal); colors.push(css('--ai')); deltas.push(null);
+  wfC.data.datasets[0].data=base;
+  wfC.data.datasets[1].data=val;
+  wfC.data.datasets[1].backgroundColor=colors;
+  wfC.$delta=deltas;
+  wfC.update('none');
+}
+function rows(arr){return arr.map(([k,c,v])=>`<div class="row ${c==='total'?'total':''}"><span class="k">${k}</span><span class="val">${v}</span></div>`).join("");}
+
+// ── BIND ────────────────────────────────────────────────────────
+const labelMap={scope:v=>(+v).toLocaleString()+" pd",teamT:v=>v,rateT:v=>sym+(+v).toLocaleString(),
+  reworkT:v=>v+"%",teamA:v=>v,uplift:v=>(v/100).toFixed(2)+"×",ramp:v=>v+" days",reworkA:v=>v+"%",
+  rateA:v=>sym+(+v).toLocaleString(),plat:v=>sym+(+v).toLocaleString()};
+const vMap={scope:"scopeV",teamT:"teamTV",rateT:"rateTV",reworkT:"reworkTV",teamA:"teamAV",
+  uplift:"upliftV",ramp:"rampV",reworkA:"reworkAV",rateA:"rateAV",plat:"platV"};
+function syncLabels(){ids.forEach(id=>{if(vMap[id])$(vMap[id]).textContent=labelMap[id]($(id).value);});}
+ids.forEach(id=>$(id).addEventListener("input",()=>{syncLabels();render();markPresetCustom(id);}));
+
+// presets
+function markPresetCustom(id){if(id==="uplift"||id==="ramp")document.querySelectorAll(".preset").forEach(p=>p.classList.remove("on"));}
+document.querySelectorAll(".preset").forEach(p=>p.addEventListener("click",()=>{
+  document.querySelectorAll(".preset").forEach(x=>x.classList.remove("on"));p.classList.add("on");
+  $("uplift").value=(+p.dataset.u)*100; $("ramp").value=p.dataset.r; syncLabels(); render();}));
+
+// currency: fixed to USD
+
+// theme
+$("themeBtn").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute("data-theme",cur==="dark"?"light":"dark");
+  [cmpC,burnC,sensC,wfC].forEach(c=>c&&c.destroy()); buildCharts(); render();});
+
+// reset
+$("resetBtn").addEventListener("click",()=>{
+  const def={scope:1200,teamT:6,rateT:320,reworkT:15,teamA:4,uplift:160,ramp:12,reworkA:15,rateA:320,plat:220};
+  Object.entries(def).forEach(([k,v])=>$(k).value=v);
+  sym="$";
+  ["symT","symA","symP"].forEach(i=>$(i).textContent="$");$("curLabel").textContent="USD";
+  document.querySelectorAll(".preset").forEach(x=>x.classList.remove("on"));
+  document.querySelector('.preset[data-u="1.6"]').classList.add("on");
+  syncLabels();render();});
+
+// ── CONTACT (mailto with live scenario) ─────────────────────────
+const SALES_EMAIL="sales@alignedautomation.com";
+$("contactBtn").addEventListener("click",()=>{
+  const c=window.__ctx; if(!c){return;}
+  const s=c.s;
+  const name=$("cName").value.trim()||"[your name]";
+  const company=$("cCompany").value.trim()||"[company]";
+  const email=$("cEmail").value.trim()||"[your email]";
+  const L=[
+    "Hello Aligned Automation team,","",
+    "I modelled a delivery scenario in the Automation30 Delivery Economics calculator and would like to discuss it.","",
+    "--- My details ---",
+    "Name: "+name, "Company: "+company, "Email: "+email, "",
+    "--- Scenario snapshot ---",
+    "Scope: "+s.scope.toLocaleString()+" ideal person-days","",
+    "Traditional Agile: "+s.teamT+" FTE @ "+sym+s.rateT.toLocaleString()+"/day, "+Math.round(s.reworkT*100)+"% rework",
+    "  -> "+c.T.months.toFixed(1)+" months, total "+fmtFull(c.T.total),"",
+    "AI-Native Pod: "+s.teamA+" FTE @ "+s.uplift.toFixed(2)+"x throughput uplift (ramp "+s.ramp+" days), "+Math.round(s.reworkA*100)+"% rework",
+    "  Platform/tokens "+fmtFull(s.plat)+"/day",
+    "  -> "+c.A.months.toFixed(1)+" months, total "+fmtFull(c.A.total),"",
+    "Projected gain:",
+    "  Cost saving: "+fmtFull(c.costSave)+" ("+c.costPct.toFixed(0)+"%)",
+    "  Time to market: "+c.timeSave.toFixed(1)+" months faster",
+    "  ROI on AI spend: "+c.roi.toFixed(0)+"%",
+    "  Cost-parity breakeven uplift: "+c.be.toFixed(2)+"x","",
+    "Please get in touch to discuss next steps.","",
+    "Thanks,", name
+  ];
+  const subject="Delivery ROI enquiry - AI-Native vs Traditional Agile";
+  const url="mailto:"+SALES_EMAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(L.join("\r\n"));
+  window.location.href=url;
+});
+
+// ── INIT ────────────────────────────────────────────────────────
+buildCharts(); syncLabels(); render();
+</script>
+</body>
+</html>

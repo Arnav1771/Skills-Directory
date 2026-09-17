@@ -1,0 +1,68 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 3  |  Skill: drift-guard
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `drift-guard` skill.
+
+### Inputs
+- Skill definition: `.claude/DriftGuard/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+  - `artifacts/traceability-report.md`
+  - `specs/features.md`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Conduct the required elicitation sequence to collect missing drift monitoring configuration.
+- Parse the behavioural baseline from `artifacts/openspec.yaml` after confirmation.
+- Load the EvalHarness baseline if available, or generate the required baseline template when absent.
+- Generate only the artifacts applicable to the selected observability stack and notification method.
+- Do not assume values that require user approval.
+
+### Required Elicitation
+Collect only the following:
+
+1. EvalHarness baseline location.
+2. Production traffic sampling rate.
+3. Drift alert threshold.
+4. Drift evaluation interval.
+5. Observability stack.
+6. Revalidation notification target.
+7. Drift dimensions to monitor.
+
+### Confirmation Gate
+Present a concise configuration summary including:
+- Baseline source
+- Traffic sampling rate
+- Drift threshold
+- Evaluation interval
+- Observability stack
+- Revalidation target
+- Drift dimensions
+- Confirmation that the spec baseline will be derived from `artifacts/openspec.yaml`
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <question>` → update the specified value and re-display the summary.
+
+### Outputs
+After confirmation, generate the applicable artifacts under `operate/drift-guard/`:
+
+- `drift-config.yaml`
+- `drift-scorer.py`
+- `sampling-config.yaml`
+- `drift-report.md`
+- `revalidation-trigger.yaml`
+- `eval-baseline/baseline-manifest.yaml` (if baseline does not already exist)
+- `drift-dashboard.json`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

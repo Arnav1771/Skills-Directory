@@ -1,0 +1,171 @@
+# Source: 02-data-readiness.md  |  Prompt 11  |  Skill: scenario-planner
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `scenario-planner` skill.
+
+### Inputs
+- Skill definition: `.claude/ScenarioPlanner/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/roi-brief.md`
+  - `artifacts/sprint-scope-ranked.md`
+  - `artifacts/assumption-log.md`
+  - `artifacts/task-breakdown.yaml`
+  - `specs/program.md`
+
+### Execution
+Read `artifacts/roi-brief.md`, `artifacts/sprint-scope-ranked.md`, `artifacts/assumption-log.md`, `artifacts/task-breakdown.yaml`, and `specs/program.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Assumption Sensitivity Analysis
+- Phase 2: 3-Scenario ROI Matrix
+- Phase 3: Minimum Viable Scope
+- Phase 4: Variance Flagging
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Best-case scenario parameters
+- Expected-case assumptions
+- Worst-case scenario parameters
+- Scope options selected for stress-testing
+- Minimum acceptable sprint ROI threshold
+
+### Phase 1 — Assumption Sensitivity Analysis
+Using `artifacts/assumption-log.md`:
+
+- Identify all `HITL_BLOCKERS` and `WARNINGS`.
+- Determine the potential ROI impact if each assumption fails.
+- Estimate:
+  - Value at risk
+  - Potential rework effort
+  - Confidence impact
+
+Calculate sensitivity scores using the method defined in the skill.
+
+Rank assumptions by sensitivity and identify the top contributors to sprint outcome uncertainty.
+
+Generate:
+- Top sensitivity assumptions
+- Confidence levels
+- Value exposure estimates
+- Sensitivity rankings
+
+### Phase 2 — 3-Scenario ROI Matrix
+For each selected scope option:
+
+Generate:
+- Best-case scenario analysis
+- Expected-case scenario analysis
+- Worst-case scenario analysis
+
+Calculate the scenario outputs using the formulas defined in the skill.
+
+For each scenario determine:
+- Delivery effort
+- Investment required
+- Value realised
+- ROI percentage
+- Payback period
+
+Generate verdicts indicating whether:
+- Expected ROI exceeds the minimum threshold
+- Worst-case ROI remains acceptable
+- The scope option remains viable.
+
+### Phase 3 — Minimum Viable Scope
+Determine the minimum viable scope by:
+
+- Starting with must-ship requirements.
+- Adding ranked items incrementally until the minimum acceptable expected ROI threshold is achieved.
+- Verifying whether the resulting scope maintains positive ROI under the worst-case scenario.
+
+Document:
+- Included REQ-IDs
+- Value contribution
+- Effort required
+- Selection rationale
+
+Escalate if even the minimum viable scope produces unacceptable worst-case outcomes.
+
+### Phase 4 — Variance Flagging
+For each scope item:
+
+Calculate variance ratios using the method defined in the skill.
+
+Classify each item as:
+- `HIGH_VARIANCE`
+- `MEDIUM_VARIANCE`
+- `LOW_VARIANCE`
+
+Identify items with the greatest influence on sprint outcomes.
+
+Generate recommendations for POD Lead attention where applicable.
+
+Follow all constraints, processing rules, and execution behavior defined in the `ScenarioPlanner` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/scenario-matrix.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Scenario parameters
+- ROI scenario matrices
+- Minimum viable scope analysis
+- Top assumption sensitivities
+- High-variance scope items
+- Final recommendation
+
+Generate Scenario Parameter entries containing:
+- Best-case assumptions
+- Expected-case assumptions
+- Worst-case assumptions
+- Probability estimates
+
+Generate ROI Scenario Matrix entries containing:
+- Scope option
+- Scenario name
+- Investment
+- Annual value
+- ROI percentage
+- Payback period
+- Verdict
+
+Generate Minimum Viable Scope entries containing:
+- Included REQ-IDs
+- Expected ROI contribution
+- Worst-case viability assessment
+- Selection rationale
+
+Generate Top Assumption Sensitivity entries containing:
+- Rank
+- Assumption identifier
+- Confidence score
+- Value at risk
+- Sensitivity score
+
+Generate High-Variance Scope Item entries containing:
+- REQ-ID
+- Description
+- Best-case value
+- Worst-case value
+- Variance ratio
+- Recommendation
+
+Generate a Final Recommendation containing:
+- Recommended scope option
+- Supporting rationale
+- Key risks requiring POD Lead attention
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

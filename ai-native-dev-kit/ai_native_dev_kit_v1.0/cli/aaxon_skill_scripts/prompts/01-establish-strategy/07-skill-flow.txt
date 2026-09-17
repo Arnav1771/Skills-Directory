@@ -1,0 +1,71 @@
+# Source: 01-establish-strategy.md  |  Prompt 7  |  Skill: skill-flow
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `SkillFlow` skill.
+
+### Inputs
+- Skill definition: `.claude/SkillFlow/SKILL.md`
+- Authoritative catalog input: `skill_catalog.md`
+- Primary context: `specs/program.md`
+- Supporting context: `specs/knowledge.md`
+- Supporting context: `specs/design.md`
+- Supporting context: `specs/database.md`
+- Supporting context: `specs/api.md`
+- Supporting context: `specs/ui-ux.md`
+- Existing recommendation artifacts (if present):
+  - `recommendation_report.md`
+  - `recommendation_summary.md`
+
+### Execution
+Use `skill_catalog.md`, `specs/program.md`, `specs/knowledge.md`, `specs/design.md`, `specs/database.md`, `specs/api.md`, and `specs/ui-ux.md` as the authoritative inputs.
+
+Validate that all mandatory artifacts are present and non-empty before proceeding. If any mandatory artifact is missing, halt execution and follow the validation behavior defined in the skill.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Input Validation
+- Phase 1: Catalog Validation
+- Phase 1.5: Existing Coverage Analysis
+- Phase 2: Project Classification
+- Phase 3: Capability & Requirement Extraction
+- Phase 4: Recommendation Generation
+- Phase 5: Skill Enhancement Analysis
+- Phase 6: Phase Assignment
+- Phase 7: Traceability Matrix Construction
+- Phase 8: Report Generation
+
+Generate recommendations for Phase 02 and later skills only. Exclude the following skills from all recommendation classifications — they run before Phase 02 begins and are assumed complete:
+- `program-charter`
+- `spec-knowledge`
+- `spec-design`
+- `spec-database`
+- `spec-api`
+- `spec-uiux`
+- `SkillFlow`
+- `skill-generator`
+
+Use only `skill_catalog.md` for all skill analysis, capability mapping, ownership analysis, dependency resolution, phase assignment, and recommendation decisions.
+
+Do not read raw skill files for recommendation decisions. If a skill is not present in `skill_catalog.md`, treat it as a catalog gap and do not recommend it.
+
+Ensure all recommendations are evidence-backed using the Phase 01 artifacts and catalog entries. Do not generate recommendations solely because a skill is generally useful.
+
+Follow all validation rules, traceability rules, confidence scoring rules, hallucination prevention rules, ordering rules, and success criteria defined in the `SkillFlow` skill.
+
+### Outputs
+Generate or update the following files:
+
+- `recommendation_report.md`
+- `recommendation_summary.md`
+
+Ensure the outputs conform to the structures defined by the skill, including all mandatory sections and validations.
+
+Before generating `recommendation_report.md` and `recommendation_summary.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

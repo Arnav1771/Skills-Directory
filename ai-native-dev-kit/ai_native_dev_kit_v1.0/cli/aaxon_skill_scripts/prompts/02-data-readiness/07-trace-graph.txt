@@ -1,0 +1,169 @@
+# Source: 02-data-readiness.md  |  Prompt 7  |  Skill: trace-graph
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `trace-graph` skill.
+
+### Inputs
+- Skill definition: `.claude/TraceGraph/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/ai-manifest.json`
+  - `specs/spec.md`
+  - `specs/tasks.md`
+- Additional inputs (if available):
+  - `tests/*.feature`
+  - `artifacts/deploy-manifest.yaml`
+
+### Execution
+Read `artifacts/openspec.yaml`, `artifacts/ai-manifest.json`, `specs/spec.md`, and `specs/tasks.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Requirement Inventory
+- Phase 2: Artifact Inventory
+- Phase 3: Graph Construction
+- Phase 4: Gap Detection
+- Phase 5: Gate Attestation
+
+Use the following predefined assumptions without additional elicitation:
+- Gate context: `Gate-1`
+- Orphan policy: `warn`
+
+### Requirement Inventory
+Extract all requirement identifiers from `artifacts/openspec.yaml`.
+
+Cross-reference against:
+- `specs/spec.md`
+
+Build a requirement inventory containing:
+- Requirement identifier
+- Description
+- Requirement type
+- Status
+
+Confirm identifier consistency across artifacts and identify any mismatches.
+
+### Artifact Inventory
+Parse:
+- `artifacts/ai-manifest.json`
+
+If available, also parse:
+- `tests/*.feature`
+- `artifacts/deploy-manifest.yaml`
+
+Extract:
+- Artifact entries and requirement mappings
+- Cluster identifiers
+- Test scenario identifiers and `@REQ-XXX` annotations
+- Deployment entries
+
+Build a complete artifact inventory for traceability analysis.
+
+### Graph Construction
+Build a directed traceability graph for each requirement following the structure defined in the skill:
+
+```
+REQ-ID
+  └─► CLU-ID
+        └─► Artifact
+              └─► Test Scenario
+                    └─► Deployment Entry
+```
+
+Generate traceability relationships linking:
+- Requirements
+- Clusters
+- Generated artifacts
+- Test scenarios
+- Deployment records
+
+### Gap Detection
+Identify and classify:
+
+- `UNTRACED REQUIREMENT`
+  - Requirement exists in `artifacts/openspec.yaml` but has no artifact mapping.
+
+- `ORPHANED ARTIFACT`
+  - Artifact exists in `artifacts/ai-manifest.json` without a requirement mapping.
+
+- `UNTESTED REQUIREMENT`
+  - Requirement has artifact mappings but no corresponding test scenario.
+
+- `BROKEN LINK`
+  - Requirement references artifacts that do not exist in the manifest.
+
+- `MISSING PROVENANCE HEADER`
+  - Manifest artifacts lacking the required Automation30 provenance metadata.
+
+Apply the following classifications:
+- Untraced requirements: `CRITICAL`
+- Orphaned artifacts: `WARNING`
+- Untested requirements: `WARNING`
+- Broken links: `ERROR`
+- Missing provenance headers: `WARNING`
+
+Classify orphaned artifacts as warnings.
+
+### Gate Attestation
+Perform traceability validation for `Gate-1`.
+
+Verify that:
+- All requirements have artifact mappings.
+- Gate-1 traceability conditions are satisfied.
+
+Determine:
+- PASS or FAIL status.
+- Blocker count.
+- Readiness to proceed.
+- Reasons preventing progression if applicable.
+
+Follow all constraints, processing rules, and execution behavior defined in the `TraceGraph` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/traceability-report.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Gate context
+- Generation timestamp
+- Coverage summary
+- Gap report
+- Full traceability graph
+- Gate attestation
+
+Generate Coverage Summary entries containing:
+- Total requirements
+- Fully traced requirements
+- Partially traced requirements
+- Untraced requirements
+
+Generate Gap Report sections containing:
+- CRITICAL findings
+- WARNING findings
+- ERROR findings
+- Recommended actions
+
+Generate Full Traceability Graph entries containing:
+- Requirement identifiers
+- Cluster identifiers
+- Artifact mappings
+- Test mappings
+- Deployment mappings
+
+Generate Gate Attestation containing:
+- Gate name
+- PASS or FAIL status
+- Blocker count
+- Ready to proceed determination
+- Supporting rationale
+
+Before generating `artifacts/traceability-report.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

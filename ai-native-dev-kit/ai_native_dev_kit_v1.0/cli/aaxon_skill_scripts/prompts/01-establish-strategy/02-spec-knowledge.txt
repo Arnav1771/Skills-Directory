@@ -1,0 +1,58 @@
+# Source: 01-establish-strategy.md  |  Prompt 2  |  Skill: spec-knowledge
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-knowledge` skill.
+
+### Inputs
+- Skill definition: `.claude/spec-knowledge/SKILL.md`
+- Primary context: `specs/program.md`
+- Existing knowledge specification (if present): `specs/knowledge.md`
+- Reference template: `references/knowledge-template.md`
+- Example output: `sample_output/knowledge.md`
+
+### Execution
+Read `specs/program.md` first and use it as the primary source of context.
+
+Check whether `specs/knowledge.md` already exists:
+- If it exists, execute the skill in **Review Mode**.
+- If it does not exist, execute the skill in **Initialize Mode**.
+
+When initializing, derive and document the domain knowledge supported by the program charter, including:
+- Domain overview
+- Core domain entities and relationships
+- Business rules and constraints
+- Workflows and actors
+- Glossary terms
+- State transitions and state machines
+- Compliance and regulatory considerations explicitly reflected in the charter
+
+Infer information only when it is reasonably supported by the contents of `specs/program.md`. Do not introduce concepts that cannot be traced back to the existing program charter.
+
+Follow the execution steps and behavior defined in the `spec-knowledge` skill.
+
+### Outputs
+Generate or update the following file using the canonical structure defined in `references/knowledge-template.md`:
+
+- `specs/knowledge.md`
+
+Ensure the output contains the following sections:
+- Domain Overview
+- Core Entities
+- Business Rules
+- State Machines
+- Workflows
+- Constraints & Compliance
+- Glossary
+- Changelog (Review Mode only)
+
+Before generating the file, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+
+---

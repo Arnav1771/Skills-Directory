@@ -1,0 +1,49 @@
+# Source: 01-establish-strategy.md  |  Prompt 1  |  Skill: program-charter
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Execute the `program-charter` skill.
+
+### Inputs
+- Skill definition: `.claude/program-charter/SKILL.md`
+- Elicitation source: `transcripts/meeting_transcript.txt` and `transcripts\meeting_summary.txt`
+- Reference template: `references/program-md-template.md`
+
+Use `transcripts/meeting_transcript.txt` and `transcripts\meeting_summary.txt` as the completed elicitation session and treat it as the authoritative source of stakeholder responses.
+
+Extract and organize the elicitation information according to the groups defined in the skill.
+
+### Outputs
+Generate the following files:
+
+**Fully generated:**
+- `specs/program.md`
+
+**Scaffolded as placeholder stubs:**
+- `specs/knowledge.md`
+- `specs/design.md`
+- `specs/ui-ux.md`
+- `specs/database.md`
+- `specs/api.md`
+- `CLAUDE.md`
+
+Create the following folder structure:
+
+- `src/`
+- `tests/`
+- `.claude/program-charter/`
+
+Populate `specs/program.md` using the canonical structure defined in `references/program-md-template.md`.
+
+Create all other specification files as placeholder stubs exactly as described in the skill definition.
+
+Before generating `specs/program.md` or any scaffolded files, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+
+---

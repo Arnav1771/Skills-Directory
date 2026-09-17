@@ -1,0 +1,271 @@
+# Source: 03-platform-enablement.md  |  Prompt 8  |  Skill: review-pilot
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `review-pilot` skill.
+
+### Inputs
+- Skill definition: `.claude/ReviewPilot/SKILL.md`
+- Required inputs:
+  - PR diff (changed files + line diffs)
+  - `artifacts/openspec.yaml`
+- Additional inputs (if available):
+  - `.cursorrules`
+  - `AGENTS.md`
+  - TrustFabric compliance flags
+  - `artifacts/ai-manifest.json`
+  - `specs/design.md`
+- Reference files:
+  - `references/review-checklist.md`
+  - `references/spec-conformance-guide.md`
+  - `sample_input/sample-pr-diff.md`
+  - `sample_output/sample-review-report.md`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Extract PR Metadata
+- Step 2: Spec Conformance Check
+- Step 3: Convention Compliance Check
+- Step 4: Structural Analysis
+- Step 5: Classification and Output
+
+Collect the mandatory inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- PR identifier
+- Changed files under review
+- Requirement IDs affected
+- TrustFabric review status
+- Available architecture and convention context
+
+### Input Validation
+Verify that the following inputs are available:
+
+- PR diff (changed files and line diffs)
+- `artifacts/openspec.yaml`
+
+If any minimum required inputs are missing:
+- List every missing input.
+- Halt execution.
+- Do not proceed with review.
+
+Document which enhancement inputs are available:
+- `.cursorrules`
+- `AGENTS.md`
+- TrustFabric compliance flags
+- `artifacts/ai-manifest.json`
+- `specs/design.md`
+
+If enhancement inputs are unavailable:
+- Continue the review.
+- Explicitly document the reduced review scope.
+
+### Step 1 — Extract PR Metadata
+From the PR diff:
+
+1. Identify all changed files.
+2. Extract provenance headers from each changed file:
+   - `@spec:`
+   - `@task:`
+3. Build the traceability map:
+
+```
+file → requirement_id → acceptance_criteria
+```
+
+Validate provenance compliance.
+
+If any changed file lacks provenance headers:
+- Create a `MISSING_PROVENANCE` finding.
+- Classify it as `BLOCKING`.
+
+Document:
+- File path
+- Missing header details
+- Required remediation.
+
+### Step 2 — Spec Conformance Check
+For each requirement ID identified:
+
+1. Load the associated acceptance criteria from `artifacts/openspec.yaml`.
+2. Review the implementation against every criterion.
+3. Assign one of the following verdicts:
+
+- `PASS`
+- `FAIL`
+- `PARTIAL`
+- `UNTESTABLE`
+
+For every acceptance criterion reviewed, document:
+- Requirement ID
+- Acceptance criterion
+- Verdict
+- Supporting notes.
+
+Apply classification rules:
+
+- `FAIL`
+  → BLOCKING
+
+- `PARTIAL`
+  → ADVISORY
+
+- `UNTESTABLE`
+  → INFORMATIONAL requiring POD Lead review.
+
+Generate a spec conformance verdict for each requirement.
+
+### Step 3 — Convention Compliance Check
+Review all changed files against `.cursorrules`.
+
+#### Python Checks
+Evaluate:
+
+- No `print()` statements (CR-002)
+- All parameters type annotated (CR-001)
+- No raw SQL strings (CR-007)
+- Route handlers contain exception handling (CR-003)
+- PII fields absent from response schemas (CR-004)
+- Functions contain docstrings
+
+Classify findings exactly as defined:
+
+- BLOCKING:
+  - `print()`
+  - raw SQL
+  - missing exception handling
+  - PII exposure
+
+- ADVISORY:
+  - missing type annotations
+
+- INFORMATIONAL:
+  - missing docstrings
+
+#### TypeScript / React Checks
+Evaluate:
+
+- No `console.log` statements (CR-T001)
+- No `any` usage (CR-T003)
+- API access via `api-client.ts` only (CR-T002)
+- Loading states for async operations (CR-T006)
+- Error states for async operations (CR-T006)
+- Props interfaces defined (CR-T007)
+
+Classify findings exactly as defined:
+
+- BLOCKING:
+  - `console.log`
+  - direct API calls outside `api-client.ts`
+
+- ADVISORY:
+  - `any` usage
+  - missing loading/error states
+  - missing props interfaces
+
+### Step 4 — Structural Analysis
+Validate structural conformance using `specs/design.md`.
+
+Detect and report:
+
+- Files located in inappropriate architectural layers
+- Business logic implemented directly in route handlers
+- Direct database access from route layers
+- Missing service-layer abstractions
+- Missing tests for new components or services
+- Circular imports (Python)
+- Duplicate implementations already registered in `artifacts/ai-manifest.json`
+
+For each issue identified:
+- Describe the violation.
+- Reference the applicable architectural rule.
+- Assign severity:
+  - BLOCKING
+  - ADVISORY
+  - INFORMATIONAL
+
+### Step 5 — Classification and Output
+Aggregate all findings.
+
+Classify every finding as:
+- BLOCKING
+- ADVISORY
+- INFORMATIONAL
+
+Calculate:
+- Total blocking findings
+- Total advisory findings
+- Total informational findings
+
+Determine the overall review verdict:
+
+- APPROVED
+  → No blocking findings.
+
+- CHANGES_REQUIRED
+  → One or more blocking findings exist.
+
+- POD_LEAD_REVIEW_REQUIRED
+  → No blockers, but unresolved UNTESTABLE findings remain.
+
+### Outputs
+Generate:
+- `pr-review-report.md`
+- `review-verdict.yaml`
+
+Ensure `pr-review-report.md` contains:
+
+- PR identifier
+- Sprint identifier
+- Reviewer details
+- Review date
+- Overall verdict
+- Finding counts by severity
+- Spec Conformance section
+- Requirement-level verdicts
+- Blocking Findings section
+- Advisory Findings section
+- Informational Findings section
+- Final merge recommendation
+
+For Spec Conformance, include:
+- Requirement IDs reviewed
+- Acceptance criteria evaluated
+- PASS / FAIL / PARTIAL / UNTESTABLE verdicts
+- Notes supporting each decision.
+
+For Blocking Findings, include:
+- Finding identifier
+- Category
+- File and line reference
+- Description
+- Required remediation.
+
+For Advisory Findings, include:
+- Recommendation
+- Suggested follow-up actions.
+
+For Informational Findings, include:
+- Builder awareness notes.
+
+Ensure `review-verdict.yaml` contains:
+- PR identifier
+- Sprint identifier
+- Overall verdict
+- Blocking count
+- Advisory count
+- Informational count
+- Requirement-level verdicts
+- Failing criteria references.
+
+Before generating the review report, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

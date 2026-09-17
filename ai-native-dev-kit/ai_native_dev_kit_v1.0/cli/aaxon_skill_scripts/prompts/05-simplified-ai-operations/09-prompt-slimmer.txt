@@ -1,0 +1,145 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 9  |  Skill: prompt-slimmer
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `prompt-slimmer` skill.
+
+### Inputs
+- Skill definition: `.claude/PromptSlimmer/SKILL.md`
+- Authoritative inputs:
+  - `input/system-prompt.md`
+  - `input/prompt-usage-log.json`
+  - `input/slimmer-config.json`
+
+### Execution
+- Audit the current standing instructions before making any modifications.
+- Preserve the original prompt and maintain a complete audit trail.
+- Never silently rewrite directives.
+- Do not apply critical changes without explicit human approval.
+
+### Five-Phase Process
+
+#### Phase 1 — Audit
+- Parse the system prompt into discrete directives.
+- Group directives into clusters (tone, formatting, tool use, escalation, compliance, etc.).
+- Identify:
+  - Exact duplicates
+  - Semantic duplicates
+  - Superseded rules
+  - Contradictions
+- Build an audit manifest including:
+  - Directive text
+  - Cluster
+  - Duplicate references
+  - Initial criticality classification
+
+#### Phase 2 — Merge
+- Consolidate directives with identical intent.
+- Keep the most specific version.
+- Remove superseded directives and document the reason.
+- Preserve protected phrases exactly as written.
+- Surface contradictions as:
+
+```text
+NEEDS_HUMAN_RESOLUTION
+```
+
+- Do not resolve contradictions automatically.
+
+#### Phase 3 — Compress
+- Rewrite only `safe` and `review` directives using concise phrasing.
+- Remove filler and redundant qualifiers.
+- Convert verbose prose into structured instructions where appropriate.
+- Never compress `critical` directives.
+- Leave critical directives unchanged pending approval.
+
+#### Phase 4 — Classify
+Classify every proposed change as:
+
+| Classification | Action |
+|---|---|
+| safe | Auto-apply |
+| review | Stage for human review |
+| critical | Preserve original wording and require approval |
+
+Apply these rules:
+- Protected phrases automatically become `critical`.
+- Removing directives is never `safe`.
+- New consolidated directives inherit the highest classification of their source directives.
+
+For all critical changes:
+- Include:
+  - Original text
+  - Proposed text
+  - Opus semantic-preservation review status
+- Mark them:
+
+```text
+PENDING_APPROVAL
+```
+
+- Do not apply them.
+
+#### Phase 5 — Diff
+Generate a complete audit trail showing:
+- Original directive
+- Slimmed directive
+- Change classification
+- Estimated token savings
+- Approval status where applicable
+
+### Outputs
+
+Generate:
+
+- `system-prompt-slimmed.md`
+- `prompt-diff.md`
+- `slimming-report.json`
+
+### Output Requirements
+
+#### system-prompt-slimmed.md
+- Apply all `safe` changes.
+- Stage `review` changes.
+- Leave `critical` directives unchanged until approved.
+- Preserve protected phrases verbatim.
+
+#### prompt-diff.md
+Include:
+- Summary counts by classification.
+- Estimated aggregate token savings.
+- Side-by-side entries:
+
+```text
+ORIGINAL
+SLIMMED
+CHANGE_TYPE
+TOKENS_SAVED
+STATUS
+```
+
+Requirements:
+- Contradictions remain unresolved.
+- Critical items show:
+  - Opus review verdict
+  - `PENDING_APPROVAL`
+
+#### slimming-report.json
+Include:
+- Audit manifest
+- Duplicate analysis
+- Superseded directives
+- Contradiction inventory
+- Classification counts
+- Estimated token savings
+- Approval status summary
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

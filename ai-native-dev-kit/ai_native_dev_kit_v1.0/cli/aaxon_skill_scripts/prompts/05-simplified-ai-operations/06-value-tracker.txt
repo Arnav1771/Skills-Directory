@@ -1,0 +1,93 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 6  |  Skill: value-tracker
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `value-tracker` skill.
+
+### Inputs
+- Skill definition: `.claude/ValueTracker/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/roi-brief.md`
+  - `artifacts/openspec.yaml`
+  - `artifacts/sprint-scope-ranked.md`
+  - `artifacts/deploy-manifest.yaml`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- First determine whether pre-deployment baseline metrics were captured.
+- Do not assume that a baseline exists.
+- If no baseline exists:
+  - Generate baseline setup artifacts only.
+  - Stop after baseline setup generation.
+- If a baseline exists:
+  - Conduct the required elicitation sequence before generating measurement artifacts.
+  - Parse ROI forecasts from `artifacts/roi-brief.md`.
+  - Compare actual performance against forecasted outcomes.
+  - Generate calibration outputs only if explicitly enabled.
+
+### Baseline Decision Logic
+
+- Check whether pre-deployment baseline metrics were captured.
+
+If baseline metrics do **not** exist:
+- Generate:
+  - `operate/value-tracker/baseline-capture.py`
+  - `operate/value-tracker/baseline-capture-guide.md`
+- Explain that ValueTracker cannot perform actual vs. forecast analysis until baseline data has been collected.
+- Stop execution after baseline setup artifacts are produced.
+
+If baseline metrics **do** exist:
+- Proceed with elicitation and active measurement mode.
+
+### Required Elicitation (only if baseline exists)
+
+Collect only the following:
+
+1. Business metrics source.
+2. Baseline metrics location.
+3. Measurement window.
+4. Feature-to-KPI mappings.
+5. Reporting cadence.
+6. Whether actuals should automatically feed back to ValueModeler.
+
+### Confirmation Gate
+
+Present a concise configuration summary including:
+- Baseline availability
+- Metrics source
+- Baseline location
+- Measurement window
+- Feature-to-KPI mappings
+- Reporting cadence
+- Calibration feedback setting
+- ROI forecast source
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <question>` → revise and re-display the summary.
+
+### Outputs
+
+If baseline is unavailable:
+- `operate/value-tracker/baseline-capture.py`
+- `operate/value-tracker/baseline-capture-guide.md`
+
+If baseline exists, generate the applicable artifacts under `operate/value-tracker/`:
+
+- `value-tracker-config.yaml`
+- `value-tracker-fetcher.py`
+- `value-comparator.py`
+- `value-realization-report.md`
+- `baseline-metrics.yaml`
+- `value-modeler-calibration.yaml` (if enabled)
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin baseline verification and continue, or provide corrections, clarifications, or missing information before generation proceeds.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

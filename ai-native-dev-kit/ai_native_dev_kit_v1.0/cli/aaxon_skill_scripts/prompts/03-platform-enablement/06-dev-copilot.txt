@@ -1,0 +1,190 @@
+# Source: 03-platform-enablement.md  |  Prompt 6  |  Skill: dev-copilot
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+### Inputs
+- Skill definition: `.claude/DevCopilot/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/openspec.yaml`
+  - `artifacts/ai-manifest.json`
+  - `specs/design.md`
+  - `specs/api.md`
+  - `specs/database.md`
+  - `artifacts/policy-catalogue.yaml`
+  - `.cursorrules`
+  - `AGENTS.md`
+- Client org standards (if present): `context/org-standards.md`
+- Context and governance inputs:
+  - KnowledgeMesh retrieval results relevant to the assigned task
+  - TrustFabric flags and data contract constraints relevant to the entities accessed
+- Reference files:
+  - `references/coding-conventions.md`
+  - `references/stack-patterns.md`
+  - `references/provenance-header-spec.md`
+  - `references/ambiguity-escalation-guide.md`
+  - `sample_input/sample-task-context.yaml`
+  - `sample_output/sample-generated-module.py`
+
+### Context Check
+Before beginning task context assembly, check the `context/` folder for the following:
+
+**1. `context/org-standards.md`**
+- If it exists: load it as hard constraints for dimension D4 (Convention Compliance), taking precedence over `.cursorrules` and `AGENTS.md` where they conflict. No user prompt needed — proceed directly.
+- If it does not exist: ask the user once — *"Would you like to provide an org standards document in `context/org-standards.md` before code generation begins? (Yes / No)"* — and wait for their answer before continuing.
+
+**2. Any `.zip` or `.html` file in `context/` (Claude Design export)**
+- If found: treat it as a Claude Design UI export. Parse the embedded CSS variables, class names, and component markup to extract the design system — colors, typography, spacing, component structure.
+- When generating **frontend code**, use these extracted styles as the ground truth for component appearance. Generated components must match the design export — do not invent styles not present in the export.
+- If not found: proceed normally using `specs/ui-ux.md` as the UI reference.
+
+### Execution
+Ask the user:
+
+> "Would you like to implement epic-wise or task-wise?
+**epic-wise:** 
+
+Run the `DevCopilot` skill to implement ALL tasks under EXACTLY ONE epic: <EPIC_ID>.
+
+<inputs>
+Load and treat the following as authoritative, in this precedence order
+(higher overrides lower on conflict):
+1. AGENTS.md            — engineering conventions, constraints, operating rules
+2. spec/spec.md         — product & technical specification (source of truth for intent)
+3. spec/tasks.md        — task breakdown; locate ALL tasks belonging to <EPIC_ID>
+4. Existing codebase    — current patterns, modules, and contracts to extend/reuse
+</inputs>
+
+<scope>
+- Implement ONLY the tasks whose epic is <EPIC_ID>. Do not implement tasks from other
+  epics, or "obvious next steps", unless they are explicit, in-scope dependencies.
+- Enumerate the in-scope tasks first and confirm the set is complete before proceeding.
+- If a task in <EPIC_ID> depends on a task OUTSIDE the epic that is unimplemented,
+  STOP and report it as a blocking dependency (see Clarification Gate).
+- Resolve and respect intra-epic dependency order. If ordering is ambiguous or cyclic,
+  treat it as BLOCKING and ask.
+</scope>
+
+<no-assumption-rule>
+Do NOT proceed on assumptions for anything that materially affects correctness, interfaces,
+or design. This includes (non-exhaustive): file paths/locations, module or function names,
+API contracts (routes, payloads, status codes), data schemas, library/framework choices,
+auth model, error-handling strategy, config/env values, acceptance criteria, AND any
+contract SHARED across tasks in the epic (a shared schema, interface, or module used by
+more than one task must be unambiguous before generation).
+
+Classify every unknown as:
+  - BLOCKING  → cannot be inferred unambiguously from <inputs>. You MUST ask.
+  - DEFERRABLE → a low-risk, reversible default exists. State it explicitly as an
+                 assumption in your plan; do not ask, but flag it for review.
+
+If in doubt whether something is BLOCKING, treat it as BLOCKING and ask.
+Never invent values to fill a gap.
+</no-assumption-rule>
+
+<workflow>
+1. Resolve <EPIC_ID> in spec/tasks.md and ENUMERATE every task under it (ID + title).
+   If the epic is not found, has zero tasks, or the membership is ambiguous, STOP and ask.
+2. For EACH task, build a requirement model: intended behavior, in/out scope, dependencies,
+   and acceptance criteria (cite the spec/tasks lines you derived them from).
+3. Run ONE consolidated gap analysis across ALL tasks. Deduplicate shared unknowns so the
+   user answers each question once. Separate BLOCKING from DEFERRABLE.
+4. CLARIFICATION GATE:
+   - If ANY BLOCKING unknowns exist → output ONLY the Clarification Request below and STOP.
+     Generate NO code or artifacts.
+   - If NO BLOCKING unknowns exist → output the Epic Implementation Plan below and AWAIT "NEXT".
+5. On "NEXT" → generate artifacts in dependency order. By default, generate task-by-task and
+   pause after each for review; if the user replies "ALL", generate the remaining tasks
+   without intermediate pauses.
+</workflow>
+
+<output-formats>
+[A] CLARIFICATION REQUEST (when blocking unknowns exist):
+  - One-line restatement of the epic + the enumerated task list.
+  - Numbered questions, each with: the unknown, which task(s) it affects, why it blocks,
+    and 2–3 candidate options if proposable. Order by impact (epic-wide blockers first).
+  - End with: "Answer the numbered questions above; I will not generate until resolved."
+
+[B] EPIC IMPLEMENTATION PLAN (when ready to generate):
+  - Enumerated task list in planned dependency/build order.
+  - 3–5 bullets summarizing the overall approach.
+  - Per task: files to be created/modified (exact paths) and the acceptance criteria it satisfies.
+  - Stated assumptions (DEFERRABLE defaults) — explicitly labeled, grouped by task.
+  - End with: "Reply NEXT to generate task-by-task, ALL to generate the whole epic,
+    or correct any assumption/path/order above first."
+</output-formats>
+
+Begin at Workflow step 1 for <EPIC_ID> = EPIC-002.
+
+**If task-wise:**
+
+Run the `DevCopilot` skill to implement EXACTLY ONE task: <TASK_ID>.
+
+<inputs>
+Load and treat the following as authoritative, in this precedence order
+(higher overrides lower on conflict):
+1. AGENTS.md            — engineering conventions, constraints, operating rules
+2. spec/spec.md         — product & technical specification (source of truth for intent)
+3. spec/tasks.md        — task breakdown; locate the single task matching <TASK_ID>
+4. Existing codebase    — current patterns, modules, and contracts to extend/reuse
+</inputs>
+
+<scope>
+- Implement ONLY <TASK_ID>. Do not implement sibling tasks, the parent epic,
+  or "obvious next steps" unless they are explicit, in-scope dependencies of <TASK_ID>.
+- If <TASK_ID> depends on an unimplemented task, STOP and report the blocking dependency
+  (see Clarification Gate). Do not silently implement the dependency.
+</scope>
+
+<no-assumption-rule>
+Do NOT proceed on assumptions for anything that materially affects correctness, interfaces,
+or design. This includes (non-exhaustive): file paths/locations, module or function names,
+API contracts (routes, payloads, status codes), data schemas, library/framework choices,
+auth model, error-handling strategy, config/env values, and acceptance criteria.
+
+Classify every unknown as:
+  - BLOCKING  → cannot be inferred unambiguously from <inputs>. You MUST ask.
+  - DEFERRABLE → a low-risk, reversible default exists. State it explicitly as an
+                 assumption in your plan; do not ask, but flag it for review.
+
+If in doubt whether something is BLOCKING, treat it as BLOCKING and ask.
+Never invent values to fill a gap.
+</no-assumption-rule>
+
+<workflow>
+1. Resolve <TASK_ID> in spec/tasks.md. If not found or ambiguous, STOP and ask.
+2. Build a requirement model for the task: intended behavior, in/out scope,
+   dependencies, and acceptance criteria (cite the spec/tasks lines you derived them from).
+3. Run a gap analysis against <no-assumption-rule>. Separate BLOCKING from DEFERRABLE.
+4. CLARIFICATION GATE:
+   - If ANY BLOCKING unknowns exist → output ONLY the Clarification Request below and STOP.
+     Generate NO code or artifacts.
+   - If NO BLOCKING unknowns exist → output the Implementation Plan below and AWAIT "NEXT".
+5. On receiving "NEXT" → generate the implementation artifacts for <TASK_ID>.
+</workflow>
+
+<output-formats>
+[A] CLARIFICATION REQUEST (when blocking unknowns exist):
+  - Restate the task in one line (with its tasks.md ID/title).
+  - Numbered questions, each with: the unknown, why it blocks, and 2–3 candidate options
+    if you can propose them. Order by impact.
+  - End with: "Answer the numbered questions above; I will not generate until resolved."
+
+[B] IMPLEMENTATION PLAN (when ready to generate):
+  - 3–5 bullets: what will be built and the approach.
+  - Files to be created/modified (exact paths).
+  - Stated assumptions (DEFERRABLE defaults) — explicitly labeled.
+  - Acceptance criteria this implementation will satisfy.
+  - End with: "Reply NEXT to generate, or correct any assumption/path above first."
+</output-formats>
+
+Begin at Workflow step 1 for <TASK_ID> = <FILL IN>.
+
+Before generating the implementation, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

@@ -1,0 +1,50 @@
+{
+  "pptx": {
+    "anthropic_skill_id": "pptx",
+    "type": "anthropic",
+    "version": "latest",
+    "description": "Create/edit PowerPoint presentations",
+    "max_input_files": null,
+    "typical_output_kind": "pptx"
+  },
+  "xlsx": {
+    "anthropic_skill_id": "xlsx",
+    "type": "anthropic",
+    "version": "latest",
+    "description": "Create/edit Excel spreadsheets",
+    "max_input_files": null,
+    "typical_output_kind": "xlsx"
+  },
+  "docx": {
+    "anthropic_skill_id": "docx",
+    "type": "anthropic",
+    "version": "latest",
+    "description": "Create/edit Word documents",
+    "max_input_files": null,
+    "typical_output_kind": "docx"
+  },
+  "pdf": {
+    "anthropic_skill_id": "pdf",
+    "type": "anthropic",
+    "version": "latest",
+    "description": "Create/fill/merge PDF documents",
+    "max_input_files": null,
+    "typical_output_kind": "pdf"
+  },
+  "rfp_extraction": {
+    "anthropic_skill_id": "skill_01REPLACE_WITH_REAL_ID",
+    "type": "custom",
+    "version": "latest",
+    "description": "Extract structured, obligation-tagged requirements from an RFP/SOW into a compliance traceability pack",
+    "max_input_files": 5,
+    "typical_output_kind": "html"
+  },
+  "aa_scaffold_pptx": {
+    "anthropic_skill_id": "skill_01REPLACE_WITH_REAL_ID",
+    "type": "custom",
+    "version": "latest",
+    "description": "Apply AA's 2026 brand scaffold (fonts, color tokens, layouts) to a pptxgenjs-built deck",
+    "max_input_files": 1,
+    "typical_output_kind": "pptx"
+  }
+}

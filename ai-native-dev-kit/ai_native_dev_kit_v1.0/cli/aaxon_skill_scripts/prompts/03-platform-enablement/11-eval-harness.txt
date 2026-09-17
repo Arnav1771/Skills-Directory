@@ -1,0 +1,127 @@
+# Source: 03-platform-enablement.md  |  Prompt 11  |  Skill: eval-harness
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `eval-harness` skill.
+
+### Inputs
+- Skill definition: `.claude/EvalHarness/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - Golden references in `artifacts/golden-references/`
+- Additional inputs:
+  - AI-generated outputs from Guardian
+  - `artifacts/eval-rubric-prev.yaml` (if available)
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined.
+
+Execute the following phases in order:
+- Phase 1: Rubric Construction
+- Phase 2: Evaluation Execution
+- Phase 3: Drift Detection (if prior rubric exists)
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Whether golden references exist for all features requiring evaluation.
+- Whether AI-generated outputs from Guardian are available for scoring.
+- Whether a prior sprint rubric exists for drift detection.
+
+### Phase 1 — Rubric Construction
+
+#### Step R1 — Extract Semantic Criteria
+Read `artifacts/openspec.yaml` and extract all semantic evaluation dimensions, including:
+- Accuracy
+- Tone
+- Completeness
+- Conciseness
+- Safety
+- Groundedness
+- Any custom evaluation dimensions defined in the specification
+
+Identify the features requiring semantic evaluation.
+
+#### Step R2 — Golden Reference Validation
+Verify that golden references exist for every evaluated feature.
+
+If a feature lacks a golden reference:
+- Halt evaluation for that feature.
+- Prompt the POD Lead exactly as defined in the skill to:
+  - Provide a golden output example, or
+  - Define minimum acceptable thresholds, or
+  - Reference a prior sprint's golden output.
+
+Do not proceed to scoring without at least one golden reference per evaluated feature.
+
+#### Step R3 — Generate Rubric
+Generate `artifacts/eval-rubric.yaml`.
+
+For each evaluated feature:
+- Define evaluation dimensions.
+- Define dimension weights.
+- Define minimum acceptable scores.
+- Include scoring guides.
+- Link the corresponding golden reference.
+- Define the overall pass threshold.
+
+### Phase 2 — Evaluation Execution
+
+#### Step E1 — Receive Outputs for Scoring
+Collect AI-generated outputs from Guardian.
+
+Identify:
+- The originating feature.
+- The associated requirement or scenario.
+- The matching rubric and golden reference.
+
+#### Step E2 — Score Outputs
+Evaluate each output using the rubric and golden reference.
+
+For every output:
+- Score each dimension on the 1–5 scale defined by the skill.
+- Provide a one-sentence rationale for each dimension score.
+- Apply the internal evaluation structure defined in the skill.
+
+#### Step E3 — Compute Aggregate Scores
+For each evaluated output:
+- Calculate the weighted aggregate score.
+- Determine pass or fail status.
+- Verify that all safety scores meet the minimum thresholds.
+
+Document:
+- Dimension-level scores.
+- Weighted scores.
+- Pass/fail outcomes.
+
+### Phase 3 — Drift Detection
+If `artifacts/eval-rubric-prev.yaml` exists:
+
+- Compare current and prior sprint dimension means.
+- Identify any dimension whose mean score shifts by more than 0.5 points.
+- Determine whether the shift represents:
+  - Positive drift, or
+  - Negative drift.
+- Document the affected dimensions and magnitude of change.
+
+If drift is detected:
+- Generate `artifacts/eval-drift-alert.md`.
+
+### Outputs
+Generate:
+- `artifacts/eval-rubric.yaml`
+- `artifacts/eval-results.json`
+- `artifacts/eval-summary.md`
+
+Generate if drift is detected:
+- `artifacts/eval-drift-alert.md`
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

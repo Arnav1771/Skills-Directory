@@ -1,0 +1,101 @@
+# Source: 01-establish-strategy.md  |  Prompt 10  |  Skill: doc-extraction
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `doc-extraction` skill.
+
+### Inputs
+- Skill definition: `.claude/doc-extraction/SKILL.md`
+- Customer-provided documents supplied during this session
+- Existing knowledge base files (if present):
+  - `specs/knowledge.md`
+  - `specs/design.md`
+  - `specs/ui-ux.md`
+  - `specs/database.md`
+  - `specs/api.md`
+
+### Execution
+Use any customer-provided documents (requirements specifications, architecture documents, process documents, BRDs, functional specifications, data dictionaries, compliance documents, UI/UX specifications, presentations, PDFs, Word documents, or mixed artifacts) as inputs.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Document Intake
+- Phase 1: Document Parse
+- Phase 2: Conflict Detection
+- Phase 3: knowledge.md Update
+- Phase 4: design.md Update
+- Phase 5: ui-ux.md Update
+- Phase 6: Output Summary
+
+Determine and record:
+- Document type
+- Document source
+- Document recency (AS-IS, TO-BE, or Mixed)
+- Availability of existing knowledge base files
+
+Read existing knowledge files before extraction to enable conflict detection.
+
+Classify all substantive document content into the appropriate extraction categories and target files.
+
+Update artifacts using AS-IS content only.
+
+Write extracted content to the appropriate files as follows:
+- Program context, business objectives, stakeholder information → `specs/knowledge.md`
+- Customer expectations, pain points, desired outcomes → `specs/knowledge.md`
+- Existing system behavior and current workflows → `specs/knowledge.md`
+- Technical architecture, infrastructure, and components → `specs/design.md`
+- Data model, database schema, and data flows → `specs/design.md` and `specs/database.md`
+- API descriptions and integration contracts → `specs/design.md` and `specs/api.md`
+- UI screens, user workflows, and navigation → `specs/ui-ux.md`
+- Constraints → `specs/knowledge.md`
+- Open questions, risks, and unresolved items → `specs/knowledge.md`
+
+Detect and classify extracted content as:
+- Direct Conflict
+- Extension
+- Duplication
+- New Content
+
+Produce a Conflict Report listing all conflicts found. Do not silently overwrite or resolve conflicts.
+
+Apply source attribution to all extracted items using the source document name and section or page reference.
+
+Preserve all original language from customer documents when writing customer expectations. Do not paraphrase customer expectations.
+
+Mark inferred content with `[INFERRED]` and document the basis for the inference.
+
+If a document is primarily a TO-BE specification, write only a summary to `specs/knowledge.md` under expectations and do not seed design artifacts with TO-BE content.
+
+Do not populate TO-BE sections in any design artifacts. TO-BE content is reserved for the design-setup phase.
+
+If a document exceeds 50 pages, process it section by section and request confirmation before proceeding to the next section.
+
+Follow all constraints, formatting requirements, and execution behavior defined in the `doc-extraction` skill.
+
+### Outputs
+Generate or update the following artifacts as applicable:
+
+- `specs/knowledge.md`
+- `specs/design.md`
+- `specs/ui-ux.md`
+- `specs/database.md`
+- `specs/api.md`
+
+Generate an extraction report containing:
+- Document name
+- Processing date
+- Document type
+- Document recency
+- Items written by artifact
+- Conflicts found
+- Items skipped due to TO-BE classification
+- Recommended follow-up questions
+
+Before generating the updates, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

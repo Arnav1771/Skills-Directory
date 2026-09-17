@@ -1,0 +1,143 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 19  |  Skill: memory-persistence
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `memory-persistence` skill.
+
+### Inputs
+- Skill definition: `.claude/MemoryPersistence/SKILL.md`
+- Authoritative inputs:
+  - `input/session-state-raw.json`
+  - `input/memory-config.json`
+
+### Execution
+Read all required inputs and execute the skill exactly as defined.
+
+Execute the following phases in order:
+- Phase 1: State Extraction
+- Phase 2: Sensitive Data Exclusion
+- Phase 3: State Prioritization
+- Phase 4: Session State Serialization
+- Phase 5: Rehydration Block Construction
+- Phase 6: Character Cap Enforcement
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- State complexity classification
+- Open thread count
+- Interdependency count
+- Escalation status
+- Truncation decisions
+
+### Phase 1 — State Extraction
+Validate that all REQUIRED inputs are present.
+
+Verify the existence of:
+- `input/session-state-raw.json`
+- `input/memory-config.json`
+
+If any REQUIRED inputs are missing:
+- List every missing input.
+- Halt execution.
+- Do not proceed further.
+
+Extract and categorize session state from `input/session-state-raw.json`.
+
+Identify and prioritize:
+- Commitments
+- Open decisions
+- Active task
+- Constraints
+- Context notes
+
+Capture any additional state required by the skill definition.
+
+### Phase 2 — Sensitive Data Exclusion
+Inspect the extracted state and apply exclusion rules from `input/memory-config.json`.
+
+Verify that the following are NEVER persisted:
+- Authentication tokens
+- Session cookies
+- Passwords
+- API keys
+- Credit card numbers
+- Any prohibited sensitive fields defined by the configuration
+
+Document all excluded items and reasons for exclusion.
+
+### Phase 3 — State Prioritization
+Prioritize extracted state using the following order:
+1. Commitments
+2. Open decisions
+3. Active task
+4. Constraints
+5. Context notes
+
+Determine:
+- State complexity
+- Open thread count
+- Interdependency count
+
+Apply all escalation rules defined in the skill.
+
+If escalation conditions are met:
+- Record the escalation reason.
+- Document the selected model.
+
+### Phase 4 — Session State Serialization
+Generate the persistent session snapshot.
+
+Ensure the serialized state:
+- Conforms to the schema defined by the skill
+- Includes all required metadata
+- Preserves prioritized information accurately
+- Excludes prohibited sensitive information
+
+### Phase 5 — Rehydration Block Construction
+Generate the rehydration block using the prioritized session state.
+
+Ensure the block:
+- Follows the priority ordering defined by the skill
+- Is suitable for injection at the start of a future session
+- Preserves higher-priority information before lower-priority information
+
+### Phase 6 — Character Cap Enforcement
+Apply the configured 6,000-character cap.
+
+Trim lower-priority tiers first while preserving higher-priority information.
+
+If truncation occurs:
+- Record which items were truncated.
+- Document the reason for truncation.
+- Preserve the highest-priority content intact.
+
+Follow all constraints, escalation rules, processing logic, and execution behavior defined in the `MemoryPersistence` skill.
+
+### Outputs
+Generate or update the following artifacts:
+- `session-state.json`
+- `rehydration-block.md`
+
+Ensure `session-state.json` contains:
+- Version and schema information
+- Session metadata
+- Sanitized and prioritized session state
+- Complexity metadata
+- Required fields defined by the skill
+
+Ensure `rehydration-block.md`:
+- Uses the prioritized ordering defined by the skill
+- Respects the 6,000-character cap
+- Documents any truncation decisions
+- Is ready for future session restoration
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

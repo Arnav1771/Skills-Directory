@@ -1,0 +1,69 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 5  |  Skill: runbook-synth
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `runbook-synth` skill.
+
+### Inputs
+- Skill definition: `.claude/RunbookSynth/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/deploy-manifest.yaml`
+  - `artifacts/openspec.yaml`
+  - `specs/design.md`
+  - `specs/api.md`
+  - `artifacts/decision-ledger.md`
+  - `operate/incident-lens/incident-log.md`
+  - `operate/drift-guard/drift-report.md`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Conduct the required elicitation sequence before generating any runbooks.
+- Generate only the sections explicitly selected by the user.
+- Tailor the level of detail to the chosen audience.
+- Incorporate incident-derived fixes and drift insights only when the corresponding artifacts exist.
+- Do not assume rollback requirements, update triggers, or output preferences.
+
+### Required Elicitation
+Collect only the following:
+
+1. Target audience level.
+2. Runbook sections to generate.
+3. Auto-update triggers.
+4. Output format.
+5. Whether a rollback runbook is required.
+6. Deployment version identifier.
+
+### Confirmation Gate
+Present a concise configuration summary including:
+- Target audience
+- Selected sections
+- Auto-update triggers
+- Output format
+- Rollback runbook requirement
+- Version identifier
+- Source artifacts that will be used
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <question>` → revise and re-display the summary.
+
+### Outputs
+After confirmation, generate the applicable artifacts under `operate/runbook-synth/`:
+
+- `runbook-[feature-id]-[version].md`
+- `runbook-rollback-[version].md` (if requested)
+- `runbook-index.md`
+- `runbook-update-trigger.sh`
+- `runbook-config.yaml`
+- `history/runbook-[feature]-[previous-version].md` (if prior versions exist)
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

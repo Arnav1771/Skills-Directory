@@ -1,0 +1,65 @@
+# Source: 01-establish-strategy.md  |  Prompt 5  |  Skill: spec-database
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-database` skill.
+
+### Inputs
+- Skill definition: `.claude/spec-database/SKILL.md`
+- Primary context: `specs/program.md`
+- Supporting context: `specs/knowledge.md`
+- Supporting context: `specs/design.md`
+- Existing database specification (if present): `specs/database.md`
+- Reference template: `references/database-template.md`
+- Example output: `sample_output/database.md`
+
+### Execution
+Read `specs/program.md`, `specs/knowledge.md`, and `specs/design.md` first and use them as the primary sources of context.
+
+Check whether `specs/database.md` already exists:
+- If it exists, execute the skill in **Review Mode**.
+- If it does not exist, execute the skill in **Initialize Mode**.
+
+When initializing, derive the database specification from the existing specifications, including:
+- Database platform and deployment approach
+- Schema overview and entity relationships
+- Table or collection definitions
+- Constraints and integrity rules
+- Indexing strategy and performance considerations
+- Migration strategy and conventions
+- Data retention and compliance requirements
+- Seed and reference data requirements
+
+Use the database technology, ORM, and migration approach defined in `specs/design.md`, and derive entities, attributes, relationships, and business rules from `specs/knowledge.md`.
+
+Ensure that business rules documented in the existing specifications are enforced at the database level where appropriate.
+
+Infer schema decisions only when they are reasonably supported by the existing specifications. Do not introduce entities, fields, relationships, constraints, compliance requirements, or indexing strategies that conflict with or cannot be traced back to the documented specifications.
+
+Follow the execution steps and behavior defined in the `spec-database` skill.
+
+### Outputs
+Generate or update the following file using the canonical structure defined in `references/database-template.md`:
+
+- `specs/database.md`
+
+Ensure the output contains the following sections:
+- Platform
+- Schema Overview
+- Table / Collection Definitions
+- Indexes
+- Constraints & Integrity
+- Migrations
+- Data Retention & Compliance
+- Seed Data
+- Changelog (Review Mode only)
+
+Before generating `specs/database.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

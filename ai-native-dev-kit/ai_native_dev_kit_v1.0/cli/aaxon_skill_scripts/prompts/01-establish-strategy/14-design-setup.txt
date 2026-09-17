@@ -1,0 +1,132 @@
+# Source: 01-establish-strategy.md  |  Prompt 14  |  Skill: design-setup
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `design-setup` skill.
+
+### Inputs
+- Skill definition: `.claude/design-setup/SKILL.md`
+- Primary context:
+  - `specs/knowledge.md`
+  - `specs/features.md`
+  - `specs/design.md`
+  - `specs/ui-ux.md`
+- Supporting context:
+  - `specs/api.md`
+  - `specs/database.md`
+  - `specs/impl.md` (if present)
+
+### Execution
+Read `specs/knowledge.md`, `specs/features.md`, `specs/design.md`, and `specs/ui-ux.md` first and use them as the primary sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Pre-Design Context Load
+- Phase 1: Design Questionnaire
+- Phase 2: Design Validation
+- Phase 3: File Population
+- Phase 4: Design Summary
+
+
+Verify whether `specs/knowledge.md` contains:
+
+`STATUS: REVIEWED ✓`
+
+If the review status is missing, issue the warning defined in the skill and ask the user whether to proceed or complete knowledge review first.
+
+### Design Session
+Internally derive design decisions across the following domains using the available specifications. Do not present context or ask questions per domain. Record decisions, flag unresolved items, and capture any decision that cannot be derived as `[DESIGN DECISION PENDING]`.
+
+Domains to cover:
+- System Architecture Pattern
+- Technology Stack
+- Data Architecture
+- API Design
+- UI/UX Design Direction
+- Infrastructure & Deployment
+- Security & Compliance
+- Cross-Cutting Concerns
+
+For each domain:
+- Derive decisions from `specs/knowledge.md`, `specs/features.md`, and pre-stated technology constraints.
+- Capture rationale traceable to existing specifications.
+- Record any decision that cannot be confidently derived as `[DESIGN DECISION PENDING]` with the reason.
+
+### Design Validation
+After all domains are processed, perform:
+- Constraint validation against `specs/knowledge.md`
+- Compatibility validation against AS-IS findings
+- Migration risk assessment
+- Gap analysis for unresolved decisions
+
+### Outputs
+Generate or update the following artifacts:
+
+- `specs/design.md`
+- `specs/ui-ux.md`
+- `specs/api.md`
+- `specs/database.md`
+- `specs/impl.md`
+
+Populate TO-BE sections only.
+
+Preserve all existing AS-IS sections exactly as written and never overwrite them.
+
+Update `specs/design.md` with:
+- TO-BE System Architecture
+- Architecture Pattern
+- System Components
+- Scalability & Availability
+- Service Communication
+- Non-Functional Requirements
+
+Update `specs/ui-ux.md` with:
+- TO-BE UI/UX Design
+- Design System
+- Personas and Devices
+- Navigation Model
+- Accessibility
+- Internationalization
+- Key Screen Inventory
+
+Update `specs/api.md` with:
+- TO-BE API Design
+- API Style and Versioning
+- Authentication and Authorization
+- API Gateway
+- Rate Limiting
+- Backward Compatibility
+- Standard Response Envelope
+- Endpoint Inventory placeholder marked `[To be elaborated in Sprint 0]`
+
+Update `specs/database.md` with:
+- TO-BE Data Model
+- Database Technology
+- Data Architecture Pattern
+- Migration Strategy
+- Data Retention and Compliance
+- Entity Model placeholder marked `[To be elaborated in Sprint 0]`
+
+Update `specs/impl.md` with:
+- Technology Stack Summary
+- Development Standards
+- Environment Configuration
+- Security Standards
+- CI/CD Pipeline
+- Observability Stack
+- Pending Design Decisions
+
+Ensure:
+- All design decisions reference the motivating constraint, expectation, business rule, or feature where applicable.
+- Any conflict with customer expectations or constraints is explicitly flagged and resolved before proceeding.
+- Any critical unanswered decision is recorded as `[DESIGN DECISION PENDING]` with an owner and impact.
+- Endpoint inventories and detailed entity models are not fully elaborated during this phase and are deferred to Sprint 0.
+
+Before generating the design files, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,103 @@
+# Source: 03-platform-enablement.md  |  Prompt 5  |  Skill: experience-studio
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `experience-studio` skill.
+
+### Inputs
+- Skill definition: `.claude/ExperienceStudio/SKILL.md`
+- Authoritative inputs:
+  - `specs/ui-ux.md`
+  - `artifacts/openspec.yaml`
+  - `specs/design.md`
+  - `specs/features.md`
+- Additional inputs:
+  - UI artefacts under review (screenshots, Figma exports, component code)
+- Reference files:
+  - `references/ux-elicitation-questions.md`
+  - `references/journey-mapping-guide.md`
+  - `references/conformance-scoring-rubric.md`
+  - `sample_input/sample-ui-spec.md`
+  - `sample_output/sample-conformance-report.md`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Execute the following steps in order:
+- Step 1: Parse Intent Hierarchy
+- Step 2: Analyse Design Under Review
+- Step 3: Conformance Evaluation
+- Step 4: Produce Report
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+If `specs/ui-ux.md` is missing or insufficient, follow the elicitation protocol defined in the skill and ask the required questions one at a time before proceeding.
+
+### Key Validations
+- Extract all documented user journeys, experience goals, and stakeholder intent statements from `specs/ui-ux.md`.
+- Map journeys to corresponding requirement IDs in `artifacts/openspec.yaml`.
+- Build the journey-to-requirement coverage matrix.
+- Evaluate every provided UI artefact against the documented journeys and requirements.
+- Classify each journey as exactly one of:
+  - `ALIGNED`
+  - `DEVIATED`
+  - `UNCOVERED`
+  - `EXTENDED`
+- Identify and document the specific intent clause violated for every `DEVIATED` journey.
+- Flag all `EXTENDED` behaviours for POD Lead decision.
+- Enumerate blocking revision requests for every `DEVIATED` and `UNCOVERED` journey.
+- Issue Gate 2 attestation only if all journeys are `ALIGNED`.
+
+### Outputs
+Generate or update:
+- `experience-conformance-report.md`
+
+Ensure the report includes:
+- Sprint identifier
+- Review date
+- Reviewer attribution
+- Gate 2 status
+- Journey-to-requirement coverage matrix
+- Revision requests with journey and requirement references
+- Notes for all `EXTENDED` items
+- Gate 2 attestation or blocking rationale, as applicable
+
+Before generating the report, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+### Check Block — .cursorrules
+
+Silently check whether `.cursorrules` exists at the project root.
+
+If it exists: proceed to the AGENTS.md check below.
+
+If it does not exist, ask:
+
+> "`.cursorrules` is needed before execution of `dev-copilot`. Do you want it to be generated from existing information?"
+
+- If **yes**: run the skill at `.claude/artifacts-generation/create-cursorrules.md`. Once generated, ask the user to review the output and confirm whether any information should be added or updated. After review and any updates are made, proceed to the AGENTS.md check below.
+- If **no**: ask the user to provide `.cursorrules` at the project root before proceeding. Do not continue until it is available.
+
+---
+
+### Check Block — AGENTS.md
+
+Silently check whether `AGENTS.md` exists at the project root.
+
+If it exists: proceed to Prompt 6 immediately.
+
+If it does not exist, ask:
+
+> "`AGENTS.md` is needed before execution of `dev-copilot`. Do you want it to be generated from existing information?"
+
+- If **yes**: run the skill at `.claude/artifacts-generation/create-agents.md`. Once generated, ask the user to review the output and confirm whether any information should be added or updated. After review and any updates are made, ask for confirmation to proceed to Prompt 6.
+- If **no**: ask the user to provide `AGENTS.md` at the project root before proceeding. Do not continue to Prompt 6 until it is available.
+
+---

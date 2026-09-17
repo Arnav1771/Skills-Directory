@@ -1,0 +1,246 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 20  |  Skill: eval-harness
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `eval-harness` skill.
+
+### Inputs
+- Skill definition: `.claude/EvalHarness/SKILL.md`
+- Authoritative inputs:
+  - `input/eval-cases.json`
+  - `input/golden-references/`
+  - `input/eval-config.json`
+
+### Execution
+Read all required inputs and execute the skill exactly as defined.
+
+Execute the following phases in order:
+- Phase 1: Input Validation
+- Phase 2: Evaluation Suite Preparation
+- Phase 3: Exact Match Evaluation
+- Phase 4: Rubric Evaluation
+- Phase 5: Rubric + Regex Evaluation
+- Phase 6: Functional Evaluation
+- Phase 7: Adversarial Evaluation
+- Phase 8: Quality Gate Assessment
+- Phase 9: Failure Analysis
+- Phase 10: Results Generation
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Evaluation execution mode
+- Grader mix configuration
+- Pass@k configuration
+- Quality gate thresholds
+- Overall gate status
+
+### Phase 1 — Input Validation
+Validate that all REQUIRED inputs are present.
+
+Verify the existence of:
+- `input/eval-cases.json`
+- `input/golden-references/`
+- `input/eval-config.json`
+
+If any REQUIRED inputs are missing:
+- List every missing input.
+- Halt execution.
+- Do not proceed further.
+
+Inspect `input/eval-config.json` and determine:
+- Checkpoint vs continuous execution mode
+- Enabled grader types
+- Pass@k settings
+- Gate thresholds
+
+Validate that every evaluation case contains:
+- Case identifier
+- Input
+- Expected output
+- Grader type
+
+If malformed cases exist:
+- List all affected case IDs.
+- Halt execution.
+
+### Phase 2 — Evaluation Suite Preparation
+Load all evaluation cases.
+
+Group cases by grader type:
+- `exact_match`
+- `rubric`
+- `rubric_regex`
+- `functional`
+- `adversarial`
+
+Resolve corresponding references from `input/golden-references/`.
+
+Identify:
+- Total evaluation count
+- Grader distribution
+- Missing references
+
+If required references are unavailable:
+- List all affected cases.
+- Halt execution.
+
+### Phase 3 — Exact Match Evaluation
+Execute all `exact_match` cases.
+
+Compare generated outputs against the corresponding golden references.
+
+Record:
+- Case ID
+- Expected output
+- Actual output
+- Pass/fail result
+
+Calculate aggregate exact match performance.
+
+### Phase 4 — Rubric Evaluation
+Execute all `rubric` cases.
+
+Use Sonnet as specified by the skill.
+
+Evaluate outputs against rubric criteria.
+
+Record:
+- Case ID
+- Rubric score
+- Evaluation rationale
+- Pass/fail determination
+
+Calculate aggregate rubric performance.
+
+### Phase 5 — Rubric + Regex Evaluation
+Execute all `rubric_regex` cases.
+
+Apply:
+- Regex validation
+- Rubric assessment
+
+Record:
+- Case ID
+- Regex outcome
+- Rubric outcome
+- Combined decision
+- Pass/fail result
+
+Identify all regex validation failures.
+
+### Phase 6 — Functional Evaluation
+Execute all `functional` cases.
+
+Validate behavioral correctness according to the skill requirements.
+
+Record:
+- Case ID
+- Functional outcome
+- Validation evidence
+- Pass/fail result
+
+Calculate aggregate functional performance.
+
+### Phase 7 — Adversarial Evaluation
+Execute all `adversarial` cases.
+
+Use Opus as specified by the skill.
+
+Assess:
+- Robustness
+- Safety behavior
+- Resistance to adversarial inputs
+
+Record:
+- Case ID
+- Vulnerability findings
+- Severity
+- Pass/fail determination
+
+Document all adversarial findings.
+
+### Phase 8 — Quality Gate Assessment
+Aggregate evaluation outcomes across all grader types.
+
+Calculate:
+- Overall pass rate
+- Per-grader pass rates
+- Pass@k metrics
+- Threshold utilization
+
+Apply the quality gate rules defined in `input/eval-config.json`.
+
+If performance falls below threshold:
+- Set gate status to `GATE_FAIL`.
+- List every failing case ID.
+- Document the reason for failure.
+
+Otherwise:
+- Set gate status to `GATE_PASS`.
+
+### Phase 9 — Failure Analysis
+Analyze all failing cases.
+
+Identify:
+- Failure categories
+- Common failure patterns
+- Repeated failure modes
+- Cross-grader correlations
+
+Generate actionable findings for remediation.
+
+Prioritize failures by impact.
+
+### Phase 10 — Results Generation
+Finalize all output artifacts.
+
+Ensure all findings, gate decisions, and analyses are consistent with the execution results.
+
+Follow all constraints, grader behaviors, gate logic, and execution rules defined in the `EvalHarness` skill.
+
+### Outputs
+Generate or update the following artifacts:
+- `eval-results.json`
+- `adversarial-findings.json`
+- `failure-analysis.json`
+- `gate-attestation.md`
+
+Ensure `eval-results.json` contains:
+- Evaluation metadata
+- Overall gate status
+- Per-case outcomes
+- Per-grader summaries
+- Aggregate metrics
+- Pass@k results
+
+Ensure `adversarial-findings.json` contains:
+- Adversarial case identifiers
+- Findings
+- Severity classifications
+- Recommended mitigations
+
+Ensure `failure-analysis.json` contains:
+- Failing case IDs
+- Failure categories
+- Root-cause patterns
+- Cross-grader insights
+- Prioritized remediation guidance
+
+Ensure `gate-attestation.md` contains:
+- Evaluation mode
+- Total evaluations executed
+- Overall pass rates
+- Threshold comparison
+- Final gate decision
+- Failing case identifiers when `GATE_FAIL`
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

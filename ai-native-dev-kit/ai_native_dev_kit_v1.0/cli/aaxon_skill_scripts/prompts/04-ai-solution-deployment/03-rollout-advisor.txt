@@ -1,0 +1,188 @@
+# Source: 04-ai-solution-deployment.md  |  Prompt 3  |  Skill: rollout-advisor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `rollout-advisor` skill.
+
+### Inputs
+- Skill definition: `.claude/RolloutAdvisor/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/release/release-intel-report.md`
+  - `artifacts/release/parity-check-report.md`
+  - `artifacts/scenario-matrix.md`
+  - `artifacts/sprint-board.md`
+  - `artifacts/task-breakdown.yaml`
+  - `artifacts/release/deploy-manifest.yaml` (if present)
+- Reference files:
+  - `references/output-schema.md`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined. :contentReference[oaicite:0]{index=0}
+
+Execute the following steps in order:
+- Step 1: Risk Profile Synthesis
+- Step 2: User Impact Elicitation
+- Step 3: Rollout Method Recommendation
+- Step 4: Trigger Threshold Definition
+- Step 5: Rollback Plan Generation
+- Step 6: Monday Smoke Test Checklist
+- Step 7: Write Outputs
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+### Step 1 — Risk Profile Synthesis
+Review the release artifacts and determine:
+
+From `artifacts/release/release-intel-report.md`:
+- Overall blast radius rating.
+- P0 blocker count and details.
+- Accepted P1 risks.
+- Components with HIGH or CRITICAL blast radius.
+
+From `artifacts/release/parity-check-report.md`:
+- Critical drift count.
+- Acknowledged notable drift items.
+- Any migration, feature flag, or connection pool concerns.
+
+From `artifacts/scenario-matrix.md`:
+- HIGH or CRITICAL deployment scenarios.
+- Scenarios likely to activate during or shortly after deployment.
+
+Determine the composite risk tier using the skill rules:
+
+- `CRITICAL`
+- `HIGH`
+- `MEDIUM`
+- `LOW`
+
+If ReleaseIntel or ParityChecker indicates unresolved blockers:
+- Continue execution.
+- Clearly mark all outputs as **DRAFT ONLY**.
+- State that rollout execution is contingent on Gate 3 blockers being resolved.
+
+### Step 2 — User Impact Elicitation
+Ask only for information that cannot be inferred.
+
+Elicit the following five questions:
+
+1. Deployment window:
+   - Planned Monday deployment time.
+   - Active user segments.
+   - Approximate percentage of users active.
+
+2. Feature flag availability:
+   - Whether a feature flag service exists.
+   - Whether all released components are flag-protected.
+
+3. Prior incident history:
+   - Whether previous post-deploy incidents occurred.
+   - Brief causes, if applicable.
+
+4. Infrastructure rollback capability:
+   - Support for blue-green deployment.
+   - Support for canary deployment.
+   - Whether only rolling updates are available.
+
+5. Monday on-call coverage:
+   - Named engineer availability.
+   - Two-hour post-deployment coverage confirmation.
+
+Accept partial responses and document conservative assumptions where answers are unavailable.
+
+### Step 3 — Rollout Method Recommendation
+Recommend the rollout strategy using the skill decision rules.
+
+Select the appropriate primary and alternative approach from:
+
+- Feature-Flag Toggle
+- Canary
+- Blue-Green
+- Direct Deploy
+
+Define:
+- Traffic progression phases.
+- Hold durations.
+- Preconditions for phase advancement.
+
+Document the rationale linking the recommendation to:
+- Composite risk tier.
+- Infrastructure capability.
+- Feature flag availability.
+
+### Step 4 — Trigger Threshold Definition
+Define progression and rollback thresholds appropriate to the selected risk tier.
+
+Include:
+
+Progression triggers:
+- Error rates.
+- p95 latency behaviour.
+- Health check status.
+- Critical log validation.
+
+Rollback triggers:
+- 5xx error thresholds.
+- p95 latency degradation.
+- Health check failures.
+- Database connection failures.
+- Feature-specific failures.
+
+Include component-specific thresholds for HIGH or CRITICAL blast-radius components when applicable.
+
+### Step 5 — Rollback Plan Generation
+For every component in deployment scope, define:
+
+- Trigger conditions.
+- Rollback method.
+- Step-by-step rollback procedure.
+- RTO target.
+- Data recovery requirements.
+- Verification steps.
+
+Also define:
+- Cross-component rollback sequencing.
+- Database rollback ordering.
+- Composite RTO target.
+
+### Step 6 — Monday Smoke Test Checklist
+Generate an executable smoke test checklist covering:
+
+- Critical user journeys.
+- Primary component functionality.
+- Integration validation.
+- High-risk deployment scenarios.
+- Drift-sensitive areas identified by ParityChecker.
+
+For each checklist item include:
+- Component validated.
+- Expected outcome.
+- Pass/fail criteria.
+- Estimated execution time.
+
+### Step 7 — Write Outputs
+Generate:
+
+- `artifacts/release/rollout-strategy.md`
+- `artifacts/release/rollback-plan.md`
+
+Ensure the outputs include:
+- Executive summary.
+- Draft status warning when applicable.
+- Recommended rollout approach.
+- Phase gates and hold periods.
+- Trigger thresholds.
+- Rollback procedures.
+- Monday smoke test checklist.
+- POD Lead sign-off section.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+**AI Solution Deployment Complete**

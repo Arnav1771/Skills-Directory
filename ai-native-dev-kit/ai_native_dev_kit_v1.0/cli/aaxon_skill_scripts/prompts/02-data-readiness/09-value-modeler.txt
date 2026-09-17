@@ -1,0 +1,161 @@
+# Source: 02-data-readiness.md  |  Prompt 9  |  Skill: value-modeler
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `value-modeler` skill.
+
+### Inputs
+- Skill definition: `.claude/ValueModeler/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/task-breakdown.yaml`
+  - `specs/features.md`
+  - `specs/program.md`
+  - `references/opportunity-catalogue.yaml`
+- Prior value actuals (if available):
+  - ValueTracker outputs from previous sprints
+
+### Execution
+Read `artifacts/openspec.yaml`, `artifacts/task-breakdown.yaml`, `specs/features.md`, `specs/program.md`, and `references/opportunity-catalogue.yaml` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Requirement Value Classification
+- Phase 2: Per-Requirement Value Quantification
+- Phase 3: Sprint ROI Calculation
+- Phase 4: Low-Value Flagging
+- Phase 5: Baseline Record
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Applicable value dimensions
+- Baseline metrics
+- Builder-hour estimates
+- Confidence modifier
+
+### Requirement Value Classification
+For each requirement in `artifacts/openspec.yaml`:
+- Classify the requirement into one or more value categories:
+  - `Direct Value`
+  - `Enabling Value`
+  - `Quality Value`
+  - `Experience Value`
+  - `Technical Value`
+
+Use:
+- `specs/features.md`
+- `specs/program.md`
+- `references/opportunity-catalogue.yaml`
+
+to determine the most appropriate value classification.
+
+Document the rationale for each classification.
+
+### Per-Requirement Value Quantification
+Quantify value using the methods defined in the skill.
+
+For Direct Value requirements:
+- Estimate annual value using the prescribed time-saved calculation.
+
+For Enabling Value requirements:
+- Estimate annual value using opportunity capture assumptions derived from the opportunity catalogue.
+
+For Quality Value requirements:
+- Estimate annual value using error reduction calculations.
+
+For Experience and Technical Value requirements:
+- Apply the qualitative proxy method defined by the skill when quantitative data is unavailable.
+
+Calculate for each requirement:
+- Annual value estimate
+- Builder-hour investment
+- Value per builder hour
+
+### Sprint ROI Calculation
+Calculate sprint-level investment and value using the formulas defined in the skill.
+
+Determine:
+- Total builder investment
+- Estimated annual value
+- Sprint ROI percentage
+- Payback period
+
+Use:
+- A default loaded hourly rate of `$150/hour` unless an alternative rate is available from the provided artifacts.
+
+Apply confidence ranges based on the confidence modifier and document the assumptions used.
+
+### Low-Value Flagging
+Identify requirements that should be flagged as:
+- `DEFER_CANDIDATE`
+- `LOW_CONFIDENCE_VALUE`
+
+Apply the thresholds defined in the skill.
+
+Document:
+- The rationale for each flag.
+- The value-to-investment relationship supporting the recommendation.
+
+### Baseline Record
+Generate a baseline value record suitable for future comparison during the Operate phase.
+
+Capture:
+- Forecast values locked at planning time.
+- Assumptions used.
+- Confidence levels.
+- Inputs required for future ValueTracker actual comparisons.
+
+Follow all constraints, processing rules, and execution behavior defined in the `ValueModeler` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/roi-brief.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Confidence level
+- Sprint ROI summary
+- Per-requirement value forecasts
+- Defer candidates
+- Assumptions and confidence notes
+- Value baseline record
+
+Generate Sprint ROI Summary entries containing:
+- Builder investment
+- Estimated annual value
+- Annual value range
+- Sprint ROI percentage
+- Payback period
+
+Generate Per-Requirement Value Forecast entries containing:
+- Requirement identifier
+- Description
+- Value category
+- Annual value estimate
+- Builder-hour estimate
+- Value per builder hour
+- Applicable flags
+
+Generate Defer Candidate entries containing:
+- Requirement identifier
+- Deferral rationale
+- Value-to-investment comparison
+
+Generate Assumptions and Confidence Notes containing:
+- Baseline assumptions
+- Hourly rates used
+- Confidence adjustments
+- Calibration limitations
+
+Generate a Value Baseline Record suitable for future ValueTracker comparison.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

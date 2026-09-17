@@ -1,0 +1,176 @@
+# Source: 03-platform-enablement.md  |  Prompt 7  |  Skill: prompt-bench
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `prompt-bench` skill.
+
+### Inputs
+- Skill definition: `.claude/PromptBench/SKILL.md`
+- Required inputs:
+  - Candidate prompt variants provided by the AI Builder
+  - POD Lead-curated query sample set
+  - `artifacts/openspec.yaml`
+  - Target model list
+- Evaluation inputs:
+  - Evaluation criteria (provided by POD Lead or derived from the specification)
+- Reference files:
+  - `references/evaluation-methods.md`
+  - `references/model-pricing.md`
+  - `references/sample-set-guidance.md`
+  - `sample_input/sample-benchmark-request.yaml`
+  - `sample_output/sample-bench-report.md`
+
+### Execution
+Read all required artifacts and execute the skill exactly as defined.
+
+Benchmark the supplied prompt variants against the selected models and representative query set.
+
+Execute the following steps in order:
+- Step 1: Benchmark Matrix Construction
+- Step 2: Execute Benchmark Runs
+- Step 3: Aggregate Metrics
+- Step 4: Ranking
+- Step 5: Winner Recommendation
+
+Collect the mandatory inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Prompt variants under evaluation
+- Query sample size and characteristics
+- Models included in the benchmark
+- Evaluation methodology used
+- NFR thresholds derived from `openspec.yaml`
+
+### Input Validation
+Verify that the following inputs are available:
+
+- Candidate prompt variants (2–5 variants)
+- Query sample set (10–50 representative queries)
+- Target model list
+- Evaluation method
+- `artifacts/openspec.yaml`
+
+If any required input is missing:
+- List all missing inputs.
+- Halt execution.
+- Do not proceed with benchmarking until they are supplied.
+
+### Step 1 — Benchmark Matrix Construction
+Construct the benchmark matrix using:
+
+Rows:
+- Each query from the curated sample set
+
+Columns:
+- Every prompt variant × model combination
+
+For each matrix cell, capture:
+- Generated response
+- Quality score
+- Latency (ms)
+- Input tokens
+- Output tokens
+- Cost (USD)
+
+### Step 2 — Execute Benchmark Runs
+For every `(prompt variant, model, query)` combination:
+
+Execute the benchmark and record:
+- Response output
+- Latency in milliseconds
+- Input token count
+- Output token count
+- Estimated or actual cost
+
+Evaluate response quality using the selected evaluation method:
+
+- LLM-as-judge
+- Exact-match against ground truth
+- Human-defined rubric
+
+Document the scoring methodology applied.
+
+If live API execution is not explicitly authorised:
+- Use simulated or recorded benchmark execution.
+- Clearly state that results are simulated.
+
+### Step 3 — Aggregate Metrics
+For each `(variant, model)` pair, calculate:
+
+- `quality_avg`
+- `quality_p10`
+- `latency_p50`
+- `latency_p95`
+- `cost_per_1k`
+- `nfr_quality_pass`
+- `nfr_latency_pass`
+- `nfr_cost_pass`
+
+Evaluate pass/fail status against NFR targets extracted from `artifacts/openspec.yaml`.
+
+### Step 4 — Ranking
+Rank all evaluated combinations using:
+
+1. Best Quality
+   - Highest `quality_avg` among NFR-passing combinations.
+
+2. Best Cost
+   - Lowest `cost_per_1k` among NFR-passing combinations.
+
+3. Best Balanced
+   - Composite score:
+     `0.5 × quality_norm + 0.3 × cost_norm_inv + 0.2 × latency_norm_inv`
+
+Identify:
+- Top-performing combinations
+- NFR failures
+- Borderline candidates
+
+### Step 5 — Winner Recommendation
+Recommend the default production candidate using the Best Balanced ranking.
+
+For the recommended winner, provide:
+- Variant identifier
+- Model name
+- Balanced score
+- NFR status
+- Rationale for recommendation
+
+For all rejected candidates:
+- Explain why they were not selected.
+- Identify specific NFR failures where applicable.
+
+### Outputs
+Generate:
+- `prompt-bench-report.md`
+- `prompt-bench-nfr-evidence.yaml`
+
+Ensure `prompt-bench-report.md` contains:
+- Feature identifier
+- Sprint identifier
+- Benchmark date
+- Sample size
+- Variants tested
+- Models tested
+- Recommended winner
+- Recommendation rationale
+- NFR thresholds
+- Results matrix
+- Variant descriptions
+- Failure analysis
+- Model routing recommendation
+
+Ensure `prompt-bench-nfr-evidence.yaml` contains:
+- Every variant/model combination evaluated
+- Aggregated metrics
+- NFR pass/fail evidence
+- Structured release-gate evidence suitable for downstream consumption.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

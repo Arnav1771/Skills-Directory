@@ -1,0 +1,87 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 7  |  Skill: experiment-ops
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `experiment-ops` skill.
+
+### Inputs
+- Skill definition: `.claude/ExperimentOps/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `artifacts/deploy-manifest.yaml`
+  - `operate/runtime-iq/thresholds.yaml`
+  - `operate/value-tracker/value-tracker-config.yaml`
+- Use the skill specification exactly as defined. :contentReference[oaicite:0]{index=0}
+
+### Execution
+- Parse deployment and runtime context to identify experiment candidates and available routing mechanisms.
+- Use RuntimeIQ thresholds as default guardrail references where applicable.
+- Use ValueTracker metric mappings to help validate experiment metrics.
+- Do not assume experiment details that have not been explicitly confirmed.
+
+### Required Elicitation
+
+Collect only the following:
+
+1. Experiment hypothesis.
+2. Variant definitions (control + treatments).
+3. Traffic allocation.
+4. Primary metric and expected effect.
+5. Guardrail metrics with degradation thresholds.
+6. Statistical significance level.
+7. Minimum and maximum runtime.
+8. Traffic routing method.
+9. Whether the winning variant should be auto-promoted.
+
+### Confirmation Gate
+
+Present a concise configuration summary including:
+- Hypothesis
+- Variants
+- Traffic allocation
+- Primary metric and expected effect
+- Guardrail metrics and thresholds
+- Significance level
+- Runtime window
+- Routing method
+- Auto-promotion setting
+
+Include the stakeholder acknowledgement reminder:
+
+> Stakeholder alignment is required before this experiment can run in production. Confirm that guardrail thresholds and significance requirements have been approved.
+
+Wait for:
+
+- `CONFIRM` → proceed with generation.
+- `EDIT <Q-number>` → revise and re-display the summary.
+
+### Outputs
+
+Generate the following artifacts under `operate/experiment-ops/`:
+
+- `experiment-[id]-manifest.yaml`
+- Appropriate routing artifact (`traffic-router.py` or routing configuration)
+- `guardrail-monitor.py`
+- `significance-calculator.py`
+- `auto-stop.sh`
+- `experiment-dashboard.json`
+- `experiment-results-report.md`
+
+### Processing Requirements
+
+- Validate that traffic allocation totals 100%; if not, re-prompt for correction.
+- Select routing implementation based on the chosen routing method.
+- Generate guardrail monitoring that automatically routes traffic back to control when thresholds are breached.
+- Implement significance evaluation only after the minimum runtime has elapsed.
+- Enforce automatic experiment termination at the maximum runtime.
+- Never auto-promote a winner without explicit POD Lead approval, even if auto-promotion is enabled.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to begin the elicitation sequence, or provide corrections, clarifications, or missing information before generation proceeds.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

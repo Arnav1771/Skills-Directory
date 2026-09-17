@@ -1,0 +1,151 @@
+# Source: 02-data-readiness.md  |  Prompt 3  |  Skill: research-copilot
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `research-copilot` skill.
+
+### Inputs
+- Skill definition: `.claude/ResearchCopilot/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `specs/knowledge.md`
+  - `specs/features.md`
+- Available evidence sources:
+  - Stakeholder meeting notes
+  - Elicitation transcripts
+- Additional evidence sources (if provided):
+  - Analytics exports or usage telemetry
+  - Prior sprint validation reports
+  - Support ticket exports
+
+### Execution
+Read `artifacts/openspec.yaml`, `specs/knowledge.md`, and `specs/features.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Requirement Extraction
+- Phase 2: Evidence Indexing
+- Phase 3: Cross-Reference
+- Phase 4: Contradiction Detection
+- Phase 5: AssumptionTracker Escalation
+
+Use the following predefined assumptions without additional elicitation:
+- Available evidence sources:
+  - Stakeholder meeting notes
+  - Elicitation transcripts
+- Evidence recency:
+  - First-sprint evidence
+- Contradiction handling:
+  - Flag contradictions as warnings and continue
+- Minimum evidence level required to proceed:
+  - `PARTIAL`
+
+### Requirement Extraction
+Extract all requirements from `artifacts/openspec.yaml`.
+
+Load:
+- `specs/knowledge.md` for domain context and prior research signals.
+- `specs/features.md` for feature intent and requirement context.
+
+Capture:
+- Requirement identifiers
+- Requirement descriptions
+- Related feature intent
+
+### Evidence Indexing
+Process all available evidence sources.
+
+For each evidence item:
+- Extract key observations, user statements, and findings.
+- Tag each observation with:
+  - Source
+  - Evidence type (`qualitative` or `quantitative`)
+  - Date or recency marker
+  - Evidence strength
+
+Build a searchable evidence index for downstream validation.
+
+### Cross-Reference
+For each requirement:
+- Search the evidence index for supporting or conflicting observations.
+- Classify evidence strength as:
+  - `CONFIRMED`
+  - `PARTIAL`
+  - `WEAK`
+  - `CONTRADICTED`
+  - `NO-EVIDENCE`
+
+Apply the following definitions:
+- `CONFIRMED`: Two or more independent evidence sources directly support the requirement.
+- `PARTIAL`: One evidence source or indirect support exists.
+- `WEAK`: Evidence is anecdotal, single-stakeholder opinion, or otherwise limited.
+- `CONTRADICTED`: Available evidence suggests the requirement conflicts with observed behaviour or stakeholder input.
+- `NO-EVIDENCE`: No supporting evidence exists.
+
+Record the top two to three evidence citations for each requirement.
+
+Allow requirements classified as `PARTIAL` to proceed without escalation.
+
+### Contradiction Detection
+For requirements classified as `CONTRADICTED`:
+- Summarize the contradiction.
+- Compare the stated requirement against the supporting evidence.
+- Classify contradiction severity as:
+  - `MINOR`
+  - `MAJOR`
+  - `BLOCKING`
+
+Treat contradictions as warnings and continue processing.
+
+Generate recommended actions for stakeholder review and resolution.
+
+### AssumptionTracker Escalation
+Flag requirements classified as:
+- `WEAK`
+- `CONTRADICTED`
+- `NO-EVIDENCE`
+
+For each flagged requirement:
+- Estimate a confidence score between `0` and `1`.
+- Recommend a resolution approach, such as:
+  - Additional research
+  - Stakeholder interview
+  - Risk acceptance
+
+Follow all constraints, processing rules, and execution behavior defined in the `ResearchCopilot` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/evidence-map.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Evidence source summary
+- Evidence coverage summary
+- Requirement evidence breakdowns
+- Evidence classifications
+- Supporting citations
+- Contradiction analyses
+- AssumptionTracker recommendations
+
+Generate an AssumptionTracker Escalation List containing:
+- Requirement identifier
+- Evidence level
+- Confidence score
+- Recommended action
+
+Generate a Contradiction Summary containing:
+- Requirement identifier
+- Contradiction severity
+- Recommended action
+
+Before generating `artifacts/evidence-map.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,171 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 10  |  Skill: budget-governor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `budget-governer` skill.
+
+### Inputs
+- Skill definition: `.claude/BudgetGovernor/SKILL.md`
+- Authoritative inputs:
+  - `input/task-graph.json`
+  - `input/pricing-table.json`
+  - `input/budget-caps.json`
+
+### Execution
+- Perform deterministic cost accounting only. Do not use assumptions beyond the provided inputs.
+- Use the pricing table supplied in the inputs. If required pricing data is missing, pause and request clarification before continuing.
+- Preserve precision to 6 decimal places for calculations and use display rounding only in reports.
+
+### Processing Steps
+
+#### Step 1 — Load Task Graph
+For each task step, extract:
+- `step_id`
+- `model`
+- `estimated_input_tokens`
+- `estimated_output_tokens`
+- `is_optional`
+- `depends_on`
+- `estimated_iterations` (default to 1 if absent)
+
+For looping steps:
+
+```text
+effective_input_tokens  = estimated_input_tokens × max(1, estimated_iterations)
+effective_output_tokens = estimated_output_tokens × max(1, estimated_iterations)
+```
+
+#### Step 2 — Compute Per-Step Cost
+Using `pricing-table.json`, calculate:
+
+```text
+input_cost_usd  = (effective_input_tokens / 1,000,000) × input_price
+output_cost_usd = (effective_output_tokens / 1,000,000) × output_price
+step_total_usd  = input_cost_usd + output_cost_usd
+```
+
+Round calculations to 6 decimal places.
+
+#### Step 3 — Roll Up Totals
+Calculate:
+
+- Mandatory projection:
+  - Include only `is_optional = false`
+- Worst-case projection:
+  - Include all steps
+
+Generate:
+
+```text
+task_total_usd
+task_worst_usd
+session_total_usd
+sprint_total_usd
+```
+
+using any prior spend values available in the budget inputs.
+
+#### Step 4 — Budget Comparison
+Load limits from `budget-caps.json`.
+
+Calculate utilization percentages:
+
+```text
+task_utilization_pct
+session_utilization_pct
+sprint_utilization_pct
+```
+
+Also calculate:
+
+```text
+headroom = cap_usd − projected_total_usd
+```
+
+for each level.
+
+#### Step 5 — Gate Decision
+Use the highest utilization across all caps.
+
+Apply:
+
+```text
+≤ 80%     → proceed
+80–100%   → warn
+> 100%    → block
+```
+
+The most constrained cap determines the final gate decision.
+
+#### Step 6 — Remediation (Only if Blocked)
+If the gate result is `block`:
+
+- Identify the top 3 highest-cost steps.
+- Evaluate the next cheaper model tier:
+  - Opus → Sonnet
+  - Sonnet → Haiku
+- Recalculate projected costs.
+- Estimate savings from model downgrades.
+- Evaluate loop reduction opportunities using planned versus projected iterations.
+- Rank remediation suggestions by estimated savings.
+
+#### Step 7 — Ledger Update
+Generate the forecast and append a ledger entry containing:
+
+```json
+{
+  "session_id": "<uuid>",
+  "timestamp_utc": "<iso8601>",
+  "task_id": "<task_id>",
+  "gate_decision": "<proceed|warn|block>",
+  "projected_cost_usd": null,
+  "actual_cost_usd": null
+}
+```
+
+Populate `projected_cost_usd` from the forecast. Leave `actual_cost_usd` as `null`.
+
+### Outputs
+
+Generate:
+
+- `cost-forecast.json`
+- `spend-ledger.json`
+
+### Output Requirements
+
+#### cost-forecast.json
+Include:
+- Per-step breakdown
+- Effective token counts
+- Input/output costs
+- Mandatory and worst-case totals
+- Task/session/sprint projections
+- Utilization percentages
+- Headroom calculations
+- Final gate decision
+
+If blocked, also include:
+- Highest-cost steps
+- Downgrade analysis
+- Iteration reduction opportunities
+- Ordered remediation suggestions
+
+#### spend-ledger.json
+Append a new immutable ledger entry containing:
+- Session identifier
+- Timestamp
+- Task identifier
+- Gate decision
+- Projected cost
+- Actual cost placeholder
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,66 @@
+# Source: 01-establish-strategy.md  |  Prompt 3  |  Skill: spec-design
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-design` skill.
+
+### Inputs
+- Skill definition: `.claude/spec-design/SKILL.md`
+- Primary context: `specs/program.md`
+- Supporting context: `specs/knowledge.md`
+- Existing design specification (if present): `specs/design.md`
+- Reference template: `references/design-template.md`
+- Example output: `sample_output/design.md`
+- Client design preferences (if present): `context/design-preferences.md`
+
+### Context Check
+Before reading any spec files, check whether `context/design-preferences.md` exists.
+- If it exists: read it and extract design preferences. Use them to pre-populate answers to the skill's elicitation groups. Show the user a summary of what was inferred and ask them to confirm or override before proceeding.
+- If it does not exist: ask the user once — *"Would you like to provide a design preferences document in `context/design-preferences.md` before we proceed? (Yes / No)"* — and wait for their answer before continuing.
+
+### Execution
+Read `specs/program.md` and `specs/knowledge.md` first and use them as the primary sources of context.
+
+Check whether `specs/design.md` already exists:
+- If it exists, execute the skill in **Review Mode**.
+- If it does not exist, execute the skill in **Initialize Mode**.
+
+When initializing, propose a coherent technical architecture and technology stack aligned with the program goals, workflows, non-functional requirements, compliance requirements, and domain requirements documented in the prerequisite specifications.
+
+Document and justify the following design decisions:
+- System architecture and communication patterns
+- Technology stack and runtime choices
+- Frameworks and key libraries
+- Infrastructure and deployment approach
+- Coding standards and conventions
+- Security design decisions
+- Observability strategy
+
+Infer technology decisions only when they are reasonably supported by the existing specifications. Do not introduce decisions that conflict with the documented program requirements, domain constraints, non-functional requirements, or compliance considerations.
+
+Follow the execution steps and behavior defined in the `spec-design` skill.
+
+### Outputs
+Generate or update the following file using the canonical structure defined in `references/design-template.md`:
+
+- `specs/design.md`
+
+Ensure the output contains the following sections:
+- System Architecture
+- Technology Stack
+- Libraries & Dependencies
+- Infrastructure
+- Coding Standards
+- Security Design
+- Observability
+- Changelog (Review Mode only)
+
+Before generating `specs/design.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

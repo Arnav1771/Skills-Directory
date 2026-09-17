@@ -1,0 +1,111 @@
+# Source: 02-data-readiness.md  |  Prompt 2  |  Skill: policy-catalog
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `policy-catalog` skill.
+
+### Inputs
+- Skill definition: `.claude/PolicyCatalog/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/openspec.yaml`
+  - `specs/database.md`
+  - `specs/api.md`
+  - `specs/features.md`
+  - `references/policy-library.md`
+
+### Execution
+Read `artifacts/openspec.yaml`, `specs/database.md`, `specs/api.md`, `specs/features.md`, and `references/policy-library.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Requirement Scan
+- Phase 2: Policy Matching
+- Phase 3: Rail Prompt Generation
+- Phase 4: Gap Analysis
+
+Use the following predefined assumptions without additional elicitation:
+- Jurisdiction: `internal-only`
+- Data residency constraints: `none`
+- PII present: `no`
+- Classification level: `internal`
+- Novel policies: `none`
+
+### Requirement Scan
+Parse all requirements from `artifacts/openspec.yaml`.
+
+For each requirement, identify compliance-relevant signals, including:
+- PII field references
+- Authentication and authorization flows
+- Data persistence operations
+- External data transmission
+- Audit logging requirements
+- User consent flows
+- Data deletion or retention operations
+
+### Policy Matching
+For each requirement with compliance signals:
+- Match against `references/policy-library.md`.
+- Assign one or more policy identifiers using the format:
+  - `POL-[FRAMEWORK]-[NNN]`
+- Extract the applicable compliance guard prompts.
+- Flag unmatched compliance signals as `POLICY_GAP`.
+
+Ensure:
+- Requirements with applicable policies are classified as `COMPLIANT`.
+- Requirements with unmatched compliance signals are classified as `POLICY_GAP`.
+- Requirements with no compliance signals are classified as `EXEMPT`.
+
+### Rail Prompt Generation
+For each matched policy:
+- Produce concise compliance guard prompts suitable for injection into AI Builder contexts.
+- Format each rail as:
+
+`[POL-ID] Guard: [what the builder must enforce] | Check: [what the reviewer must verify]`
+
+Ensure:
+- Guard prompts remain concise and actionable.
+- Reviewer checks are specific and verifiable.
+
+### Gap Analysis
+Identify:
+- Requirements containing compliance-relevant signals with no matching policies.
+- Requirements exempt from compliance enforcement.
+- Requirements fully covered by existing policies.
+
+Flag all `POLICY_GAP` findings as gate blockers requiring POD Lead action before Gate-1.
+
+Follow all constraints, processing rules, and execution behavior defined in the `PolicyCatalog` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/policy-catalogue.yaml`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation date
+- Jurisdiction
+- Data classification level
+- PII presence status
+- Requirement-to-policy mappings
+- Compliance statuses
+- Assigned policies
+- Guard prompts
+- Reviewer checks
+- Policy gap details
+
+Generate policy gap entries containing:
+- Requirement identifier
+- Compliance signal
+- Gap reason
+- Required action
+
+Generate per-task compliance rail prompts suitable for injection into `task-breakdown.yaml` during downstream SpecFlow execution.
+
+Before generating `artifacts/policy-catalogue.yaml`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+---

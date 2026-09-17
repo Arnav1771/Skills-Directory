@@ -1,0 +1,70 @@
+# Source: 01-establish-strategy.md  |  Prompt 4  |  Skill: spec-uiux
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `spec-uiux` skill.
+
+### Inputs
+- Skill definition: `.claude/spec-uiux/SKILL.md`
+- Primary context: `specs/program.md`
+- Supporting context: `specs/design.md`
+- Existing UI/UX specification (if present): `specs/ui-ux.md`
+- Reference template: `references/uiux-template.md`
+- Example output: `sample_output/ui-ux.md`
+- Client UX reference (if present): any of the following in `context/` — `ux-reference.*` (doc, CSS, image) or any `.html`/`.zip` file (Claude Design export)
+
+### Context Check
+Before reading any spec files, check the `context/` folder for a UX reference in this order:
+1. Any file named `ux-reference.*` (accepts `.md`, `.css`, `.pdf`, `.png`, `.jpg`, or any image format)
+2. Any `.html` or `.zip` file — treated as a Claude Design export (a UI mockup built and downloaded from Claude's design tool, containing HTML/CSS that encodes the design system)
+
+**If found:** Read or interpret the file and extract design tokens, component styles, colors, and typography. For a Claude Design HTML/zip, parse the embedded CSS variables, class names, and component markup to infer the design system. Show the user a summary of what was inferred and ask them to confirm or override before proceeding.
+
+**If not found:** ask the user once — *"Would you like to provide a UX reference file in `context/` before we proceed? This can be a doc, CSS file, image, or a Claude Design HTML/zip export. (Yes / No)"* — and wait for their answer before continuing.
+
+### Execution
+Read `specs/program.md` and `specs/design.md` first and use them as the primary sources of context.
+
+Check whether `specs/ui-ux.md` already exists:
+- If it exists, execute the skill in **Review Mode**.
+- If it does not exist, execute the skill in **Initialize Mode**.
+
+When initializing, propose a UI/UX specification aligned with the target users, user journeys, accessibility requirements, design highlights, and frontend approach defined in the prerequisite specifications.
+
+Document and define the following design decisions:
+- Design tokens, including colors, typography, spacing, elevation, and border radius
+- Component library standards, including variants, states, sizing, and usage guidance
+- Motion and transition principles
+- Layout and responsive behavior standards
+- Accessibility requirements and internationalization considerations
+- Iconography standards
+- Copy and tone guidelines
+
+Infer design decisions only when they are reasonably supported by the existing specifications. Do not introduce decisions that conflict with documented user needs, accessibility requirements, non-functional requirements, frontend constraints, or existing design guidance.
+
+Follow the execution steps and behavior defined in the `spec-uiux` skill.
+
+### Outputs
+Generate or update the following file using the canonical structure defined in `references/uiux-template.md`:
+
+- `specs/ui-ux.md`
+
+Ensure the output contains the following sections:
+- Design Tokens
+- Component Library
+- Motion System
+- Layout System
+- Accessibility Standards
+- Iconography
+- Copy & Tone
+- Changelog (Review Mode only)
+
+Before generating `specs/ui-ux.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

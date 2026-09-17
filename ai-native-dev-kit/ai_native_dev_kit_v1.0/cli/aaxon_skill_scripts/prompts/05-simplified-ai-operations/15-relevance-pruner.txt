@@ -1,0 +1,248 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 15  |  Skill: relevance-pruner
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `relevance-pruner` skill.
+
+### Inputs
+- Skill definition: `RelevancePruner/SKILL.md`
+- Authoritative inputs:
+  - `input/candidate-chunks.json`
+  - `input/task-query.md`
+  - `input/pruning-config.json`
+
+### Execution
+- Prune candidate context deterministically before downstream reasoning.
+- Do not summarize, rewrite, truncate, or modify chunk content.
+- Score, retain, or reject complete chunks only.
+- Pause and request clarification if required inputs are incomplete.
+
+### Processing Steps
+
+#### Step 1 — Load Inputs
+Read:
+
+- Candidate chunks from `candidate-chunks.json`
+- Current task intent from `task-query.md`
+- Configuration from `pruning-config.json`
+
+Extract:
+
+- Threshold (default `0.35`)
+- Maximum token budget
+- Scoring weights
+- Protected patterns
+- Embedding model
+
+If configuration values are missing, apply documented defaults and record them.
+
+#### Step 2 — Score Every Chunk
+For each chunk calculate:
+
+```text
+relevance_score =
+(semantic_similarity × 0.6)
++ (recency_weight × 0.2)
++ (source_authority × 0.2)
+```
+
+Document each component score.
+
+##### Semantic Similarity
+- Compute embeddings using the configured embedding model.
+- Query embedding uses:
+  - Primary intent
+  - Secondary intent
+  - Explicit keywords from `task-query.md`
+- Chunk embedding uses:
+
+```text
+title + first 512 characters of content
+```
+
+Clamp cosine similarity:
+
+```text
+semantic_similarity = max(0, cosine_similarity)
+```
+
+##### Recency Weight
+
+```text
+days_old = (now − created_at).days
+
+recency_weight = exp(-days_old / 365)
+```
+
+If `created_at` is missing:
+
+```text
+recency_weight = 0.5
+```
+
+##### Source Authority
+Use explicit authority scores when present.
+
+Otherwise apply defaults:
+
+| Source | Authority |
+|---|---:|
+| knowledge_base | 0.90 |
+| product_documentation | 0.85 |
+| faq | 0.75 |
+| crm_case_note | 0.70 |
+| prior_turn | 0.65 |
+| external_article | 0.50 |
+| user_generated | 0.30 |
+| unknown | 0.50 |
+
+#### Step 3 — Protect Critical Chunks
+Protect any chunk matching:
+
+- `customer_id`
+- `ticket_id`
+- `commitment_made`
+
+Protected chunks:
+
+- Cannot be dropped by threshold checks.
+- Must record:
+
+```text
+kept_reason = "protected_pattern"
+```
+
+Reserve their tokens before budget packing.
+
+#### Step 4 — Apply Threshold
+Drop non-protected chunks where:
+
+```text
+relevance_score < threshold
+```
+
+Log:
+
+```text
+drop_reason = "below_threshold"
+```
+
+#### Step 5 — Greedy Budget Packing
+Sort survivors by:
+
+```text
+relevance_score descending
+```
+
+Pack chunks greedily:
+
+```text
+if token_count + chunk_tokens <= max_tokens:
+    keep
+else:
+    drop
+```
+
+Over-budget drops use:
+
+```text
+drop_reason = "over_budget_after_threshold"
+```
+
+Protected chunks always take precedence.
+
+If protected chunks alone exceed budget:
+
+```text
+budget_exceeded_by_protection = true
+```
+
+Keep them anyway.
+
+#### Step 6 — Generate Outputs
+
+Generate:
+
+##### pruned-context.json
+
+Include:
+
+```json
+{
+  "id": "",
+  "title": "",
+  "source": "",
+  "relevance_score": 0,
+  "semantic_similarity": 0,
+  "recency_weight": 0,
+  "source_authority": 0,
+  "tokens": 0,
+  "kept_reason": "",
+  "content": ""
+}
+```
+
+##### dropped-chunks-log.json
+
+Include:
+
+```json
+{
+  "id": "",
+  "title": "",
+  "source": "",
+  "relevance_score": 0,
+  "tokens": 0,
+  "drop_reason": ""
+}
+```
+
+##### pruning-summary.json
+
+Include:
+
+- Task query summary
+- Total candidate tokens
+- Total kept tokens
+- Tokens reclaimed
+- Reduction percentage
+- Chunks evaluated
+- Chunks kept
+- Chunks dropped
+- Below-threshold count
+- Over-budget count
+- Protected chunks kept
+- Budget exceeded by protection flag
+- Threshold used
+- Maximum token budget
+
+### Outputs
+
+Generate:
+
+- `pruned-context.json`
+- `dropped-chunks-log.json`
+- `pruning-summary.json`
+
+### Output Requirements
+
+Include summary metrics:
+
+- Total chunks evaluated
+- Chunks retained
+- Chunks dropped
+- Tokens reclaimed
+- Reduction percentage
+- Protected chunks preserved
+- Budget utilization after pruning
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+
+---

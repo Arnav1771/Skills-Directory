@@ -1,0 +1,188 @@
+# Source: 03-platform-enablement.md  |  Prompt 15  |  Skill: insight-ops
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `insight-ops` skill.
+
+### Inputs
+- Skill definition: `.claude/InsightOps/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/test-results.json`
+  - `artifacts/eval-results.json`
+  - `artifacts/adversarial-test-suite.json`
+  - `artifacts/simlab-results.json`
+  - `artifacts/policy-scan-results.json`
+  - `artifacts/openspec.yaml`
+  - `artifacts/traceability-report.md`
+- Optional inputs:
+  - `artifacts/operate-metrics/`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined. :contentReference[oaicite:0]{index=0}
+
+Execute the following steps in order:
+- Step I1: Completeness and Freshness Check
+- Step I2: Cross-Agent Signal Aggregation
+- Step I3: Pattern Detection
+- Step I4: Spec Amendment Recommendations
+- Step I5: Action List Generation
+- Step I6: Write Validation Report
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Validation artifact completeness.
+- Validation artifact freshness.
+- Requirement coverage status.
+- Operate metrics availability.
+- Release gate readiness.
+
+### Step I1 — Completeness and Freshness Check
+Verify that all required validation outputs exist:
+- `artifacts/test-results.json`
+- `artifacts/eval-results.json`
+- `artifacts/adversarial-test-suite.json`
+- `artifacts/simlab-results.json`
+- `artifacts/policy-scan-results.json`
+- `artifacts/openspec.yaml`
+- `artifacts/traceability-report.md`
+
+Validate that each artifact belongs to the current sprint by checking available timestamps and sprint identifiers.
+
+If any required artifact is missing:
+- Halt execution.
+- List the missing outputs.
+- Prompt exactly as defined in the skill.
+- Do not continue until all required inputs are available.
+
+If any artifact appears stale:
+- Explicitly document the warning.
+- Identify the originating agent.
+- Continue only if the user confirms the evidence should still be used.
+
+### Step I2 — Cross-Agent Signal Aggregation
+Build a unified failure map for every requirement ID defined in `artifacts/openspec.yaml`.
+
+For each requirement, aggregate:
+- Guardian status.
+- EvalHarness evaluation score.
+- RedTeamX adversarial classification.
+- SimLab NFR status.
+- PolicyEnforcer violations by severity.
+
+Construct the aggregate signal using the skill rules:
+
+- `RED`
+  - Any FAIL result.
+  - Any VULNERABLE result.
+  - Any CRITICAL or HIGH policy violation.
+
+- `AMBER`
+  - Any WARN result.
+  - Any DEGRADED adversarial result.
+  - Evaluation score below threshold.
+  - Any MEDIUM policy violation.
+
+- `GREEN`
+  - All validation signals pass with no blocking findings.
+
+Document the unified failure map per requirement.
+
+### Step I3 — Pattern Detection
+Analyse the unified failure map and identify cross-agent patterns.
+
+Detect and document:
+
+#### Cross-Agent Correlation
+Identify requirements exhibiting degraded signals across multiple validation agents.
+
+#### Component Blast Radius
+Identify components associated with failures spanning multiple requirements.
+
+#### Spec Gap Signals
+Identify:
+- Repeated Guardian `SPEC_ERROR` classifications.
+- Underdefined requirements revealed through adversarial or validation failures.
+- Requirement clusters indicating specification ambiguity.
+
+#### Environmental Patterns
+Correlate:
+- Guardian `ENV_ERROR` findings.
+- SimLab infrastructure failures.
+- Shared environmental dependencies.
+
+#### Regression Signals
+Identify:
+- EvalHarness quality regressions.
+- Drift evidence.
+- Declining performance compared to prior sprint evidence where available.
+
+For each detected pattern:
+- Describe the evidence.
+- Explain the likely root cause.
+- List the impacted requirements and components.
+
+### Step I4 — Spec Amendment Recommendations
+For every identified SPEC_ERROR or spec gap pattern:
+
+Generate amendment recommendations that include:
+- Amendment identifier.
+- Triggering evidence.
+- Failure pattern description.
+- Affected `openspec.yaml` requirement IDs.
+- Specific wording or additions recommended.
+- Estimated amendment effort.
+- Priority classification.
+
+Recommendations must be concrete and directly actionable.
+
+### Step I5 — Action List Generation
+Produce a POD Lead-ready action list ordered using the following priority:
+
+1. Release gate blockers.
+2. AMBER findings and quick wins.
+3. Spec amendment recommendations.
+4. Informational and next-sprint improvements.
+
+For each action item include:
+- Action identifier.
+- Description.
+- Owner.
+- Estimated effort.
+- Blocking status.
+- Affected files, requirements, or components.
+- Recommended next step.
+
+### Step I6 — Write Validation Report
+Compile a consolidated validation report containing:
+- Executive summary.
+- Release gate status.
+- Cross-agent findings.
+- Failure patterns.
+- Spec amendment recommendations.
+- Ordered action list.
+- Passing evidence supporting release decisions.
+
+### Outputs
+Generate:
+- `artifacts/validation-report.md`
+- `artifacts/spec-amendments.md`
+- `artifacts/action-list.md`
+
+If Operate phase metrics are available:
+- Generate `artifacts/feedback-loop-triggers.yaml`.
+
+If Operate phase metrics are unavailable:
+- Explicitly document that feedback-loop triggers could not be generated.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+**Platform Enablement Complete**

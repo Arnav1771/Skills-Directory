@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aa-skills"
+version = "0.1.0"
+description = "Framework for invoking Aligned Automation AI-native skills via the Claude API, with file I/O and session/context management."
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.40.0",
+]
+
+[project.scripts]
+aa-skills = "aa_skills.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["aa_skills*"]

@@ -1,0 +1,125 @@
+# Source: 02-data-readiness.md  |  Prompt 12  |  Skill: decision-ledger
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `decision-ledger` skill.
+
+### Inputs
+- Skill definition: `.claude/DecisionLedger/SKILL.md`
+- Authoritative inputs (if available):
+  - `artifacts/decision-ledger.md`
+  - `artifacts/openspec.yaml`
+  - `artifacts/impact-analysis.md`
+  - `artifacts/sprint-scope-ranked.md`
+
+### Execution
+Execute the skill exactly as defined.
+
+Determine the appropriate operating mode:
+- Log Entry Mode
+- Query Mode
+- Sprint Summary Mode
+
+Use the available artifacts as the authoritative sources of context.
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+### Log Entry Mode
+For each decision to be recorded:
+
+Determine and document:
+- Decision type
+- Decision text
+- Rationale
+- Approver
+- Affected requirement identifiers
+- Superseded decision reference, if applicable
+
+For HITL gate clearances, additionally determine:
+- Gate identifier
+- Conditions or caveats
+
+Generate a unique decision identifier using the format:
+- `DEC-[SPRINT-ID]-[NNN]`
+
+Generate timestamps using:
+- `YYYY-MM-DDTHH:MM:SSZ`
+
+If a superseded decision is identified:
+- Mark the prior decision as superseded by the newly generated decision identifier.
+- Preserve append-only integrity by creating a new entry rather than modifying historical content.
+
+Append all new entries to the ledger exactly as defined by the skill.
+
+Generate confirmation messages for each decision recorded.
+
+### Query Mode
+If a query request is detected:
+
+Support queries by:
+- Requirement identifier
+- Date range
+- Approver
+- Decision type
+- Full ledger
+
+Return query results sorted and formatted according to the rules defined in the skill.
+
+### Sprint Summary Mode
+When requested:
+
+Generate a business-ready sprint decision summary.
+
+Group decisions by category, including:
+- Gate clearances
+- Scope decisions
+- Spec changes
+- Risk acceptances
+- Other applicable decision categories
+
+Follow all constraints, processing rules, and execution behavior defined in the `DecisionLedger` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/decision-ledger.md`
+
+Generate the following artifact only when applicable:
+
+- `artifacts/decision-summary.md`
+
+Ensure `artifacts/decision-ledger.md` contains entries including:
+- Decision identifier
+- Decision type
+- Timestamp
+- Decision statement
+- Rationale
+- Approver
+- Affected requirements
+- Gate information when applicable
+- Conditions when applicable
+- Status
+- Supersedes reference
+
+Generate Decision Summary entries containing:
+- Gate clearances
+- Scope decisions
+- Deferred requirements
+- Descoped requirements
+- Approved specification changes
+- Risk acceptances
+- References to the full ledger
+
+Maintain append-only behavior throughout execution:
+- Never modify or delete existing entries.
+- Corrections and updates must be represented as new entries.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt.
+
+---

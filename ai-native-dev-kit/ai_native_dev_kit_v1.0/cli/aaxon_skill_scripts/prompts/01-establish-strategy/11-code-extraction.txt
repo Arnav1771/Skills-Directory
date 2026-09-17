@@ -1,0 +1,163 @@
+# Source: 01-establish-strategy.md  |  Prompt 11  |  Skill: code-extraction
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `code-extraction` skill.
+
+### Inputs
+- Skill definition: `.claude/code-extraction/SKILL.md`
+- Provided source artifacts, including:
+  - Source code files
+  - Repository contents or repository exports
+  - Schema files
+  - Database migration scripts
+  - OpenAPI, Swagger, WSDL, or gRPC definitions
+  - Configuration files
+  - Infrastructure-as-code files
+- Existing knowledge base files (if present):
+  - `specs/knowledge.md`
+  - `specs/api.md`
+  - `specs/database.md`
+  - `specs/design.md`
+
+### Execution
+Parse the provided legacy or existing source code, schema files, API definitions, migration scripts, configuration files, and infrastructure artifacts.
+
+Execute the skill exactly as defined, including:
+- Phase 0: Code Intake
+- Phase 1: Code Analysis
+- Phase 2: knowledge.md Update
+- Phase 3: api.md Update
+- Phase 4: database.md Update
+- Phase 5: design.md Update
+- Phase 6: Output Summary
+
+Determine and document:
+- Artifact type
+- Technology stack
+- Scope of analysis
+- Availability of existing knowledge files
+
+Read existing knowledge files before extraction to enable conflict detection and deduplication.
+
+Analyze source code to identify:
+- Application entry points
+- Module and package structure
+- Business logic and domain entities
+- External dependencies and integrations
+- Configuration patterns
+- Error handling approaches
+- Authentication and authorization mechanisms
+
+Analyze API definitions to extract:
+- Endpoints
+- Methods
+- Request schemas
+- Response schemas
+- Authentication requirements
+- Versioning strategies
+- Deprecated or unstable endpoints
+
+Analyze database schemas and migrations to extract:
+- Tables and collections
+- Fields and data types
+- Nullability and defaults
+- Primary and foreign keys
+- Constraints
+- Indexes
+- Entity relationships
+- Soft delete patterns
+- Audit fields
+- Multi-tenancy patterns
+
+Analyze infrastructure artifacts to identify:
+- Cloud provider and services
+- Deployment model
+- Scaling approaches
+- Containerization patterns
+- Load balancing and CDN configurations
+
+Update artifacts using AS-IS knowledge only.
+
+Update `specs/knowledge.md` with:
+- Component and service entries
+- Business-purpose descriptions
+- Observed behaviors
+- External dependencies
+- Technical debt observations
+- Change log entries
+
+Update `specs/api.md` with:
+- The AS-IS API surface
+- Endpoint definitions
+- Request and response summaries
+- Authentication mechanisms
+- Operational notes
+- Deprecation findings
+
+Update `specs/database.md` with:
+- The AS-IS data model
+- Table and collection documentation
+- Indexes
+- Relationships
+- Entity relationship summaries
+- Data model observations
+
+Update `specs/design.md` with:
+- The AS-IS architecture seed
+- Observed technology stack
+- Architectural patterns
+- Design patterns
+- Technical debt register
+- Constraints implied by the codebase
+
+Never overwrite existing entries. Append findings and flag conflicts only.
+
+Detect and report:
+- Conflicts with existing knowledge
+- Duplicate findings
+- Gaps requiring clarification
+- Migration risks
+
+Never infer business rules not evidenced in code. If logic is unclear, document it as `[INFERRED — requires validation]`.
+
+Do not document dead code as active behavior. Record it only as technical debt where appropriate.
+
+Do not reproduce credentials, secrets, API keys, or sensitive values found in the code. Report their existence only as security findings.
+
+If the codebase is very large, prioritize analysis in the following order:
+- Entry points
+- Routing and controllers
+- Domain models
+- Database schema
+- Service logic
+
+Follow all constraints, formatting requirements, and execution behavior defined in the `code-extraction` skill.
+
+### Outputs
+Generate or update the following artifacts as applicable:
+
+- `specs/knowledge.md`
+- `specs/api.md`
+- `specs/database.md`
+- `specs/design.md`
+
+Generate a code extraction report containing:
+- Artifact name
+- Processing date
+- Identified technology stack
+- Files analyzed
+- Knowledge written by artifact
+- Conflicts with existing knowledge
+- Gaps requiring clarification
+- Migration risk flags
+
+Before generating the updates, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

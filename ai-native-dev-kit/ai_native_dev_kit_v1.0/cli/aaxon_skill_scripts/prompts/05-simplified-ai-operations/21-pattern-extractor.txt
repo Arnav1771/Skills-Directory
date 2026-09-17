@@ -1,0 +1,240 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 21  |  Skill: pattern-extractor
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `pattern-extractor` skill.
+
+### Inputs
+- Skill definition: `.claude/PatternExtractor/SKILL.md`
+- Authoritative inputs:
+  - `input/session-traces/`
+  - `input/existing-patterns.json`
+  - `input/extractor-config.json`
+
+### Execution
+Read all required inputs and execute the skill exactly as defined.
+
+Execute the following phases in order:
+- Phase 1: Input Validation
+- Phase 2: Mine
+- Phase 3: Score
+- Phase 4: Cluster
+- Phase 5: Draft
+- Phase 6: Queue
+- Phase 7: Results Generation
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Total session traces analyzed
+- Existing pattern catalogue size
+- Confidence threshold applied
+- Clustering parameters used
+- Anti-pattern detection status
+- Promotion queue summary
+
+### Phase 1 — Input Validation
+Validate that all REQUIRED inputs are present.
+
+Verify the existence of:
+- `input/session-traces/`
+- `input/existing-patterns.json`
+- `input/extractor-config.json`
+
+If any REQUIRED inputs are missing:
+- List every missing input.
+- Halt execution.
+- Do not proceed further.
+
+Inspect `input/extractor-config.json` and determine:
+- Confidence threshold
+- Clustering parameters
+- Anti-pattern detection rules
+
+Validate that session traces are readable and suitable for extraction.
+
+If malformed traces exist:
+- List all affected trace identifiers.
+- Halt execution.
+
+### Phase 2 — Mine
+Scan all session traces and accompanying artifacts for recurring patterns.
+
+Identify and extract:
+
+1. Recurring tool call sequences
+2. Repeated reasoning chains
+3. Consistent phrasing patterns
+4. Decision heuristics
+5. Artifact patterns
+
+For each candidate pattern, record:
+- `pattern_id`
+- `pattern_type`
+- `occurrences`
+- `raw_evidence`
+
+Limit raw evidence excerpts according to the skill definition.
+
+Determine whether the session qualifies for extraction based on the execution criteria defined by the skill.
+
+### Phase 3 — Score
+Assign confidence scores to all extracted patterns.
+
+Apply the scoring formula defined by the skill:
+
+```
+confidence = min(
+    1.0,
+    ((occurrences - 1) * 0.25)
+    + (consistency_score * 0.5)
+)
+```
+
+Calculate:
+- Consistency scores
+- Confidence scores
+- Failure session counts
+- Failure rates
+
+Classify patterns as:
+- High confidence (`>= 0.75`)
+- Moderate confidence (`0.50–0.74`)
+- Low confidence (`< 0.50`)
+
+Identify all patterns eligible for promotion review.
+
+### Phase 4 — Cluster
+Group related patterns into candidate skills.
+
+Evaluate:
+- Trigger overlap
+- Intent overlap
+- Workflow similarity
+- Keyword similarity using Jaccard thresholds
+
+Compute cluster confidence using the method defined by the skill.
+
+Cross-reference all clusters against `input/existing-patterns.json`.
+
+Determine whether each cluster should be classified as:
+- New candidate skill
+- Existing skill enhancement (`OVERLAP`)
+- Instinct requiring additional evidence
+
+Document overlap findings.
+
+### Phase 5 — Draft
+Generate candidate skill drafts for all patterns or clusters with confidence `>= 0.50`.
+
+For each draft, generate:
+
+- Candidate metadata
+- Trigger section
+- Instructions section
+- Examples section
+- Caveats section
+
+Ensure generated drafts conform to the structure defined by the skill.
+
+Flag all drafts as requiring human review.
+
+### Phase 6 — Queue
+Generate the promotion queue.
+
+Classify entries as:
+
+#### Ready for Promotion
+Requirements:
+- Confidence `>= 0.75`
+- No blocking anti-pattern designation
+
+Include:
+- Draft path
+- Confidence score
+- Evidence summary
+- Overlap notes
+- Reviewer checklist
+
+#### Needs More Evidence
+Requirements:
+- Confidence `0.50–0.74`
+
+Include:
+- Instinct summary
+- Required additional evidence
+- Suggested re-evaluation timing
+
+#### Instinct Only
+Requirements:
+- Confidence `< 0.50`
+
+Record in the catalogue only.
+
+Do not surface these in the promotion queue unless explicitly required by the skill.
+
+Apply all anti-pattern detection rules.
+
+If anti-patterns are identified:
+- Flag them separately.
+- Prevent automatic promotion.
+- Include warning notes and reviewer guidance.
+
+### Phase 7 — Results Generation
+Finalize all output artifacts.
+
+Ensure all findings, classifications, queues, and draft outputs are internally consistent.
+
+Follow all constraints, scoring rules, clustering logic, anti-pattern safeguards, promotion thresholds, and execution behavior defined in the `PatternExtractor` skill.
+
+### Outputs
+Generate or update the following artifacts:
+- `pattern-catalogue.json`
+- `SKILL-*-candidate.md`
+- `promotion-queue.json`
+- `extraction-report.json`
+
+Ensure `pattern-catalogue.json` contains:
+- All extracted patterns
+- Pattern classifications
+- Confidence scores
+- Occurrence counts
+- Evidence excerpts
+- Anti-pattern indicators
+
+Ensure `SKILL-*-candidate.md` files contain:
+- Candidate status
+- Confidence metadata
+- Evidence summaries
+- Trigger definitions
+- Step-by-step instructions
+- Examples
+- Caveats
+
+Ensure `promotion-queue.json` contains:
+- Ready-for-promotion entries
+- Needs-more-evidence entries
+- Overlap notes
+- Reviewer checklists
+- Anti-pattern warnings
+
+Ensure `extraction-report.json` contains:
+- Execution summary
+- Session statistics
+- Pattern counts by category
+- Confidence distributions
+- Promotion recommendations
+- Anti-pattern findings
+- Estimated reuse value
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
+
+**Simplified AI Operations Complete**

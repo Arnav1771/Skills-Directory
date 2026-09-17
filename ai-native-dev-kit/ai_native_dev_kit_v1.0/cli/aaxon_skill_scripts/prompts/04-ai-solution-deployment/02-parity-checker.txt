@@ -1,0 +1,161 @@
+# Source: 04-ai-solution-deployment.md  |  Prompt 2  |  Skill: parity-checker
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `parity-checker` skill.
+
+### Inputs
+- Skill definition: `.claude/ParityChecker/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/release/env-config-staging.yaml`
+  - `artifacts/release/env-config-production.yaml`
+- Reference files:
+  - `references/classification-rules.md`
+  - `references/output-schema.md`
+
+### Execution
+Read all available artifacts and execute the skill exactly as defined. :contentReference[oaicite:0]{index=0}
+
+Determine the run mode before proceeding:
+
+- If both environment config files exist:
+  - Run in **DIFF MODE**.
+- If either file is missing:
+  - Run in **ELICITATION MODE**, generate the missing YAML files, then continue to diff execution.
+
+Execute the following steps in order:
+- Step 1: Run Mode Detection
+- Step 2: First-Run Elicitation (if required)
+- Step 3: Generate Environment Config YAML Files (if required)
+- Step 4: Config Diff and Classification
+- Step 5: Write Output
+
+Collect the mandatory user inputs defined by the skill only if they cannot be inferred from the available artifacts. Otherwise, use the inferred values and explicitly state the assumptions made.
+
+Determine and document:
+- Active run mode.
+- Environment configuration completeness.
+- Critical, notable, and expected drift counts.
+- Gate 3 parity status.
+
+### Step 1 — Run Mode Detection
+Check whether the following files exist:
+- `artifacts/release/env-config-staging.yaml`
+- `artifacts/release/env-config-production.yaml`
+
+If both exist:
+- Announce:
+  - "I found existing environment config files. Running in diff mode."
+- Proceed directly to Step 4.
+
+If either file is absent:
+- Announce:
+  - "No environment config files found. Starting first-run elicitation."
+- Proceed to Step 2.
+
+### Step 2 — First-Run Elicitation (ELICITATION MODE only)
+Conduct a structured interview one dimension at a time.
+
+Collect staging and production values for:
+
+1. Runtime & Infrastructure
+2. Application Dependencies
+3. Database & Data Services
+4. External Services & API Versions
+5. Feature Flags
+6. Secrets & Environment Variables
+7. Monitoring & Observability
+8. Network & Security
+
+Do not ask all dimensions simultaneously.
+
+For secrets:
+- Collect names only.
+- Never request, store, or log secret values.
+
+### Step 3 — Generate Environment Config YAML Files (ELICITATION MODE only)
+Generate:
+- `artifacts/release/env-config-staging.yaml`
+- `artifacts/release/env-config-production.yaml`
+
+Use the schema defined in the skill.
+
+Ensure:
+- Secret names only are stored.
+- Secret values are excluded.
+- Missing variable lists are populated during diff processing.
+
+After generation, confirm:
+- Environment configuration files have been created.
+- Future parity checks can reuse these files.
+- Proceed automatically to the diff stage.
+
+### Step 4 — Config Diff and Classification
+Compare all fields across the following eight dimensions:
+
+- Runtime
+- Dependencies
+- Database
+- External Services
+- Feature Flags
+- Environment Variables
+- Monitoring
+- Network
+
+Classify every detected difference as exactly one of:
+
+- `CRITICAL_DRIFT`
+- `NOTABLE_DRIFT`
+- `EXPECTED_DIFF`
+
+Apply the classification rules defined by the skill, including:
+
+- Runtime version mismatches.
+- Dependency lockfile mismatches.
+- Migration state mismatches.
+- Feature flag inconsistencies.
+- External service endpoint/version mismatches.
+- Environment variable presence mismatches.
+- Monitoring differences.
+- TLS expiry thresholds.
+- CORS violations.
+- Resource allocation differences.
+
+For any uncovered scenario:
+- Classify as `CRITICAL_DRIFT` if the difference could reasonably cause staging success and production failure.
+
+Calculate and document:
+- Total `CRITICAL_DRIFT` findings.
+- Total `NOTABLE_DRIFT` findings.
+- Total `EXPECTED_DIFF` findings.
+
+Determine Gate 3 parity status:
+- Gate passes only if `CRITICAL_DRIFT = 0`.
+
+### Step 5 — Write Output
+Generate:
+- `artifacts/release/parity-check-report.md`
+
+If generated during this execution, also create:
+- `artifacts/release/env-config-staging.yaml`
+- `artifacts/release/env-config-production.yaml`
+
+Ensure the parity report includes:
+- Active run mode.
+- Executive summary.
+- Drift classification summary.
+- Detailed diff table.
+- Critical findings.
+- Expected differences with rationale.
+- Gate 3 parity verdict.
+- POD Lead acknowledgement requirements.
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

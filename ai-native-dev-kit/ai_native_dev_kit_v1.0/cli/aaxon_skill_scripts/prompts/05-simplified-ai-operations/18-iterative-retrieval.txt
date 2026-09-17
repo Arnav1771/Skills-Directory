@@ -1,0 +1,220 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 18  |  Skill: iterative-retrieval
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `iterative-retrieval` skill.
+
+### Inputs
+- Skill definition: `IterativeRetrieval/SKILL.md` :contentReference[oaicite:0]{index=0}
+- Authoritative inputs:
+  - `input/task-query.md`
+  - `input/knowledge-base/`
+  - `input/retrieval-config.json`
+
+### Execution
+Use progressive retrieval to answer the task using the minimum grounded context necessary. Start with a small slice, identify knowledge gaps, and retrieve additional evidence only when confidence remains below threshold.
+
+### Processing Steps
+
+#### Step 1 — Initialize Retrieval Context
+Read `task-query.md` completely.
+
+Extract:
+
+- Primary question to resolve
+- Key entities
+- User intent
+- Likely document domains
+- Known facts already present
+- Constraints affecting the answer
+- Initial unresolved conditions
+
+Initialize:
+
+```text
+confidence = 0.0
+round = 0
+tokens_loaded = 0
+gaps = []
+```
+
+Do not retrieve documents yet.
+
+#### Step 2 — First Retrieval Slice
+Using the primary question and top entities:
+
+- Query the knowledge base.
+- Retrieve the top 3 highest-relevance chunks.
+- Record:
+
+```json
+{
+  "round": 1,
+  "query": "",
+  "docs_loaded": [],
+  "tokens_this_round": 0,
+  "cumulative_tokens": 0
+}
+```
+
+Update cumulative token usage.
+
+#### Step 3 — Assess Grounding and Confidence
+Attempt to answer the task using only currently loaded context.
+
+Evaluate for knowledge gaps, including:
+
+- Missing eligibility conditions
+- Unknown thresholds or dates
+- Unloaded referenced sections
+- Ambiguous policy scope
+- Missing supporting evidence
+- Unresolved reasoning branches
+
+Assign confidence:
+
+| Confidence | Interpretation |
+|---|---|
+| 0.00–0.40 | Major gaps remain |
+| 0.41–0.60 | Partial answer |
+| 0.61–0.84 | Likely answer with minor uncertainty |
+| 0.85–1.00 | Fully grounded |
+
+For every detected gap record:
+
+```json
+{
+  "gap_id": "",
+  "description": "",
+  "target_query": "",
+  "target_category": "",
+  "severity": "blocking | supporting"
+}
+```
+
+#### Step 4 — Evaluate Stop Conditions
+Check stop criteria in this order:
+
+1. Confidence ≥ 0.85
+2. Maximum rounds reached
+3. Maximum token budget reached
+4. No gaps detected
+5. Confidence ≥ 0.70 with only supporting gaps remaining
+
+Apply defaults from configuration:
+
+| Parameter | Default |
+|---|---:|
+| Confidence threshold | 0.85 |
+| Maximum rounds | 5 |
+| Token budget | 12,000 |
+| Initial slice size | Top-3 |
+
+If a stop condition is met:
+
+Record the appropriate:
+
+```text
+stop_reason
+```
+
+Proceed to output generation.
+
+#### Step 5 — Progressive Retrieval Loop
+If blocking gaps remain:
+
+- Select the highest-priority blocking gap.
+- Formulate a targeted query.
+- Retrieve the top 2 new chunks not already loaded.
+- Update:
+
+```text
+round
+tokens_loaded
+retrieval_context
+confidence
+gaps
+```
+
+Repeat Steps 3–5 until a stop condition is satisfied.
+
+#### Step 6 — Generate Grounded Answer
+Produce:
+
+```text
+grounded-answer.md
+```
+
+Include:
+
+```markdown
+## Resolution
+
+## Supporting Evidence
+
+## Recommended Agent Actions
+
+## Coverage Confidence
+```
+
+Requirements:
+
+- Every factual claim must include inline citations.
+- Recommended actions must be grounded in retrieved evidence.
+- State the final confidence score and confidence band.
+
+#### Step 7 — Generate Retrieval Trace
+Produce:
+
+```text
+retrieval-trace.json
+```
+
+For each round record:
+
+- Round number
+- Query issued
+- Documents loaded
+- Tokens loaded this round
+- Cumulative tokens
+- Confidence after reasoning
+- Gaps detected
+
+Include `stop_reason` only in the final round.
+
+#### Step 8 — Generate Coverage Metrics
+Produce:
+
+```text
+coverage-report.json
+```
+
+Include:
+
+- Final confidence
+- Stop reason
+- Total rounds
+- Total tokens loaded
+- Gaps identified
+- Gaps resolved
+- Gaps unresolved
+- Efficiency versus full corpus load
+- Percentage reduction achieved
+
+### Outputs
+
+Generate:
+
+- `grounded-answer.md`
+- `retrieval-trace.json`
+- `coverage-report.json`
+
+Before generating the artifacts, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

@@ -1,0 +1,189 @@
+# Source: 05-simplified-ai-operations.md  |  Prompt 14  |  Skill: context-profiler
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `context-profiler` skill.
+
+### Inputs
+- Skill definition: `ContextProfiler/SKILL.md`
+- Authoritative inputs:
+  - `input/session-window.md`
+  - `input/profiler-config.json`
+
+### Execution
+- Profile the active context window deterministically.
+- Measure context usage only. Do not summarize, rewrite, compact, or modify any segment.
+- Treat missing inputs as zero-token segments and document them accordingly.
+
+### Processing Steps
+
+#### Step 1 — Load Inputs
+Read:
+- Session context from `session-window.md`
+- Configuration from `profiler-config.json`
+
+Extract:
+- Model context window size (default to `200000` if absent)
+- Alert thresholds
+- Segment definitions
+
+If the model window size is defaulted, add a note indicating this assumption.
+
+#### Step 2 — Profile the Five Segments
+Account for exactly these segments:
+
+| Segment | Description |
+|---|---|
+| `system_prompt` | Static instructions loaded at session start |
+| `conversation_history` | User turns, assistant turns, tool invocations, and tool outputs |
+| `retrieved_context` | Retrieved documents, RAG inserts, and injected knowledge |
+| `tool_schemas` | Loaded MCP/tool schemas and descriptors |
+| `working_memory` | Active memory blocks, project instructions, and temporary reasoning aids |
+
+If a segment source is unavailable:
+- Set token count to `0`
+- Mark its source as `"missing"`
+- Add a corresponding note.
+
+#### Step 3 — Estimate Tokens
+Apply the deterministic heuristic independently to each segment:
+
+```text
+estimated_tokens = ceil(character_count / 3.8)
+```
+
+For JSON-heavy segments:
+
+```text
+estimated_tokens = ceil(character_count / 3.5)
+```
+
+Annotate all estimates with:
+
+```json
+"method": "char_heuristic"
+```
+
+Do not claim exact tokenizer counts.
+
+#### Step 4 — Compute Budget Totals
+Calculate:
+
+```text
+total_used = sum(segment_tokens)
+
+utilization_percentage =
+(total_used / model_window_size) × 100
+
+headroom =
+model_window_size − total_used
+
+headroom_percentage =
+(headroom / model_window_size) × 100
+```
+
+#### Step 5 — Apply Alert Thresholds
+Use these thresholds:
+
+| Utilization | Alert Level |
+|---|---|
+| < 70% | none |
+| 70–84.9% | warn |
+| 85–94.9% | critical |
+| ≥ 95% | emergency |
+
+Determine:
+- `alert_level`
+- `threshold_crossed`
+- `recommended_action`
+
+Recommended actions:
+
+```text
+none
+invoke_strategic_compactor
+invoke_strategic_compactor_immediately
+invoke_relevance_pruner_then_compactor
+```
+
+If utilization exceeds the model window:
+
+```text
+status = overflow
+alert_level = emergency
+```
+
+#### Step 6 — Build context-budget.json
+Generate:
+
+```text
+output/context-budget.json
+```
+
+Include:
+
+- Schema version
+- Timestamp
+- Model window size
+- Estimation method
+- Per-segment:
+  - token count
+  - percentage
+  - character count
+  - source
+- Totals
+- Utilization percentage
+- Headroom
+- Status
+- Alert level
+- Threshold status
+- Recommended action
+- Notes
+
+#### Step 7 — Action Payload
+If a recommendation exists, include:
+
+```json
+"action_payload": {
+  "skill": "",
+  "priority": "",
+  "suggested_compaction_target_tokens": 0,
+  "segments_to_compact": [],
+  "rationale": ""
+}
+```
+
+Use:
+
+```text
+suggested_compaction_target_tokens =
+ceil(conversation_history_tokens × 0.40)
+```
+
+when compaction is recommended.
+
+### Outputs
+
+Generate:
+
+- `output/context-budget.json`
+
+### Output Requirements
+
+Include summary metrics:
+
+- Total tokens used
+- Context utilization percentage
+- Remaining headroom
+- Alert level
+- Recommended next action
+
+Before generating the outputs, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**  
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---

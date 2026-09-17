@@ -1,0 +1,181 @@
+# Source: 02-data-readiness.md  |  Prompt 4  |  Skill: assumption-tracker
+# Auto-extracted verbatim from the AA phase prompt file. Edit freely per engagement.
+
+Run the `assumption-tracker` skill.
+
+### Inputs
+- Skill definition: `.claude/AssumptionTracker/SKILL.md`
+- Authoritative inputs:
+  - `artifacts/evidence-map.md`
+  - `artifacts/openspec.yaml`
+  - `specs/knowledge.md`
+- Prior assumption history (if available):
+  - `references/assumption-history.yaml`
+
+### Execution
+Read `artifacts/evidence-map.md`, `artifacts/openspec.yaml`, and `specs/knowledge.md` as the authoritative sources of context.
+
+Execute the skill exactly as defined, including:
+- Phase 1: Assumption Inventory
+- Phase 2: Confidence Scoring
+- Phase 3: HITL Blocker Classification
+- Phase 4: Resolution Tracking
+- Phase 5: Escalation to DecisionLedger
+
+Use the following predefined assumptions without additional elicitation:
+- Confidence threshold:
+  - `0.4`
+- Resolution deadline:
+  - `2 hours before Gate-1`
+- Prior sprint assumption history:
+  - `none`
+- Risk posture:
+  - `balanced`
+
+### Assumption Inventory
+Extract and consolidate assumptions from:
+- Explicit assumptions in `artifacts/openspec.yaml`
+- Weak-evidence escalations from `artifacts/evidence-map.md`
+- Domain-level assumptions identified in `specs/knowledge.md`
+
+Identify assumptions originating from:
+- Requirements tagged with assumption indicators.
+- Requirements classified as:
+  - `WEAK`
+  - `CONTRADICTED`
+  - `NO-EVIDENCE`
+
+Deduplicate assumptions appearing across multiple sources and merge them into a single tracked entry.
+
+Capture:
+- Assumption description
+- Source artifact(s)
+- Affected requirement identifiers
+- Related domain context
+
+### Confidence Scoring
+For each assumption, compute a confidence score using the heuristics defined in the skill.
+
+Apply:
+- Base score:
+  - `0.5`
+
+Apply the following scoring modifiers:
+
+| Factor | Score Modifier |
+|----------|----------------|
+| Evidence strength: CONFIRMED | +0.4 |
+| Evidence strength: PARTIAL | +0.2 |
+| Evidence strength: WEAK | +0.0 |
+| Evidence strength: NO-EVIDENCE | -0.2 |
+| Evidence strength: CONTRADICTED | -0.4 |
+| Prior sprint: resolved successfully | +0.2 |
+| Prior sprint: unresolved / wrong | -0.2 |
+| Dependency on external system/team | -0.1 |
+| POD Lead domain expertise available | +0.1 |
+
+Clamp all confidence scores to the range:
+- `0.0–1.0`
+
+Document the factors contributing to each score.
+
+### HITL Blocker Classification
+Classify assumptions according to:
+- Confidence threshold:
+  - `0.4`
+- Risk posture:
+  - `balanced`
+
+Apply the following rules:
+- Score < 0.4 → `HITL_BLOCKER`
+- Score between 0.4 and 0.6 → `WARNING`
+- Score ≥ 0.6 → `TRACKED`
+
+Treat all first-sprint HITL blockers as requiring manual POD Lead review regardless of score.
+
+Identify:
+- Gate blockers
+- Non-blocking warnings
+- Tracked assumptions requiring monitoring
+
+### Resolution Tracking
+For each `HITL_BLOCKER`, recommend one of:
+- `VALIDATE`
+- `ACCEPT_RISK`
+- `DEFER`
+- `DESCOPE`
+
+Specify:
+- Recommended resolution approach
+- Evidence required for validation
+- Responsible party if identifiable
+- Resolution deadline:
+  - `2 hours before Gate-1`
+
+Track assumption status as:
+- `OPEN`
+- `RESOLVED`
+
+### Escalation to DecisionLedger
+For assumptions resolved through `ACCEPT_RISK`, generate DecisionLedger payloads containing:
+- Decision type:
+  - `risk-acceptance`
+- Decision statement
+- Rationale
+- Affected requirements
+- Confidence score
+
+Follow all constraints, processing rules, and execution behavior defined in the `AssumptionTracker` skill.
+
+### Outputs
+Generate or update the following artifact:
+
+- `artifacts/assumption-log.md`
+
+Ensure the artifact contains:
+- Sprint identifier
+- Generation timestamp
+- Confidence threshold
+- Resolution deadline
+- Summary statistics
+- HITL blocker inventory
+- Warning inventory
+- Tracked assumptions
+- Resolved assumptions
+
+Generate HITL blocker entries containing:
+- Assumption identifier
+- Description
+- Source
+- Affected requirements
+- Confidence score
+- Scoring factors
+- Status
+- Recommended resolution
+- Resolution deadline
+
+Generate warning entries containing:
+- Assumption identifier
+- Description
+- Confidence score
+- Affected requirements
+- Recommended action
+
+Generate tracked assumption entries containing:
+- Assumption identifier
+- Description
+- Confidence score
+- Status
+
+Generate DecisionLedger escalation payloads for all accepted risks.
+
+Before generating `artifacts/assumption-log.md`, present a bulleted summary with 3–5 bullet points.
+
+**Expected Action from User**
+Reply **NEXT** to proceed with artifact generation, or provide corrections, clarifications, or missing information before generation continues.
+
+After completion, report what was created or updated.
+
+ask for confirmation before moving on to next prompt
+
+---
