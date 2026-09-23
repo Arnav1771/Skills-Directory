@@ -293,7 +293,7 @@ personal. Select per-repo by owner (helper: `scripts/select-git-identity.sh`):
 | Repo owner                          | Per-repo identity                                                  |
 | ----------------------------------- | ------------------------------------------------------------------ |
 | `github.com/Arnav1771/*` (personal) | `Arnav1771` / `arnav.bhargava3@gmail.com`                          |
-| work / org repo (Aligned Automation)| `AABH-AI` / `arnav.bhargava@alignedautomation.com`                 |
+| work / org repo (employer)          | `AABH-AI` / `your work email`                                      |
 
 - WSL global default is already `Arnav1771 / arnav.bhargava3@gmail.com`; `gh` is
   authed to **Arnav1771**. For an Arnav1771 repo no override is needed.

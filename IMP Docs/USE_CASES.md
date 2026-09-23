@@ -55,8 +55,7 @@ SKILL.md docs, copy install commands, follow composes-well links, submit via PR.
 
 11. **Team/org private catalogs** — template-ize the site so any org can fork,
     point it at their internal skills repo, and get a branded internal
-    directory (the Aligned Automation use case: WFM/RCA playbook skills, Dell
-    SOW tooling as internal skills).
+    directory (for example, a team's own internal playbook skills).
 12. **Skill quality badges** — automated scoring (has scripts? references?
     examples? diagram? passes validation? recently updated?) surfaced as badges
     on cards; the leaderboard's rankScore already computes most of this.
