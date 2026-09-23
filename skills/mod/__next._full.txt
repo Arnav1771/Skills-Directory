@@ -79,8 +79,8 @@ personal. Select per-repo by owner (helper: <code>scripts/select-git-identity.sh
 <td><code>Arnav1771</code> / <code>arnav.bhargava3@gmail.com</code></td>
 </tr>
 <tr>
-<td>work / org repo (Aligned Automation)</td>
-<td><code>AABH-AI</code> / <code>arnav.bhargava@alignedautomation.com</code></td>
+<td>work / org repo (employer)          </td>
+<td><code>AABH-AI</code> / <code>work email</code>                          </td>
 </tr>
 </tbody></table>
 <ul>
